@@ -1,0 +1,7 @@
+{
+  "name": "OMF",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular"
+}
