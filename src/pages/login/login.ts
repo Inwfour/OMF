@@ -2,9 +2,6 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, AlertController,ToastController } from 'ionic-angular';
 import { User } from '../../models/user';
 import { RegisterPage } from '../register/register';
-import { AngularFireAuth } from 'angularfire2/auth';
-import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
-import { DbServiceProvider } from '../../providers/db-service/db-service';
 import firebase from 'firebase';
 import { TabsPage } from '../tabs/tabs';
 
@@ -23,10 +20,7 @@ import { TabsPage } from '../tabs/tabs';
 export class LoginPage {
 
   user: User = new User;
-  constructor(private serviceAuth: AuthServiceProvider,
-    private serviceData: DbServiceProvider,
-    private afAuth: AngularFireAuth,
-    public navCtrl: NavController,
+  constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public loadingCtrl: LoadingController,
     public alertCtrl:AlertController,

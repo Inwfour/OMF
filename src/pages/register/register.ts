@@ -2,21 +2,18 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController,AlertController,ToastController } from 'ionic-angular';
 import { User } from '../../models/user';
 import { AngularFireAuth } from 'angularfire2/auth';
-import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
-import { DbServiceProvider } from '../../providers/db-service/db-service';
+
 import firebase from 'firebase';
 
 @IonicPage()
 @Component({
   selector: 'page-register',
   templateUrl: 'register.html',
-  providers: [AuthServiceProvider]
 })
 export class RegisterPage {
   user: User = new User;
 
-  constructor(public serviceAuth: AuthServiceProvider,
-    public serviceData: DbServiceProvider,
+  constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public loadingCtrl: LoadingController,

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, ToastController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
+import { Http,Headers,RequestOptions} from '@angular/http';
 import firebase from 'firebase';
 import moment from 'moment';
 
@@ -20,7 +21,7 @@ export class FeedPage {
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private loadingCtrl: LoadingController
-    , private toastCtrl: ToastController, private camera: Camera) {
+    , private toastCtrl: ToastController, private camera: Camera,private http:Http) {
     this.text = "";
     this.getPosts();
   }
@@ -195,6 +196,38 @@ export class FeedPage {
       })
     })
 
+  }
+
+  like(post){
+    let body = {
+      postId: post.id,
+      userId: firebase.auth().currentUser.uid,
+      action: post.data().likes && post.data().likes[firebase.auth().currentUser.uid] === true ? "unlike" : "like"
+    }
+
+    let url = "https://us-central1-oldmyfriends.cloudfunctions.net/updateLikesCount";
+    let headers = new Headers();
+    headers.append('Access-Control-Allow-Origin' , '*');
+      let options = new RequestOptions({ headers:headers });
+    return new Promise((resolve,reject)=>{
+       this.http.post(url,JSON.stringify(body), options).subscribe(res => {
+          resolve(res.json());
+        }, (err) => {
+          reject(err);
+        });
+    })
+       
+
+  //   return new Promise((resolve, reject) => {
+  //   this.http.post("https://us-central1-oldmyfriends.cloudfunctions.net/updateLikesCount", JSON.stringify(body), {
+      
+  //     responseType: "text"
+  //   }).subscribe((data) => {
+  //     console.log(data);
+  //   }, (error) => {
+  //     console.log(error);
+  //   })
+  // });
   }
 
 }

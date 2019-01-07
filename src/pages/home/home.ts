@@ -1,12 +1,10 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
-import { DbServiceProvider } from '../../providers/db-service/db-service';
-import { AuthServiceProvider } from '../../providers/auth-service/auth-service';
 import { User } from '../../models/user';
 import { ChatbotPage } from '../chatbot/chatbot';
 import { FeedPage } from '../feed/feed';
 import firebase from 'firebase';
-import { LoginPage } from '../login/login';
+
 
 /**
  * Generated class for the HomePage page.
@@ -24,8 +22,6 @@ export class HomePage {
   user :User = new User;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
-    public serviceData: DbServiceProvider,
-    public serviceAuth: AuthServiceProvider,
     public events: Events
     ) {
   }
@@ -46,7 +42,7 @@ export class HomePage {
     //   }).present();
     //   this.navCtrl.setRoot(LoginPage);
     // })
-    this.serviceAuth.doLogout()
+    firebase.auth().signOut()
     this.events.publish('user:logout');
 
   }

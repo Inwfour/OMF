@@ -5,22 +5,19 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
-// Firebase
-import { AngularFireModule } from 'angularfire2';
-import { AngularFireDatabaseModule } from 'angularfire2/database';
+
 import { FIREBASE_CONFIG } from './firebase.config';
-import { AngularFireAuthModule } from 'angularfire2/auth';
 import { LoginPage } from '../pages/login/login';
 import { RegisterPage } from '../pages/register/register';
 import { ChatbotPage } from '../pages/chatbot/chatbot';
-import { AuthServiceProvider } from '../providers/auth-service/auth-service';
-import { DbServiceProvider } from '../providers/db-service/db-service';
 import { TextToSpeech } from '@ionic-native/text-to-speech';
 import { TabsPage } from '../pages/tabs/tabs';
 import { UserPage } from '../pages/user/user';
 import firebase from 'firebase';
 import { FeedPage } from '../pages/feed/feed';
 import { Camera } from '@ionic-native/camera';
+
+import { HttpModule } from '@angular/http';
 
 firebase.initializeApp(FIREBASE_CONFIG);
 firebase.firestore().settings({
@@ -40,9 +37,7 @@ firebase.firestore().settings({
   ],
   imports: [
     BrowserModule,
-    AngularFireModule.initializeApp(FIREBASE_CONFIG),
-    AngularFireDatabaseModule,
-    AngularFireAuthModule,
+    HttpModule,
     IonicModule.forRoot(MyApp,{
       // scrollAssist: true,
       // autoFocusAssist: true 
@@ -66,8 +61,6 @@ firebase.firestore().settings({
     SplashScreen,
     TextToSpeech,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    AuthServiceProvider,
-    DbServiceProvider,
     Camera
   ]
 })
