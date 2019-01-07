@@ -157,12 +157,23 @@ export class FeedPage {
 
   upload(name: string) {
     return new Promise((resolve, reject) => {
+
+      let loader = this.loadingCtrl.create({
+        spinner: 'hide',
+        content: `<img src="assets/imgs/loading.svg">`,
+        
+      });
+      loader.present();
+
       let ref = firebase.storage().ref("postImages/" + name);
 
       let uploadTask = ref.putString(this.image.split(',')[1], "base64");
 
-      uploadTask.on("state_changed", (taskSnapshot) => {
+      uploadTask.on("state_changed", (taskSnapshot: any) => {
         console.log(taskSnapshot)
+        let percentage = taskSnapshot.bytesTransferred / taskSnapshot.totalBytes * 100;
+        loader.setContent("Uploaded " + percentage + "% ...")
+
       }, (error) => {
         console.log(error)
       }, () => {
@@ -172,8 +183,10 @@ export class FeedPage {
           firebase.firestore().collection("posts").doc(name).update({
             image: url
           }).then(() => {
+            loader.dismiss();
             resolve()
           }).catch((err) => {
+            loader.dismiss();
             reject()
           })
         }).catch((err) => {
