@@ -1,0 +1,31 @@
+<ion-header hidden>
+
+  <ion-navbar>
+    <ion-title>login</ion-title>
+  </ion-navbar>
+
+</ion-header>
+<ion-content padding text-center class="bg">
+  <ion-list style="margin-top: 30px;">
+    <img width="50%" src="assets/imgs/family.png">
+    <br><br>
+    <div class="head" text-center>
+      <h1>OLD MY FRIENDS</h1>
+      <h5>ยินดีต้อนรับคุณปู่คุณย่าทุกท่าน</h5>
+    </div>
+    <ion-item>
+      <ion-icon name="ios-contact" item-left ></ion-icon>
+      <ion-input #input [(ngModel)]="user.email" placeholder="ชื่อผู้ใช้" type="text"></ion-input>
+    </ion-item>
+    <ion-item class="pass">
+      <ion-icon name="ios-lock" item-left></ion-icon>
+      <ion-input #input [(ngModel)]="user.password" type="password" placeholder="รหัสผ่าน"></ion-input>
+    </ion-item>
+    <br><br>
+    <button ion-button block round (click)="login(user)">เข้าสู่ระบบ</button>
+    <button ion-button block round (click)="nextRegister()">สมัครสมาชิก</button>
+
+
+  </ion-list>
+
+</ion-content>

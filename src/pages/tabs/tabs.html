@@ -1,0 +1,13 @@
+<ion-tabs color="headertop" selectedIndex="0">
+  <ion-tab tabIcon="home" tabTitle="หน้าแรก" [root]="homePage" ></ion-tab>
+  <ion-tab tabIcon="ios-people"  [root]="userPage" tabTitle="เพื่อน"></ion-tab>
+  <ion-tab tabIcon="ios-camera" tabTitle="ถ่ายรูป" [root]="userPage" (ionSelect)="addPhoto()"></ion-tab>
+  <!-- <ion-fab bottom center>
+      <button ion-fab color="headertop">
+        <ion-icon name="ios-camera"></ion-icon>
+      </button>
+  </ion-fab> -->
+  <ion-tab tabIcon="ios-settings"  [root]="userPage" tabTitle="ตั้งค่า" ></ion-tab>
+  <ion-tab tabIcon="ios-contact" [root]="userPage" tabTitle="ข้อมูลส่วนตัว" ></ion-tab>
+</ion-tabs>
+

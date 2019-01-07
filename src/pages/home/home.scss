@@ -1,3 +1,25 @@
 page-home {
+    .content{
+            height: 100%;
+            width: 100%;
+            background: linear-gradient(160deg, #1E8449 30%,#2471A3 70%)
+    }
+
+    .card{
+        border-radius: 20px;
+    }
+
+    .card-img{
+        width: 50%;margin: auto;
+    }
+    .card-col-text{
+        display: flex!important;
+        text-align: left !important;
+        align-items: center!important;
+    }
+
+    .card-text{
+        font-size: 2.2vh;margin: 0 !important;color: white
+    }
 
 }

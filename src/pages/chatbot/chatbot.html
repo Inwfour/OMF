@@ -1,0 +1,45 @@
+<ion-header >
+    <ion-navbar text-center>
+      <ion-title>
+        ปู่จอห์น
+      </ion-title>
+    </ion-navbar>
+  </ion-header>
+  
+  <ion-content padding>
+  
+    <ion-fab bottom right>
+      <button ion-fab color="danger" (click)="sendVoice()">
+        <ion-icon name="mic"></ion-icon>
+      </button>
+    </ion-fab>
+  
+    <ion-list no-lines class="chat-list">
+      <ion-item *ngFor="let message of messages" class="chat-item" text-wrap>
+        <ion-avatar item-left *ngIf="message.sender == 'api'">
+          <img src = "assets/imgs/bot.png">
+        </ion-avatar>
+        <ion-avatar item-right *ngIf="message.sender == 'me'">
+            <img src = "assets/imgs/user.jpg">
+          </ion-avatar>
+          <div *ngIf="message.sender == 'api'" class="bubble me">
+            <h3>{{message.text}}</h3>
+          </div>
+          <div *ngIf="message.sender == 'me'" class="bubble you">
+              <h3>{{message.text}}</h3>
+            </div>
+      </ion-item>
+    </ion-list>
+  
+  </ion-content>
+  <ion-footer>
+    <ion-toolbar color="light">
+      <ion-item>
+      <ion-input #input type="text" placeholder="Your Message here.." [(ngModel)]="text"></ion-input>
+      <button ion-button icon-only item-right clear (click)="sendText(); input.setFocus()">
+        <ion-icon name="send"></ion-icon>
+      </button>
+    </ion-item>
+    </ion-toolbar>  
+  </ion-footer>
+  
