@@ -50,8 +50,10 @@
     </ion-item-divider>
     <ion-item item-wrap>
       {{ post.data().text }}
-      {{ post.uid }}
     </ion-item>
+
+    <img [src]="post.data().image" *ngIf="post.data().image">
+
     <ion-row class="bottom-bar">
       <ion-col>
         <button ion-button block icon-left clear small color="headertop" class="border-right" >
