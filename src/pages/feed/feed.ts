@@ -64,22 +64,26 @@ export class FeedPage {
     let query = firebase.firestore().collection("posts").orderBy("created", "desc")
       .limit(this.pageSize)
 
-    // query.onSnapshot((snapshot) => {
-    //   let changedDocs = snapshot.docChanges();
+    query.onSnapshot((snapshot) => {
+      let changedDocs = snapshot.docChanges();
 
-    //   changedDocs.forEach((change) => {
-    //     if(change.type == "added"){
-    //       // TODO
-    //     }
-    //     if(change.type == "modified"){
-    //       // TODO
-    //       console.log("Document with id" + change.doc.id + "has been modified.");
-    //     }
-    //     if(change.type == "removed"){
-    //       // TODO
-    //     }
-    //   })
-    // })
+      changedDocs.forEach((change) => {
+        if(change.type == "added"){
+          // TODO
+        }
+        if(change.type == "modified"){
+          // TODO
+          for(let i = 0;i < this.posts.length; i++){
+            if(this.posts[i].id == change.doc.id){
+              this.posts[i] = change.doc;
+            }
+          }
+        }
+        if(change.type == "removed"){
+          // TODO
+        }
+      })
+    })
 
     query.get().then((docs) => {
 
@@ -221,18 +225,6 @@ export class FeedPage {
     }, (error) => {
       console.log(error);
     })
-
-    // let url = "https://us-central1-oldmyfriends.cloudfunctions.net/updateLikesCount";
-    // let headers = new Headers();
-    // headers.append('Access-Control-Allow-Origin' , '*');
-    //   let options = new RequestOptions({ headers:headers });
-    // return new Promise((resolve,reject)=>{
-    //    this.http.post(url,JSON.stringify(body), options).subscribe(res => {
-    //       resolve(res.json());
-    //     }, (err) => {
-    //       reject(err);
-    //     });
-    // })
        
 
   }
