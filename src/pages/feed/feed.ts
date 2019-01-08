@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, ToastController, ActionSheetController, AlertController,
+ModalController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { HttpClient, HttpHeaders} from '@angular/common/http';
 import firebase from 'firebase';
 import moment from 'moment';
+import { CommentsPage } from '../comments/comments';
 
 @IonicPage()
 @Component({
@@ -18,10 +20,11 @@ export class FeedPage {
   cursor: any;
   infiniteEvent: any;
   image: string = "";
-  userid:any;
+
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private loadingCtrl: LoadingController
-    , private toastCtrl: ToastController, private camera: Camera,private http:HttpClient) {
+    , private toastCtrl: ToastController, private camera: Camera,private http:HttpClient,private actionSheetCtrl:ActionSheetController
+    , private alertCtrl:AlertController,private modalCtrl:ModalController) {
     this.text = "";
     this.getPosts();
   }
@@ -203,7 +206,7 @@ export class FeedPage {
   }
 
   like(post){
-    this.userid = firebase.auth().currentUser.uid;
+
     let body = {
       postId: post.id,
       userId: firebase.auth().currentUser.uid,
@@ -228,6 +231,65 @@ export class FeedPage {
     })
        
 
+  }
+
+  comment(post) {
+    this.actionSheetCtrl.create({
+      buttons: [
+        {
+          text: "View All Comments",
+          handler: () => {
+            this.modalCtrl.create(CommentsPage, {
+              "post":post
+            }).present();
+          }
+        },
+        {
+          text: "New comment",
+          handler: () => {
+              this.alertCtrl.create({
+                title: "New Comment",
+                message: "Type your comment",
+                inputs: [
+                  {
+                    name: "comment",
+                    type: "text"
+                  }
+                ],
+                buttons: [
+                  {
+                    text: "Cancel"
+                  },
+                  {
+                    text: "Post",
+                    handler: (data) => {
+                      if(data.comment){
+                        firebase.firestore().collection("comments").add({
+                          text: data.comment,
+                          post: post.id,
+                          owner: firebase.auth().currentUser.uid,
+                          owner_name: firebase.auth().currentUser.displayName,
+                          created: firebase.firestore.FieldValue.serverTimestamp()
+                        }).then((doc) => {
+                          this.toastCtrl.create({
+                            message: "Comment posted successfully",
+                            duration: 3000
+                          }).present();
+                        }).catch((err) => {
+                          this.toastCtrl.create({
+                            message: err.message,
+                            duration: 3000
+                          }).present();
+                        })
+                      }
+                    }
+                  }
+                ]
+              }).present();
+          }
+        }
+      ]
+    }).present();
   }
 
 }

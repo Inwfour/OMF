@@ -56,15 +56,15 @@
 
     <ion-row class="bottom-bar">
       <ion-col>
-        <button ion-button block icon-left clear small [color]="post.data().likes[userid] ? 'primary' : 'headertop'" class="border-right" (click)="like(post)">
+        <button ion-button block icon-left clear small color="headertop" class="border-right" (click)="like(post)">
           <ion-icon name="thumbs-up"></ion-icon>
           <small>{{ post.data().likesCount || 0 }} Likes</small>
         </button>
       </ion-col>
       <ion-col>
-          <button ion-button block icon-left clear small color="headertop" class="border-right">
+          <button ion-button block icon-left clear small color="headertop" class="border-right" (click)="comment(post)">
             <ion-icon name="text"></ion-icon>
-            <small>12 Comments</small>
+            <small> {{ post.data().commentsCount || 0 }} Comments</small>
           </button>
         </ion-col>
         <ion-col>

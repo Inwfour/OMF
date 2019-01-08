@@ -18,7 +18,7 @@ import { FeedPage } from '../pages/feed/feed';
 import { Camera } from '@ionic-native/camera';
 
 import { HttpClientModule } from '@angular/common/http';
-import { InterceptorModule } from './interceptor.module';
+import { CommentsPage } from '../pages/comments/comments';
 
 firebase.initializeApp(FIREBASE_CONFIG);
 firebase.firestore().settings({
@@ -34,12 +34,12 @@ firebase.firestore().settings({
     ChatbotPage,
     TabsPage,
     UserPage,
-    FeedPage
+    FeedPage,
+    CommentsPage
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
-    InterceptorModule,
     IonicModule.forRoot(MyApp,{
       // scrollAssist: true,
       // autoFocusAssist: true 
@@ -56,7 +56,8 @@ firebase.firestore().settings({
     ChatbotPage,
     TabsPage,
     UserPage,
-    FeedPage
+    FeedPage,
+    CommentsPage
   ],
   providers: [
     StatusBar,
