@@ -18,7 +18,7 @@ export class FeedPage {
   cursor: any;
   infiniteEvent: any;
   image: string = "";
-
+  userid:any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private loadingCtrl: LoadingController
     , private toastCtrl: ToastController, private camera: Camera,private http:HttpClient) {
@@ -203,10 +203,11 @@ export class FeedPage {
   }
 
   like(post){
+    this.userid = firebase.auth().currentUser.uid;
     let body = {
       postId: post.id,
       userId: firebase.auth().currentUser.uid,
-      action: post.data().likes && post.data().likes[firebase.auth().currentUser.uid] === true ? "unlike" : "like"
+      action: post.data().likes && post.data().likes[firebase.auth().currentUser.uid] == true ? "unlike" : "like"
     }
 
     const header = {

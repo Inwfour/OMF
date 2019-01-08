@@ -44,7 +44,7 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <ion-card *ngFor="let post of posts">
+  <ion-card *ngFor="let post of posts; let odd = odd">
     <ion-item-divider color="headertop">
       {{ post.data().owner_name }} Says
     </ion-item-divider>
@@ -56,7 +56,7 @@
 
     <ion-row class="bottom-bar">
       <ion-col>
-        <button ion-button block icon-left clear small color="headertop" class="border-right" (click)="like(post)">
+        <button ion-button block icon-left clear small [color]="post.data().likes[userid] ? 'primary' : 'headertop'" class="border-right" (click)="like(post)">
           <ion-icon name="thumbs-up"></ion-icon>
           <small>{{ post.data().likesCount || 0 }} Likes</small>
         </button>
