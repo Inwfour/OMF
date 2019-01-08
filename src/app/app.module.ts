@@ -17,7 +17,8 @@ import firebase from 'firebase';
 import { FeedPage } from '../pages/feed/feed';
 import { Camera } from '@ionic-native/camera';
 
-import { HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
+import { InterceptorModule } from './interceptor.module';
 
 firebase.initializeApp(FIREBASE_CONFIG);
 firebase.firestore().settings({
@@ -37,7 +38,8 @@ firebase.firestore().settings({
   ],
   imports: [
     BrowserModule,
-    HttpModule,
+    HttpClientModule,
+    InterceptorModule,
     IonicModule.forRoot(MyApp,{
       // scrollAssist: true,
       // autoFocusAssist: true 
