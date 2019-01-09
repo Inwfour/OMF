@@ -7,12 +7,17 @@ admin.initializeApp(functions.config().firebase);
 // // https://firebase.google.com/docs/functions/typescript
 
 export const updateLikesCount = functions.https.onRequest((request, response) => {
+    let body: any;
+    if(typeof(request.body)=="string"){
+        body=JSON.parse(request.body);
+    } else {
+        body = request.body
+    }
+    
 
-    console.log(request.body);
-
-    const postId = request.body.postId;
-    const userId = request.body.userId;
-    const action = request.body.action; // 'like' or 'unlike'
+    const postId = body.postId;
+    const userId = body.userId;
+    const action = body.action; // 'like' or 'unlike'
 
     admin.firestore().collection("posts").doc(postId).get().then((data) => {
         

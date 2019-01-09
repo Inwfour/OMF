@@ -1,0 +1,62 @@
+{
+  "project_info": {
+    "project_number": "76600710845",
+    "firebase_url": "https://oldmyfriends.firebaseio.com",
+    "project_id": "oldmyfriends",
+    "storage_bucket": "oldmyfriends.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:76600710845:android:47861303da688045",
+        "android_client_info": {
+          "package_name": "com.senior.omf"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "76600710845-87v17a4b26t6smlivs5feb784pf4b1rn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.senior.omf",
+            "certificate_hash": "02de7692fabb10dd72dd8df52fc3e8c37029cabd"
+          }
+        },
+        {
+          "client_id": "76600710845-kmuhuripk6varrgdvm43u53g08na7sng.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQ2i5bvQMtm_HY653i0JNMnCn5_RAW-gg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "76600710845-kmuhuripk6varrgdvm43u53g08na7sng.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "76600710845-bqisnf5nmfgkseghn83vtuj18hk8c9al.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.senior.omf"
+              }
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

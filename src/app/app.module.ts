@@ -21,9 +21,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { CommentsPage } from '../pages/comments/comments';
 
 firebase.initializeApp(FIREBASE_CONFIG);
-firebase.firestore().settings({
-  timestampsInSnapshots:true
-})
+const firestore = firebase.firestore();
+const settings = {/* your settings... */ timestampsInSnapshots: true};
+firestore.settings(settings);
+
 
 @NgModule({
   declarations: [

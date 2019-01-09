@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController,AlertController,ToastController } from 'ionic-angular';
 import { User } from '../../models/user';
-import { AngularFireAuth } from 'angularfire2/auth';
 
 import firebase from 'firebase';
 
@@ -17,13 +16,10 @@ export class RegisterPage {
     public navCtrl: NavController,
     public navParams: NavParams,
     public loadingCtrl: LoadingController,
-    public afAuth: AngularFireAuth,
     public alertCtrl:AlertController,
     public toastCtrl:ToastController
   ) {
   }
-
-
 
   save() {
 

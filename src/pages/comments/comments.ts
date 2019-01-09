@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, ViewController } from 'ionic-angular';
+import { NavController, NavParams, ViewController, LoadingController } from 'ionic-angular';
 import firebase from 'firebase'
 import moment from 'moment'
 /**
@@ -16,8 +16,13 @@ import moment from 'moment'
 export class CommentsPage {
   post: any = {};
   comments : any[] = [];
-  constructor(public navCtrl: NavController, public navParams: NavParams,private viewCtrl:ViewController) {
-
+  constructor(public navCtrl: NavController, public navParams: NavParams,private viewCtrl:ViewController,private loadingCtrl:LoadingController) {
+    let loader = this.loadingCtrl.create({
+      spinner: 'hide',
+      content: `<img src="assets/imgs/loading.svg">`,
+      
+    });
+    loader.present();
     this.post = this.navParams.get("post");
     console.log(this.post);
 
@@ -25,9 +30,11 @@ export class CommentsPage {
     .orderBy("created", "asc")
     .get()
     .then((data) => {
+      loader.dismiss();
       console.log(data.docs);
       this.comments = data.docs;
     }).catch((err) => {
+      loader.dismiss();
       console.log(err);
     })
 

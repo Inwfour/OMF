@@ -20,13 +20,14 @@ export class FeedPage {
   cursor: any;
   infiniteEvent: any;
   image: string = "";
-
+  nameuid:any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private loadingCtrl: LoadingController
     , private toastCtrl: ToastController, private camera: Camera,private http:HttpClient,private actionSheetCtrl:ActionSheetController
     , private alertCtrl:AlertController,private modalCtrl:ModalController) {
     this.text = "";
     this.getPosts();
+    this.nameuid = firebase.auth().currentUser.uid;
   }
 
   addPhoto() {
@@ -64,8 +65,7 @@ export class FeedPage {
 
     loader.present();
 
-    let query = firebase.firestore().collection("posts").orderBy("created", "desc")
-      .limit(this.pageSize)
+    let query = firebase.firestore().collection("posts").orderBy("created", "desc").limit(this.pageSize);
 
     query.onSnapshot((snapshot) => {
       let changedDocs = snapshot.docChanges();
@@ -85,8 +85,8 @@ export class FeedPage {
         if(change.type == "removed"){
           // TODO
         }
-      })
-    })
+      });
+    });
 
     query.get().then((docs) => {
 
@@ -207,26 +207,36 @@ export class FeedPage {
 
   like(post){
 
-    let body = {
+
+    let loader = this.loadingCtrl.create({
+      spinner: 'hide',
+      content: `<img src="assets/imgs/loading.svg">`,
+      
+    });
+    loader.present();
+
+    const body = {
       postId: post.id,
       userId: firebase.auth().currentUser.uid,
-      action: post.data().likes && post.data().likes[firebase.auth().currentUser.uid] == true ? "unlike" : "like"
+      action: post.data().likes && post.data().likes[firebase.auth().currentUser.uid] === true ? "unlike" : "like"
     }
 
-    const header = {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Headers': 'Content-Type',
-      'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, PUT',
-      'Access-Control-Allow-Origin': '*'
-      };
-      const httpOptions = new HttpHeaders(header);
+    // const header = {
+    //   'Content-Type': 'application/json',
+    //   'Access-Control-Allow-Origin': '*',
+    //   'Access-Control-Allow-Methods': 'POST,GET,PUT,DELETE',
+    //   'Access-Control-Allow-Headers': 'Authorization, Lang'
+    //   };
+    //   let httpOptions = new HttpHeaders(header);
 
     this.http.post("https://us-central1-oldmyfriends.cloudfunctions.net/updateLikesCount", JSON.stringify(body), {
-      headers : httpOptions,
+      // headers : httpOptions,
       responseType: "text"
     },).subscribe((data) => {
+      loader.dismiss();
       console.log(data);
     }, (error) => {
+      loader.dismiss();
       console.log(error);
     })
        
@@ -234,6 +244,7 @@ export class FeedPage {
   }
 
   comment(post) {
+
     this.actionSheetCtrl.create({
       buttons: [
         {
