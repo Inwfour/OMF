@@ -1,23 +1,24 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
-
+import * as corsLib from 'cors';
 admin.initializeApp(functions.config().firebase);
 
-// // Start writing Firebase Functions
-// // https://firebase.google.com/docs/functions/typescript
+// export const cors = functions.https.onRequest((req, res) => {
+//     res.set('Access-Control-Allow-Origin', '*');
+//     res.set('Access-Control-Allow-Methods', 'GET, POST');
+// })
+
+
+const cors = corsLib({origin: true});
+
 
 export const updateLikesCount = functions.https.onRequest((request, response) => {
-    let body: any;
-    if(typeof(request.body)=="string"){
-        body=JSON.parse(request.body);
-    } else {
-        body = request.body
-    }
-    
+    response.set('Access-Control-Allow-Origin', '*');
+    cors(request, response, () => {
 
-    const postId = body.postId;
-    const userId = body.userId;
-    const action = body.action; // 'like' or 'unlike'
+    const postId = JSON.parse(request.body).postId;
+    const userId = JSON.parse(request.body).userId;
+    const action = JSON.parse(request.body).action; // 'like' or 'unlike'
 
     admin.firestore().collection("posts").doc(postId).get().then((data) => {
         
@@ -44,7 +45,7 @@ export const updateLikesCount = functions.https.onRequest((request, response) =>
         response.status(err.code).send(err.message)
     })
 
-
+});
 });
 
 export const updateCommentsCount = functions.firestore.document('comments/{commentId}').onCreate(async (event) => {

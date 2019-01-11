@@ -16,7 +16,8 @@ import { UserPage } from '../pages/user/user';
 import firebase from 'firebase';
 import { FeedPage } from '../pages/feed/feed';
 import { Camera } from '@ionic-native/camera';
-
+import { AngularFireAuth } from 'angularfire2/auth';
+import { AngularFireModule } from 'angularfire2';
 import { HttpClientModule } from '@angular/common/http';
 import { CommentsPage } from '../pages/comments/comments';
 
@@ -41,6 +42,7 @@ firestore.settings(settings);
   imports: [
     BrowserModule,
     HttpClientModule,
+    AngularFireModule.initializeApp(FIREBASE_CONFIG),
     IonicModule.forRoot(MyApp,{
       // scrollAssist: true,
       // autoFocusAssist: true 
@@ -62,6 +64,7 @@ firestore.settings(settings);
   ],
   providers: [
     StatusBar,
+    AngularFireAuth,
     SplashScreen,
     TextToSpeech,
     {provide: ErrorHandler, useClass: IonicErrorHandler},

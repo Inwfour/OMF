@@ -35,15 +35,10 @@ export class HomePage {
   }
 
   logout(){
-    // firebase.auth().signOut().then(() => {
-    //   let toast = this.toastCtrl.create({
-    //     message: "Logout Success !!!",
-    //     duration: 3000
-    //   }).present();
-    //   this.navCtrl.setRoot(LoginPage);
-    // })
-    firebase.auth().signOut()
-    this.events.publish('user:logout');
+    firebase.auth().signOut().then(() => {
+      this.events.publish('user:logout');
+      firebase.firestore().disableNetwork();
+    })
 
   }
 

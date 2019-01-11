@@ -48,6 +48,7 @@ export class LoginPage {
     firebase.auth().signInWithEmailAndPassword(this.user.email,this.user.password).then((data) => {
       loader.dismiss();
       console.log(data);
+      firebase.firestore().enableNetwork();
       this.navCtrl.setRoot(TabsPage);
     }).catch((err) => {
       loader.dismiss();

@@ -56,8 +56,8 @@
 
     <ion-row class="bottom-bar">
       <ion-col>
-        <button ion-button block icon-left clear [color]="post.data().likes[nameuid] != true ? 'headertop' : 'primary' " small class="border-right" (click)="like(post)">
-          <ion-icon  name="thumbs-up"></ion-icon>
+        <button ion-button block icon-left clear small color="headertop" class="border-right" (click)="like(post)">
+          <ion-icon name="thumbs-up"></ion-icon>
           <small>{{ post.data().likesCount || 0 }} Likes</small>
         </button>
       </ion-col>
@@ -68,7 +68,7 @@
           </button>
         </ion-col>
         <ion-col>
-            <button ion-button block icon-left clear small color="headertop">
+            <button ion-button block icon-left clear small color="headertop" *ngIf="post.data().created">
               <small>{{ ago(post.data().created.toDate()) }}</small>
             </button>
           </ion-col>

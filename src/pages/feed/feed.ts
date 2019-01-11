@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController, ToastController, ActionSheetController, AlertController,
 ModalController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
-import { HttpClient, HttpHeaders} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import firebase from 'firebase';
 import moment from 'moment';
 import { CommentsPage } from '../comments/comments';
@@ -20,14 +20,36 @@ export class FeedPage {
   cursor: any;
   infiniteEvent: any;
   image: string = "";
-  nameuid:any;
+
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private loadingCtrl: LoadingController
     , private toastCtrl: ToastController, private camera: Camera,private http:HttpClient,private actionSheetCtrl:ActionSheetController
     , private alertCtrl:AlertController,private modalCtrl:ModalController) {
     this.text = "";
     this.getPosts();
-    this.nameuid = firebase.auth().currentUser.uid;
+
+  //   this.firebaseCordova.getToken().then((token) => {
+  //     console.log(token);
+  //     this.updateToken(token,firebase.auth().currentUser.uid);
+  //   }).catch((err) => {
+  //     console.log(err);
+  //   })
+
+  // }
+
+  // updateToken(token: string,uid: string){
+
+  //   firebase.firestore().collection("users").doc(uid).set({
+  //     token: token,
+  //     tokenUpdate: firebase.firestore.FieldValue.serverTimestamp()
+  //   }, {
+  //       merge: true
+  //   }).then((data) => {
+
+  //   }).catch((err) => {
+  //     console.log(err);
+  //   })
+
   }
 
   addPhoto() {
@@ -65,7 +87,8 @@ export class FeedPage {
 
     loader.present();
 
-    let query = firebase.firestore().collection("posts").orderBy("created", "desc").limit(this.pageSize);
+    let query = firebase.firestore().collection("posts").orderBy("created", "desc")
+      .limit(this.pageSize)
 
     query.onSnapshot((snapshot) => {
       let changedDocs = snapshot.docChanges();
@@ -85,8 +108,8 @@ export class FeedPage {
         if(change.type == "removed"){
           // TODO
         }
-      });
-    });
+      })
+    })
 
     query.get().then((docs) => {
 
@@ -206,33 +229,25 @@ export class FeedPage {
   }
 
   like(post){
-
-
     let loader = this.loadingCtrl.create({
       spinner: 'hide',
-      content: `<img src="assets/imgs/loading.svg">`,
+      content: `<img src="assets/imgs/loading.svg">`
       
     });
+  
     loader.present();
 
-    const body = {
+    let body = {
       postId: post.id,
       userId: firebase.auth().currentUser.uid,
-      action: post.data().likes && post.data().likes[firebase.auth().currentUser.uid] === true ? "unlike" : "like"
+      action: post.data().likes && post.data().likes[firebase.auth().currentUser.uid] == true ? "unlike" : "like"
     }
 
-    // const header = {
-    //   'Content-Type': 'application/json',
-    //   'Access-Control-Allow-Origin': '*',
-    //   'Access-Control-Allow-Methods': 'POST,GET,PUT,DELETE',
-    //   'Access-Control-Allow-Headers': 'Authorization, Lang'
-    //   };
-    //   let httpOptions = new HttpHeaders(header);
 
-    this.http.post("https://us-central1-oldmyfriends.cloudfunctions.net/updateLikesCount", JSON.stringify(body), {
-      // headers : httpOptions,
+    this.http.post("https://us-central1-oldmyfriends.cloudfunctions.net/updateLikesCount", JSON.stringify(body)
+    , {
       responseType: "text"
-    },).subscribe((data) => {
+    }).subscribe((data) => {
       loader.dismiss();
       console.log(data);
     }, (error) => {
@@ -244,7 +259,6 @@ export class FeedPage {
   }
 
   comment(post) {
-
     this.actionSheetCtrl.create({
       buttons: [
         {
