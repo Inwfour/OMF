@@ -3,9 +3,10 @@ import { IonicPage, NavController, NavParams, LoadingController, ToastController
 ModalController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { HttpClient } from '@angular/common/http';
-import firebase from 'firebase';
+import firebase, { database } from 'firebase';
 import moment from 'moment';
 import { CommentsPage } from '../comments/comments';
+import { Firebase  } from '@ionic-native/firebase';
 
 @IonicPage()
 @Component({
@@ -20,35 +21,38 @@ export class FeedPage {
   cursor: any;
   infiniteEvent: any;
   image: string = "";
+  _uid:any;
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private loadingCtrl: LoadingController
     , private toastCtrl: ToastController, private camera: Camera,private http:HttpClient,private actionSheetCtrl:ActionSheetController
-    , private alertCtrl:AlertController,private modalCtrl:ModalController) {
+    , private alertCtrl:AlertController,private modalCtrl:ModalController,private firebaseCordova:Firebase) {
     this.text = "";
     this.getPosts();
 
-  //   this.firebaseCordova.getToken().then((token) => {
-  //     console.log(token);
-  //     this.updateToken(token,firebase.auth().currentUser.uid);
-  //   }).catch((err) => {
-  //     console.log(err);
-  //   })
+    this._uid = firebase.auth().currentUser.uid;
 
-  // }
+    this.firebaseCordova.getToken().then((token) => {
+      console.log(token);
+      this.updateToken(token,firebase.auth().currentUser.uid);
+    }).catch((err) => {
+      console.log(err);
+    })
 
-  // updateToken(token: string,uid: string){
+  }
 
-  //   firebase.firestore().collection("users").doc(uid).set({
-  //     token: token,
-  //     tokenUpdate: firebase.firestore.FieldValue.serverTimestamp()
-  //   }, {
-  //       merge: true
-  //   }).then((data) => {
+  updateToken(token: string,uid: string){
 
-  //   }).catch((err) => {
-  //     console.log(err);
-  //   })
+    firebase.firestore().collection("users").doc(uid).set({
+      token: token,
+      tokenUpdate: firebase.firestore.FieldValue.serverTimestamp()
+    }, {
+        merge: true
+    }).then((data) => {
+
+    }).catch((err) => {
+      console.log(err);
+    })
 
   }
 
@@ -315,6 +319,35 @@ export class FeedPage {
         }
       ]
     }).present();
+  }
+
+  delete(post) {
+    let alert = this.alertCtrl.create({
+      title: "Your want delete post ???",
+      message: "Uid = " + post.id,
+      buttons: [
+        {
+          text: "Cancel",
+          role: "cancel",
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: "Confirm",
+          handler: () => {
+            firebase.firestore().collection("posts").doc(post.id).delete().then(() => {
+              console.log("Success Uid = " + post.id);
+              this.getPosts();
+            }).catch((error) => {
+              console.error("Error removing document: ", error);
+              this.getPosts();
+            });
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
 }

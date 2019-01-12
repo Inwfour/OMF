@@ -17,13 +17,13 @@ export class MyApp {
   showSplash = true;
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,afAuth:AngularFireAuth) {
 
-    afAuth.authState.subscribe((user) => {
-      if (user && user.uid){
-        this.rootPage = TabsPage;
-      } else {
-        this.rootPage = LoginPage;
-      }
-    });
+    // afAuth.authState.subscribe((user) => {
+    //   if (user && user.uid){
+    //     this.rootPage = TabsPage;
+    //   } else {
+    //     this.rootPage = LoginPage;
+    //   }
+    // });
     
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.

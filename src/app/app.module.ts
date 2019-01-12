@@ -20,6 +20,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireModule } from 'angularfire2';
 import { HttpClientModule } from '@angular/common/http';
 import { CommentsPage } from '../pages/comments/comments';
+import { Firebase } from '@ionic-native/firebase';
 
 firebase.initializeApp(FIREBASE_CONFIG);
 const firestore = firebase.firestore();
@@ -65,6 +66,7 @@ firestore.settings(settings);
   providers: [
     StatusBar,
     AngularFireAuth,
+    Firebase,
     SplashScreen,
     TextToSpeech,
     {provide: ErrorHandler, useClass: IonicErrorHandler},

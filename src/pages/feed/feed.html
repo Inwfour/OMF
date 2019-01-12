@@ -44,9 +44,10 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <ion-card *ngFor="let post of posts; let odd = odd">
+  <ion-card *ngFor="let post of posts">
     <ion-item-divider color="headertop">
       {{ post.data().owner_name }} Says
+      <button *ngIf="post.data().owner == _uid" ion-button item-end outline color="light" (click)="delete(post)">Delete</button>
     </ion-item-divider>
     <ion-item item-wrap>
       {{ post.data().text }}
@@ -56,13 +57,13 @@
 
     <ion-row class="bottom-bar">
       <ion-col>
-        <button ion-button block icon-left clear small color="headertop" class="border-right" (click)="like(post)">
+        <button  ion-button block icon-left clear small [color]="post.data().likes[_uid] ? 'primary':'headertop'" class="border-right" (click)="like(post)">
           <ion-icon name="thumbs-up"></ion-icon>
           <small>{{ post.data().likesCount || 0 }} Likes</small>
         </button>
       </ion-col>
       <ion-col>
-          <button ion-button block icon-left clear small color="headertop" class="border-right" (click)="comment(post)">
+          <button ion-button block icon-left clear small color="headertop"  class="border-right" (click)="comment(post)">
             <ion-icon name="text"></ion-icon>
             <small> {{ post.data().commentsCount || 0 }} Comments</small>
           </button>
