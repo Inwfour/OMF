@@ -6,6 +6,8 @@ import { LoginPage } from '../pages/login/login';
 import { timer } from 'rxjs/observable/timer';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { TabsPage } from '../pages/tabs/tabs';
+import firebase from 'firebase';
+import { HomePage } from '../pages/home/home';
 
 declare var window;
 
@@ -17,13 +19,17 @@ export class MyApp {
   showSplash = true;
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,afAuth:AngularFireAuth) {
 
-    // afAuth.authState.subscribe((user) => {
-    //   if (user && user.uid){
-    //     this.rootPage = TabsPage;
-    //   } else {
-    //     this.rootPage = LoginPage;
-    //   }
-    // });
+    const unsubscribe = firebase.auth().onAuthStateChanged(user => {
+      console.log(user);
+      if (!user) {
+        this.rootPage = LoginPage;
+        unsubscribe();
+      } else {
+        this.rootPage = TabsPage;
+        unsubscribe();
+      }
+    });
+    
     
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.

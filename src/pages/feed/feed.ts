@@ -155,15 +155,29 @@ export class FeedPage {
   }
 
   post() {
+    let loader = this.loadingCtrl.create({
+      spinner: 'hide',
+      content: `<img src="assets/imgs/loading.svg">`
+      
+    });
+  
+    loader.present();
     firebase.firestore().collection("posts").add({
       text: this.text,
       created: firebase.firestore.FieldValue.serverTimestamp(),
       owner: firebase.auth().currentUser.uid,
-      owner_name: firebase.auth().currentUser.displayName
+      owner_name: firebase.auth().currentUser.displayName,
+      likes: {
+        [`${firebase.auth().currentUser.uid}`] : false
+      },
+      likesCount: 0
+      
     }).then(async (doc) => {
+      loader.dismiss();
       console.log(doc);
 
       if (this.image) {
+        loader.dismiss();
         await this.upload(doc.id);
       }
 
@@ -172,8 +186,10 @@ export class FeedPage {
 
       this.getPosts();
     }).catch((err) => {
+      loader.dismiss();
       console.log(err);
     })
+
   }
 
   refresh(event) {

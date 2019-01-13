@@ -35,7 +35,8 @@ export class HomePage {
   }
 
   logout(){
-    firebase.auth().signOut().then(() => {
+    firebase.auth().signOut().then((data) => {
+      console.log(data);
       this.events.publish('user:logout');
       firebase.firestore().disableNetwork();
     })
