@@ -35,3 +35,14 @@
     </ion-item>
   </ion-list>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar color="light">
+    <ion-item>
+    <ion-input #input type="text" placeholder="กรอกคอมเม้นของคุณที่นี่ .." [(ngModel)]="text"></ion-input>
+    <button ion-button icon-only item-right clear (click)="sendComment(); input.setFocus()">
+      <ion-icon name="send"></ion-icon>
+    </button>
+  </ion-item>
+  </ion-toolbar>  
+</ion-footer>
