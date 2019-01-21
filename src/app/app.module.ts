@@ -21,6 +21,9 @@ import { AngularFireModule } from 'angularfire2';
 import { HttpClientModule } from '@angular/common/http';
 import { CommentsPage } from '../pages/comments/comments';
 import { Firebase } from '@ionic-native/firebase';
+import { GoogleMaps } from '@ionic-native/google-maps';
+import { GooglemapPage } from '../pages/googlemap/googlemap';
+import { CollectionServicesProvider } from '../providers/get-collections/get-collections';
 
 firebase.initializeApp(FIREBASE_CONFIG);
 const firestore = firebase.firestore();
@@ -38,7 +41,8 @@ firestore.settings(settings);
     TabsPage,
     UserPage,
     FeedPage,
-    CommentsPage
+    CommentsPage,
+    GooglemapPage
   ],
   imports: [
     BrowserModule,
@@ -61,16 +65,19 @@ firestore.settings(settings);
     TabsPage,
     UserPage,
     FeedPage,
-    CommentsPage
+    CommentsPage,
+    GooglemapPage
   ],
   providers: [
     StatusBar,
     AngularFireAuth,
     Firebase,
     SplashScreen,
+    GoogleMaps,
     TextToSpeech,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    Camera
+    Camera,
+    CollectionServicesProvider
   ]
 })
 export class AppModule {}

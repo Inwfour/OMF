@@ -59,7 +59,7 @@ export class ChatbotPage {
       (response) => {
         this.tts.speak({
           text: response.result.fulfillment.speech,
-          locale: "en-IN",
+          locale: "th-IN",
           rate: 1
         })
       }, (error) => {

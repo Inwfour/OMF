@@ -1,12 +1,15 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, ToastController, ActionSheetController, AlertController,
-ModalController } from 'ionic-angular';
+import {
+  IonicPage, NavController, NavParams, LoadingController, ToastController, ActionSheetController, AlertController,
+  ModalController
+} from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { HttpClient } from '@angular/common/http';
 import firebase, { database } from 'firebase';
 import moment from 'moment';
 import { CommentsPage } from '../comments/comments';
-import { Firebase  } from '@ionic-native/firebase';
+import { Firebase } from '@ionic-native/firebase';
+import { CollectionServicesProvider } from '../../providers/get-collections/get-collections';
 
 @IonicPage()
 @Component({
@@ -21,12 +24,14 @@ export class FeedPage {
   cursor: any;
   infiniteEvent: any;
   image: string = "";
-  _uid:any;
-
+  _uid: any;
+  comments: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private loadingCtrl: LoadingController
-    , private toastCtrl: ToastController, private camera: Camera,private http:HttpClient,private actionSheetCtrl:ActionSheetController
-    , private alertCtrl:AlertController,private modalCtrl:ModalController,private firebaseCordova:Firebase) {
+    , private toastCtrl: ToastController, private camera: Camera, private http: HttpClient, private actionSheetCtrl: ActionSheetController
+    , private alertCtrl: AlertController, private modalCtrl: ModalController, private firebaseCordova: Firebase
+    , private CollectionService: CollectionServicesProvider
+  ) {
     this.text = "";
     this.getPosts();
 
@@ -34,25 +39,25 @@ export class FeedPage {
 
     this.firebaseCordova.getToken().then((token) => {
       console.log(token);
-      this.updateToken(token,firebase.auth().currentUser.uid);
+      this.updateToken(token, firebase.auth().currentUser.uid);
     }).catch((err) => {
       console.log(err);
     })
 
   }
 
-  updateToken(token: string,uid: string){
+  updateToken(token: string, uid: string) {
 
-    firebase.firestore().collection("users").doc(uid).set({
+    this.CollectionService.UsersCollection().doc(uid).set({
       token: token,
       tokenUpdate: firebase.firestore.FieldValue.serverTimestamp()
     }, {
         merge: true
-    }).then((data) => {
+      }).then((data) => {
 
-    }).catch((err) => {
-      console.log(err);
-    })
+      }).catch((err) => {
+        console.log(err);
+      })
 
   }
 
@@ -91,25 +96,25 @@ export class FeedPage {
 
     loader.present();
 
-    let query = firebase.firestore().collection("posts").orderBy("created", "desc")
+    let query = this.CollectionService.PostsCollection().orderBy("created", "desc")
       .limit(this.pageSize)
 
     query.onSnapshot((snapshot) => {
       let changedDocs = snapshot.docChanges();
 
       changedDocs.forEach((change) => {
-        if(change.type == "added"){
+        if (change.type == "added") {
           // TODO
         }
-        if(change.type == "modified"){
+        if (change.type == "modified") {
           // TODO
-          for(let i = 0;i < this.posts.length; i++){
-            if(this.posts[i].id == change.doc.id){
+          for (let i = 0; i < this.posts.length; i++) {
+            if (this.posts[i].id == change.doc.id) {
               this.posts[i] = change.doc;
             }
           }
         }
-        if(change.type == "removed"){
+        if (change.type == "removed") {
           // TODO
         }
       })
@@ -132,7 +137,7 @@ export class FeedPage {
   }
 
   loadMorePosts(event) {
-    firebase.firestore().collection("posts").orderBy("created", "desc").startAfter(this.cursor)
+    this.CollectionService.PostsCollection().orderBy("created", "desc").startAfter(this.cursor)
       .limit(this.pageSize).get().then((docs) => {
 
         docs.forEach((doc) => {
@@ -155,35 +160,37 @@ export class FeedPage {
   }
 
   post() {
+
     let loader = this.loadingCtrl.create({
       spinner: 'hide',
       content: `<img src="assets/imgs/loading.svg">`
-      
+
     });
-  
+
     loader.present();
-    firebase.firestore().collection("posts").add({
+
+    this.CollectionService.PostsCollection().add({
       text: this.text,
       created: firebase.firestore.FieldValue.serverTimestamp(),
       owner: firebase.auth().currentUser.uid,
       owner_name: firebase.auth().currentUser.displayName,
       likes: {
-        [`${firebase.auth().currentUser.uid}`] : false
+        [`${firebase.auth().currentUser.uid}`]: false
       },
       likesCount: 0
-      
+
     }).then(async (doc) => {
-      loader.dismiss();
+
       console.log(doc);
 
       if (this.image) {
-        loader.dismiss();
+
         await this.upload(doc.id);
       }
 
       this.text = "";
       this.image = undefined;
-
+      loader.dismiss();
       this.getPosts();
     }).catch((err) => {
       loader.dismiss();
@@ -212,7 +219,7 @@ export class FeedPage {
       let loader = this.loadingCtrl.create({
         spinner: 'hide',
         content: `<img src="assets/imgs/loading.svg">`,
-        
+
       });
       loader.present();
 
@@ -248,13 +255,13 @@ export class FeedPage {
 
   }
 
-  like(post){
+  like(post) {
     let loader = this.loadingCtrl.create({
       spinner: 'hide',
       content: `<img src="assets/imgs/loading.svg">`
-      
+
     });
-  
+
     loader.present();
 
     let body = {
@@ -265,22 +272,22 @@ export class FeedPage {
 
 
     this.http.post("https://us-central1-oldmyfriends.cloudfunctions.net/updateLikesCount", JSON.stringify(body)
-    , {
-      responseType: "text"
-    }).subscribe((data) => {
-      loader.dismiss();
-      console.log(data);
-    }, (error) => {
-      loader.dismiss();
-      console.log(error);
-    })
-       
+      , {
+        responseType: "text"
+      }).subscribe((data) => {
+        loader.dismiss();
+        console.log(data);
+      }, (error) => {
+        loader.dismiss();
+        console.log(error);
+      })
+
 
   }
 
   comment(post) {
     this.modalCtrl.create(CommentsPage, {
-      "post":post
+      "post": post
     }).present();
     // this.actionSheetCtrl.create({
     //   buttons: [
@@ -341,6 +348,7 @@ export class FeedPage {
   }
 
   delete(post) {
+
     let alert = this.alertCtrl.create({
       title: "Your want delete post ???",
       message: "Uid = " + post.id,
@@ -355,13 +363,42 @@ export class FeedPage {
         {
           text: "Confirm",
           handler: () => {
-            firebase.firestore().collection("posts").doc(post.id).delete().then(() => {
-              console.log("Success Uid = " + post.id);
-              this.getPosts();
-            }).catch((error) => {
-              console.error("Error removing document: ", error);
-              this.getPosts();
-            });
+            // Delete Posts
+            this.CollectionService.PostsCollection().doc(post.id).delete()
+              .then(() => {
+                console.log("Success Uid Posts = " + post.id);
+                // Get Comments
+                this.CollectionService.CommentsCollection().where("post", "==", post.id)
+                  .get()
+                  .then((data) => {
+                    data.forEach(function (doc) {
+                      // Delete Comments
+
+                      firebase.firestore().collection("comments").doc(doc.id).delete()
+                        .then(() => {
+                          console.log("Success Uid Comments = " + doc.id);
+
+                        }) // Success Delete
+
+                        // Edit continue ......................
+
+                        firebase.firestore().collection("posts").doc(post.id).update(data => {
+
+                        })
+
+                    }) // Finish Get comments
+                    this.comments = data.docs.length;
+                    console.log(this.comments);
+                    this.getPosts();
+                  }).catch((err) => {
+
+                    console.log(err);
+                  })
+
+              }).catch((error) => {
+                console.error("Error removing document: ", error);
+                this.getPosts();
+              });
           }
         }
       ]

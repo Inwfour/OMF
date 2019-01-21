@@ -4,6 +4,7 @@ import { User } from '../../models/user';
 import { ChatbotPage } from '../chatbot/chatbot';
 import { FeedPage } from '../feed/feed';
 import firebase, { messaging } from 'firebase';
+import { GooglemapPage } from '../googlemap/googlemap';
 
 
 /**
@@ -33,6 +34,10 @@ export class HomePage {
 
   chatbot(){
     this.navCtrl.push(ChatbotPage);
+  }
+
+  googleMap(){
+    this.navCtrl.push(GooglemapPage);
   }
 
   logout(){

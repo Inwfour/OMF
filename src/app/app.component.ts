@@ -7,7 +7,6 @@ import { timer } from 'rxjs/observable/timer';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { TabsPage } from '../pages/tabs/tabs';
 import firebase from 'firebase';
-import { HomePage } from '../pages/home/home';
 
 declare var window;
 
@@ -45,7 +44,7 @@ export class MyApp {
 
     //   window["ApiAIPlugin"].init(
     //     {
-    //         clientAccessToken: "23ea47bac3b34507bcb0bd45a2325355", // insert your client access key here
+    //         clientAccessToken: "fe95cf69c3ab4cae9df66de9f27ce5f7", // insert your client access key here
     //         lang: "th" // set lang tag from list of supported languages
     //     }, 
     //     function(result) { 
