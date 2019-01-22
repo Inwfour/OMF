@@ -123,9 +123,6 @@ export class CommentsPage {
   }
 
   deleteComment(comment){
-
-    let commentCount = this.post.data().commentsCount;
-
      this.actionSheetCtrl.create({
        title: "คุณต้องการลบคอมเม้น ?",
       buttons: [
@@ -141,19 +138,17 @@ export class CommentsPage {
             firebase.firestore().collection("comments").doc(comment.id).delete().then(() => {
                         
               firebase.firestore().collection("posts").doc(this.post.id).update({
-              "commentsCount": commentCount - 1
+              "commentsCount": this.post.data().commentsCount - 1
             }).then(() => {
               loader.dismiss();  
-              commentCount = this.post.data().commentCount;
               this.getComment();
             }).catch(err => {
               console.log(err);
             });
+
             }).catch(err => {
               console.log(err);
             });
-            // Update CommentCount - 1
-
           }
         },
         {

@@ -29,7 +29,8 @@ export class FeedPage {
 
   text: string = "";
   posts: any[] = [];
-  commentsLength: any[] = [];
+  getPost: any = {};
+  // commentsLength: any[] = [];
   pageSize: number = 10;
   cursor: any;
   infiniteEvent: any;
@@ -45,7 +46,7 @@ export class FeedPage {
     , private CollectionService: CollectionServicesProvider, private element: ElementRef
   ) {
     this.text = "";
-
+    // this.getComment();
     this.getPosts();
 
     this._uid = firebase.auth().currentUser.uid;
@@ -85,7 +86,21 @@ export class FeedPage {
 
   }
 
-  
+  // getComment(){
+  //   firebase.firestore().collection("posts").get().then(docs => {
+  //     docs.forEach((doc) => {
+  //       firebase.firestore().collection("comments").where("post", "==", doc.id)
+  //       .get()
+  //       .then(data => {
+  //           data.forEach((dataDocs) => {
+  //             console.log(dataDocs);
+  //           })
+              
+  //       })
+        
+  //     })
+  //   })
+  // }
 
   addPhoto() {
     this.lunchCamera();
