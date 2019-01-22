@@ -24,6 +24,7 @@ import { Firebase } from '@ionic-native/firebase';
 import { GoogleMaps } from '@ionic-native/google-maps';
 import { GooglemapPage } from '../pages/googlemap/googlemap';
 import { CollectionServicesProvider } from '../providers/get-collections/get-collections';
+import { EditPostPage } from '../pages/edit-post/edit-post';
 
 firebase.initializeApp(FIREBASE_CONFIG);
 const firestore = firebase.firestore();
@@ -42,7 +43,8 @@ firestore.settings(settings);
     UserPage,
     FeedPage,
     CommentsPage,
-    GooglemapPage
+    GooglemapPage,
+    EditPostPage
   ],
   imports: [
     BrowserModule,
@@ -66,7 +68,8 @@ firestore.settings(settings);
     UserPage,
     FeedPage,
     CommentsPage,
-    GooglemapPage
+    GooglemapPage,
+    EditPostPage
   ],
   providers: [
     StatusBar,

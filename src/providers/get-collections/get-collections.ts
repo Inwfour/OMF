@@ -10,6 +10,7 @@ import firebase from 'firebase';
 */
 @Injectable()
 export class CollectionServicesProvider {
+  
 
   constructor(public http: HttpClient) {
     

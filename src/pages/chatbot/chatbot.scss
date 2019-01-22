@@ -23,6 +23,7 @@ page-chatbot {
         padding:10px 18px;
         position: relative;
         vertical-align: middle;
+        
     }
 
     .bubble::before{
@@ -43,6 +44,7 @@ page-chatbot {
     .me {
         float: left;
         margin: 5px 45px 5px 20px;
+        
     }
 
     .me::before{
@@ -59,4 +61,6 @@ page-chatbot {
         box-shadow: 2px -2px 2px 0 rgba(178, 178, 178, .4);
         right: -9px;
     }
+
+
 }

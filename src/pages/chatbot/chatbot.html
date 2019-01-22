@@ -35,7 +35,7 @@
   <ion-footer>
     <ion-toolbar color="light">
       <ion-item>
-      <ion-input #input type="text" placeholder="Your Message here.." [(ngModel)]="text"></ion-input>
+      <ion-textarea (keyup)="resize()" rows="1" placeholder="กรอกข้อความขอบคุณ" [(ngModel)]="text"></ion-textarea>
       <button ion-button icon-only item-right clear (click)="sendText(); input.setFocus()">
         <ion-icon name="send"></ion-icon>
       </button>

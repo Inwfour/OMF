@@ -1,38 +1,51 @@
-import { Component } from '@angular/core';
+import { Component, Directive, HostListener, ElementRef } from '@angular/core';
 import {
   IonicPage, NavController, NavParams, LoadingController, ToastController, ActionSheetController, AlertController,
   ModalController
 } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { HttpClient } from '@angular/common/http';
-import firebase, { database } from 'firebase';
+import firebase from 'firebase';
 import moment from 'moment';
 import { CommentsPage } from '../comments/comments';
 import { Firebase } from '@ionic-native/firebase';
 import { CollectionServicesProvider } from '../../providers/get-collections/get-collections';
+import { EditPostPage } from '../edit-post/edit-post';
 
 @IonicPage()
 @Component({
   selector: 'page-feed',
   templateUrl: 'feed.html',
 })
+@Directive({
+  selector: 'ion-textarea[autosize]' // Attribute selector,
+})
 export class FeedPage {
+
+  @HostListener('document:keydown.enter', ['$event'])
+  onKeydownHandler(evt: KeyboardEvent) {
+    this.resize()
+  }
 
   text: string = "";
   posts: any[] = [];
+  commentsLength: any[] = [];
   pageSize: number = 10;
   cursor: any;
   infiniteEvent: any;
   image: string = "";
   _uid: any;
   comments: any;
+  textEdit: any;
+  checkEdit: boolean;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private loadingCtrl: LoadingController
     , private toastCtrl: ToastController, private camera: Camera, private http: HttpClient, private actionSheetCtrl: ActionSheetController
     , private alertCtrl: AlertController, private modalCtrl: ModalController, private firebaseCordova: Firebase
-    , private CollectionService: CollectionServicesProvider
+    , private CollectionService: CollectionServicesProvider, private element: ElementRef
   ) {
     this.text = "";
+
     this.getPosts();
 
     this._uid = firebase.auth().currentUser.uid;
@@ -44,6 +57,17 @@ export class FeedPage {
       console.log(err);
     })
 
+  }
+  ngAfterViewInit() {
+    this.resize()
+  }
+
+  resize() {
+    let textArea =
+      this.element.nativeElement.getElementsByTagName('textarea')[0];
+    textArea.style.overflow = 'hidden';
+    textArea.style.height = 'auto';
+    textArea.style.height = (textArea.scrollHeight + 16) + "px";
   }
 
   updateToken(token: string, uid: string) {
@@ -60,6 +84,8 @@ export class FeedPage {
       })
 
   }
+
+  
 
   addPhoto() {
     this.lunchCamera();
@@ -92,9 +118,8 @@ export class FeedPage {
       spinner: 'hide',
       content: `<img src="assets/imgs/loading.svg">`
 
-    });
+    }); loader.present();
 
-    loader.present();
 
     let query = this.CollectionService.PostsCollection().orderBy("created", "desc")
       .limit(this.pageSize)
@@ -287,7 +312,8 @@ export class FeedPage {
 
   comment(post) {
     this.modalCtrl.create(CommentsPage, {
-      "post": post
+      "post": post,
+      
     }).present();
     // this.actionSheetCtrl.create({
     //   buttons: [
@@ -349,20 +375,19 @@ export class FeedPage {
 
   delete(post) {
 
-    let alert = this.alertCtrl.create({
-      title: "Your want delete post ???",
-      message: "Uid = " + post.id,
+    let alert = this.actionSheetCtrl.create({
+      title: "คุณต้องการที่จะลบโพสท์ ?",
       buttons: [
-        {
-          text: "Cancel",
-          role: "cancel",
-          handler: () => {
-            console.log('Cancel clicked');
-          }
-        },
         {
           text: "Confirm",
           handler: () => {
+            let loader = this.loadingCtrl.create({
+              spinner: 'hide',
+              content: `<img src="assets/imgs/loading.svg">`
+        
+            });
+        
+            loader.present();
             // Delete Posts
             this.CollectionService.PostsCollection().doc(post.id).delete()
               .then(() => {
@@ -377,33 +402,44 @@ export class FeedPage {
                       firebase.firestore().collection("comments").doc(doc.id).delete()
                         .then(() => {
                           console.log("Success Uid Comments = " + doc.id);
-
+                          loader.dismiss();
+                        }).catch((err) => {
+                          loader.dismiss();
+                          console.log(err);
                         }) // Success Delete
-
-                        // Edit continue ......................
-
-                        firebase.firestore().collection("posts").doc(post.id).update(data => {
-
-                        })
 
                     }) // Finish Get comments
                     this.comments = data.docs.length;
                     console.log(this.comments);
+                    loader.dismiss();
                     this.getPosts();
+
                   }).catch((err) => {
 
                     console.log(err);
                   })
-
+              
               }).catch((error) => {
                 console.error("Error removing document: ", error);
                 this.getPosts();
               });
           }
+        },
+        {
+        text: "กลับ",
+        handler: () => {
+           console.log("ไม่ได้ลบข้อมูล");
         }
+      }
       ]
     });
     alert.present();
+  }
+
+  edit(post) {
+    this.modalCtrl.create(EditPostPage, {
+      "post": post
+    }).present();
   }
 
 }

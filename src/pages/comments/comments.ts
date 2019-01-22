@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { NavController, NavParams, ViewController, LoadingController, ToastController } from 'ionic-angular';
+import { Component, ElementRef, HostListener, Directive } from '@angular/core';
+import { NavController, NavParams, ViewController, LoadingController, ToastController,ActionSheetController } from 'ionic-angular';
 import firebase from 'firebase'
 import moment from 'moment'
 /**
@@ -13,13 +13,49 @@ import moment from 'moment'
   selector: 'page-comments',
   templateUrl: 'comments.html',
 })
+@Directive({
+  selector: 'ion-textarea[autosize]' // Attribute selector,
+})
 export class CommentsPage {
+
+  @HostListener('document:keydown.enter', ['$event'])
+  onKeydownHandler(evt: KeyboardEvent) {
+    this.resize()
+  }
+
   post: any = {};
   comments: any[] = [];
   text: string = "";
-  constructor(public navCtrl: NavController, public navParams: NavParams, private viewCtrl: ViewController, private loadingCtrl: LoadingController, private toastCtrl: ToastController) {
+  likesCount:number;
+  _uid:any;
+  editTextComment:any;
 
+  constructor(public navCtrl: NavController, public navParams: NavParams, private viewCtrl: ViewController, private loadingCtrl: LoadingController, private toastCtrl: ToastController
+    , private actionSheetCtrl:ActionSheetController,private element:ElementRef
+    ) {
+    this._uid = firebase.auth().currentUser.uid;
+    console.log(this._uid)
+    this.post = this.navParams.get("post");
     this.getComment();
+    this.getLike();
+  }
+
+  ngAfterViewInit() {
+    this.resize()
+  }
+
+  resize() {
+    let textArea =
+      this.element.nativeElement.getElementsByTagName('textarea')[0];
+    textArea.style.overflow = 'hidden';
+    textArea.style.height = 'auto';
+    textArea.style.height = (textArea.scrollHeight + 16) + "px";
+  }
+
+  getLike(){
+    firebase.firestore().collection("posts").doc(this.post.id).get().then(data => {
+      this.likesCount = data.data().likesCount;
+    });
   }
 
   getComment() {
@@ -29,8 +65,6 @@ export class CommentsPage {
 
     });
     loader.present();
-    this.post = this.navParams.get("post");
-    console.log(this.post);
 
     firebase.firestore().collection("comments").where("post", "==", this.post.id)
       .orderBy("created", "asc")
@@ -82,8 +116,58 @@ export class CommentsPage {
   close() {
     this.viewCtrl.dismiss();
   }
+
   ago(time) {
     let difference = moment(time).diff(moment());
     return moment.duration(difference).humanize();
+  }
+
+  deleteComment(comment){
+
+    let commentCount = this.post.data().commentsCount;
+
+     this.actionSheetCtrl.create({
+       title: "คุณต้องการลบคอมเม้น ?",
+      buttons: [
+        {
+          text: "ยืนยัน",
+          handler: () => {
+            let loader = this.loadingCtrl.create({
+              spinner: 'hide',
+              content: `<img src="assets/imgs/loading.svg">`
+        
+            }); loader.present();
+            // Delete Comment
+            firebase.firestore().collection("comments").doc(comment.id).delete().then(() => {
+                        
+              firebase.firestore().collection("posts").doc(this.post.id).update({
+              "commentsCount": commentCount - 1
+            }).then(() => {
+              loader.dismiss();  
+              commentCount = this.post.data().commentCount;
+              this.getComment();
+            }).catch(err => {
+              console.log(err);
+            });
+            }).catch(err => {
+              console.log(err);
+            });
+            // Update CommentCount - 1
+
+          }
+        },
+        {
+          text: "กลับ",
+          handler: () => {
+             console.log("ไม่ได้ลบข้อมูล");
+          }
+        }
+      ]
+    }).present();
+
+  }
+
+  editComment(comment){
+
   }
 }

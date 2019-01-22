@@ -20,14 +20,14 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
 
   <ion-row margin class="rowStyle">
     <button ion-button icon-only color="headertop" clear (click)="addPhoto()">
       <ion-icon name="images"></ion-icon>
     </button>
 
-    <ion-input type="text" placeholder="Say something..." [(ngModel)]="text"></ion-input>
+    <ion-textarea (keyup)="resize()" rows="1" placeholder="Say something..." [(ngModel)]="text"></ion-textarea>
 
     <button ion-button icon-only color="headertop" clear (click)="post()">
         <ion-icon name="send"></ion-icon>
@@ -47,10 +47,16 @@
   <ion-card *ngFor="let post of posts">
     <ion-item-divider color="headertop">
       {{ post.data().owner_name }} Says
-      <button *ngIf="post.data().owner == _uid" ion-button item-end outline color="light" (click)="delete(post)">Delete</button>
+      <ion-icon *ngIf="post.data().owner == _uid" name="ios-create" item-right (click)="edit(post)"></ion-icon>
+      <ion-icon *ngIf="post.data().owner == _uid" name="trash" item-right (click)="delete(post)"></ion-icon>
+      <!-- <button *ngIf="post.data().owner == _uid" ion-button item-end outline color="light" (click)="edit(post)">Edit</button>
+      <button *ngIf="post.data().owner == _uid" ion-button item-end outline color="light" (click)="delete(post)">Delete</button> -->
     </ion-item-divider>
+    <ion-item text-right *ngIf="post.data().created">
+        <small> {{ post.data().created.toDate() | date: 'dd/MM/yyyy h:mm:ss a' }} </small>
+    </ion-item>
     <ion-item item-wrap>
-      {{ post.data().text }}
+      <ion-label style="white-space: pre-line">{{ post.data().text }}</ion-label>
     </ion-item>
 
     <img [src]="post.data().image" *ngIf="post.data().image">

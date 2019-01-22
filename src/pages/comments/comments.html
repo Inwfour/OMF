@@ -8,7 +8,12 @@
 
   <ion-navbar text-center color="headertop">
     <ion-title>
-      <small>{{ comments.length }} people have commented.</small>
+      <ion-col col-6>
+          <small>{{ likesCount }} ถูกใจ || </small>
+      </ion-col>
+      <ion-col col-6>
+          <small>{{ comments.length }} ความคิดเห็น.</small>
+      </ion-col>
     </ion-title>
     <ion-buttons end>
       <button ion-button icon-only clear (click)="close()">
@@ -22,16 +27,19 @@
 
 <ion-content padding>
   <ion-list>
-    <ion-item *ngFor="let comment of comments">
+    <ion-item *ngFor="let comment of comments" >
       <ion-icon item-left name="ios-chatbubbles-outline"></ion-icon>
-        <h2>
+      <ion-textarea *ngIf="editComment(comment)" (keyup)="resize()" rows="1" placeholder="Say something..." [(ngModel)]="editTextComment"></ion-textarea>
+      <ion-label style="white-space: pre-line">
           <small>{{ comment.data().text }}</small>
-        </h2>
+       </ion-label>>
         <p>
           <small>
-            {{ comment.data().owner_name }} <i> {{ ago(comment.data().created.toDate()) }} </i>
+            {{ comment.data().owner_name }} <i *ngIf="comment.data().created"> {{ ago(comment.data().created.toDate()) }} </i>
           </small>
         </p>
+      <ion-icon *ngIf="comment.data().owner == _uid" name="ios-create" item-right (click)="editComment(comment)"></ion-icon>
+      <ion-icon *ngIf="comment.data().owner == _uid" name="trash" item-right (click)="deleteComment(comment)"></ion-icon>
     </ion-item>
   </ion-list>
 </ion-content>
@@ -39,8 +47,8 @@
 <ion-footer>
   <ion-toolbar color="light">
     <ion-item>
-    <ion-input #input type="text" placeholder="กรอกคอมเม้นของคุณที่นี่ .." [(ngModel)]="text"></ion-input>
-    <button ion-button icon-only item-right clear (click)="sendComment(); input.setFocus()">
+      <ion-textarea #textarea (keyup)="resize()" rows="1" placeholder="Say something..." [(ngModel)]="text"></ion-textarea>
+    <button ion-button icon-only item-right clear (click)="sendComment(); textarea.setFocus()">
       <ion-icon name="send"></ion-icon>
     </button>
   </ion-item>
