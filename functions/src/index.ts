@@ -102,3 +102,24 @@ export const updateCommentsCount = functions.firestore.document('comments/{comme
         return false;
     }
 })
+
+export const deleteCommentsCount = functions.firestore.document('comments/{commentId}').onDelete(async (event) => {
+    let data = event.data();
+
+    let postId = data.post;
+
+    let doc = await admin.firestore().collection("posts").doc(postId).get();
+
+    if(doc.exists){
+        let commentsCount = doc.data().commentsCount;
+        commentsCount--;
+
+        await admin.firestore().collection("posts").doc(postId).update({
+            "commentsCount": commentsCount
+        })
+
+        return true;
+    } else {
+        return false;
+    }
+})

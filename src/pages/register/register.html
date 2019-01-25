@@ -5,13 +5,30 @@
 </ion-header>
 
 <ion-content padding text-center class="bg">
+    <ion-grid>
+      <ion-row padding class="center margin-top">
+        <ion-col col-3></ion-col>
+        <ion-col col-3>
+            <img width="40%" src="assets/imgs/user.png" class="avatar" alt="">
+        </ion-col>
+        <ion-col col-3></ion-col>
+      </ion-row>
+      <ion-row text-center>
+          <ion-col col-2></ion-col>
+            <ion-col col-8>
+            <button ion-button block round color="primary" class="edit-button" (click)="goEditProfile()">เปลี่ยนรูปโปรไฟล์</button>
+          </ion-col>
+          <ion-col col-2></ion-col>
+        </ion-row>
+    </ion-grid>
       <ion-list>
         <ion-item>
           <ion-icon name="ios-contact" item-left></ion-icon>
           <ion-input [(ngModel)]="user.name" type="text"></ion-input>
         </ion-item>
+        <br>
           <ion-item>
-            <ion-icon name="ios-contact" item-left></ion-icon>
+            <ion-icon name="mail" item-left></ion-icon>
             <ion-input [(ngModel)]="user.email" type="text"></ion-input>
           </ion-item>
           <br>

@@ -1,7 +1,8 @@
 import { Component, ElementRef, HostListener, Directive } from '@angular/core';
-import { NavController, NavParams, ViewController, LoadingController, ToastController,ActionSheetController } from 'ionic-angular';
+import { NavController, NavParams, ViewController, LoadingController, ToastController, ActionSheetController, ModalController } from 'ionic-angular';
 import firebase from 'firebase'
 import moment from 'moment'
+import { EditCommentPage } from '../edit-comment/edit-comment';
 /**
  * Generated class for the CommentsPage page.
  *
@@ -26,13 +27,13 @@ export class CommentsPage {
   post: any = {};
   comments: any[] = [];
   text: string = "";
-  likesCount:number;
-  _uid:any;
-  editTextComment:any;
+  likesCount: number;
+  _uid: any;
+  editTextComment: any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private viewCtrl: ViewController, private loadingCtrl: LoadingController, private toastCtrl: ToastController
-    , private actionSheetCtrl:ActionSheetController,private element:ElementRef
-    ) {
+    , private actionSheetCtrl: ActionSheetController, private element: ElementRef,private modalCtrl:ModalController
+  ) {
     this._uid = firebase.auth().currentUser.uid;
     console.log(this._uid)
     this.post = this.navParams.get("post");
@@ -52,7 +53,7 @@ export class CommentsPage {
     textArea.style.height = (textArea.scrollHeight + 16) + "px";
   }
 
-  getLike(){
+  getLike() {
     firebase.firestore().collection("posts").doc(this.post.id).get().then(data => {
       this.likesCount = data.data().likesCount;
     });
@@ -77,6 +78,19 @@ export class CommentsPage {
         loader.dismiss();
         console.log(err);
       })
+
+    firebase.firestore().collection("posts")
+    .onSnapshot(function(snapshot) {
+      snapshot.docChanges().forEach(function(change) {
+      if (change.type === "added") {
+      }
+      if (change.type === "modified") {
+          console.log("Modified city: ", change.doc.data().commentsCount);
+      }
+      if (change.type === "removed") {
+      }
+      });
+    })
   }
 
   sendComment() {
@@ -88,7 +102,7 @@ export class CommentsPage {
     });
 
     loader.present();
-  
+
     if (typeof (this.text) == "string" && this.text.length > 0) {
       firebase.firestore().collection("comments").add({
         text: this.text,
@@ -122,9 +136,9 @@ export class CommentsPage {
     return moment.duration(difference).humanize();
   }
 
-  deleteComment(comment){
-     this.actionSheetCtrl.create({
-       title: "คุณต้องการลบคอมเม้น ?",
+  deleteComment(comment) {
+    this.actionSheetCtrl.create({
+      title: "คุณต้องการลบคอมเม้น ?",
       buttons: [
         {
           text: "ยืนยัน",
@@ -132,19 +146,18 @@ export class CommentsPage {
             let loader = this.loadingCtrl.create({
               spinner: 'hide',
               content: `<img src="assets/imgs/loading.svg">`
-        
+
             }); loader.present();
             // Delete Comment
             firebase.firestore().collection("comments").doc(comment.id).delete().then(() => {
-                        
-              firebase.firestore().collection("posts").doc(this.post.id).update({
-              "commentsCount": this.post.data().commentsCount - 1
-            }).then(() => {
-              loader.dismiss();  
-              this.getComment();
-            }).catch(err => {
-              console.log(err);
-            });
+              // firebase.firestore().collection("posts").doc(this.post.id).update({
+              //   "commentsCount": this.post.data().commentsCount - 1
+              // }).then(() => {
+                loader.dismiss();
+                this.getComment();
+              // }).catch(err => {
+              //   console.log(err);
+              // });
 
             }).catch(err => {
               console.log(err);
@@ -154,7 +167,7 @@ export class CommentsPage {
         {
           text: "กลับ",
           handler: () => {
-             console.log("ไม่ได้ลบข้อมูล");
+            console.log("ไม่ได้ลบข้อมูล");
           }
         }
       ]
@@ -162,7 +175,9 @@ export class CommentsPage {
 
   }
 
-  editComment(comment){
-
+  editComment(comment) {
+    this.modalCtrl.create(EditCommentPage, {
+      "comment": comment
+    }).present();
   }
 }

@@ -20,7 +20,7 @@
           <img src = "assets/imgs/bot.png">
         </ion-avatar>
         <ion-avatar item-right *ngIf="message.sender == 'me'">
-            <img src = "assets/imgs/user.jpg">
+            <img src = "assets/imgs/user.png">
           </ion-avatar>
           <div *ngIf="message.sender == 'api'" class="bubble me">
             <h3>{{message.text}}</h3>
@@ -35,7 +35,7 @@
   <ion-footer>
     <ion-toolbar color="light">
       <ion-item>
-      <ion-textarea (keyup)="resize()" rows="1" placeholder="กรอกข้อความขอบคุณ" [(ngModel)]="text"></ion-textarea>
+      <ion-textarea rows="1" placeholder="กรอกข้อความขอบคุณ" [(ngModel)]="text"></ion-textarea>
       <button ion-button icon-only item-right clear (click)="sendText(); input.setFocus()">
         <ion-icon name="send"></ion-icon>
       </button>

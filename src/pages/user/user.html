@@ -1,18 +1,107 @@
-<!--
-  Generated template for the UserPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>user</ion-title>
-  </ion-navbar>
+    <ion-navbar style="padding-right: 10px" color="white">
+      <ion-title>ข้อมูลส่วนตัว</ion-title>
+  
+      <ion-buttons end>
+        <button ion-button icon-only>
+          <ion-icon name="person-add" class="badge-container">
+            <span class="custom-badge">3</span>
+          </ion-icon>
+        </button>
+   
+      </ion-buttons>
+    </ion-navbar>
+  
+  </ion-header>
 
-</ion-header>
+<ion-content >
+    <ion-row padding class="center">
+        <!-- Avatar -->
+        <ion-col col-3>
+          <img src="assets/imgs/four.jpg" class="avatar" alt="">
+        </ion-col>
+        <!-- Information about user -->
+        <ion-col col-3 text-center class="margin-top">
+          <h3 id="profile-name">21</h3>
+          <p no-padding no-margin>โพสต์</p>
+        </ion-col>
+        <ion-col col-3 text-center class="margin-top">
+          <h3 id="profile-name">114</h3>
+          <p no-padding no-margin>เพื่อน</p>
+        </ion-col>
+        <ion-col col-3 text-center class="margin-top">
+          <h3 id="profile-name">119</h3>
+          <p no-padding no-margin>ครอบครัว</p>
+        </ion-col>
+      </ion-row>
 
+  <ion-row no-padding class="button-up">
+      <ion-col no-padding col-4></ion-col>
+        <ion-col no-padding text-center col-8>
+        <button class="edit-button" (click)="goEditProfile()">แก้ไขข้อมูลส่วนตัว</button>
+      </ion-col>
+      <ion-col col-3></ion-col>
+    </ion-row>
+  
+    <div padding>
+      <p no-margin no-padding><b>นรากร วิเชียรไชย</b></p>
+      <p no-padding no-margin class="info">เป็นคนน่ารักสดใส และหล่อมาก ๆ</p>
+      <p no-padding no-margin class="info"><a href="#">FB: นรากร วิเชียรไชย</a></p>
+    </div>
 
-<ion-content padding>
-    test User
+    <hr>
+
+    <ion-refresher (ionRefresh)="refresh($event)">
+        <ion-refresher-content></ion-refresher-content>
+      </ion-refresher>
+
+    <div id="posts">
+        <ion-card *ngFor="let post of posts">
+          
+            <ion-item-divider color="headertop">
+                <ion-avatar item-start>
+                    <img src="assets/imgs/user.png">
+                </ion-avatar>
+                <h2 style="color: white">{{ post.data().owner_name }}</h2>
+                <p *ngIf="post.data().created" > {{ post.data().created.toDate() | date: "dd/MM/yyyy HH:mm" }} </p>
+                <ion-icon *ngIf="post.data().owner == _uid" name="ios-create" item-right (click)="edit(post)"></ion-icon>
+            <ion-icon *ngIf="post.data().owner == _uid" name="trash" item-right (click)="delete(post)"></ion-icon>
+              </ion-item-divider>
+      
+              <img [src]="post.data().image" *ngIf="post.data().image">
+              
+          <ion-item item-wrap>
+            <ion-label style="white-space: pre-line">{{ post.data().text }}</ion-label>
+          </ion-item>
+      
+      
+          <ion-row class="bottom-bar">
+            <ion-col>
+              <button  ion-button block icon-left clear small [color]="post.data().likes[_uid] ? 'primary':'headertop'" class="border-right" (click)="like(post)">
+                <ion-icon name="thumbs-up"></ion-icon>
+                <small>{{ post.data().likesCount || 0 }} Likes</small>
+              </button>
+            </ion-col>
+            <ion-col>
+                <button ion-button block icon-left clear small color="headertop"  class="border-right" (click)="comment(post)">
+                  <ion-icon name="text"></ion-icon>
+                  <small> {{ post.data().commentsCount || 0 }} Comments</small>
+                </button>
+              </ion-col>
+              <ion-col>
+                  <button ion-button block icon-left clear small color="headertop" *ngIf="post.data().created">
+                    <small>{{ ago(post.data().created.toDate()) }}</small>
+                  </button>
+                </ion-col>
+          </ion-row>
+        </ion-card>
+      </div>
+  
+      <ion-infinite-scroll (ionInfinite)="loadMorePosts($event)">
+        <ion-infinite-scroll-content >
+          
+        </ion-infinite-scroll-content>
+      </ion-infinite-scroll>
+
 </ion-content>

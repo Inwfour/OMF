@@ -32,14 +32,58 @@ page-register {
           font-size: 1.2em;
         }
       }
+    // button {
+    //     position: absolute;
+    //     display: block;
+    //     top: 50%;
+    //     background: #fff!important;
+    //     border: 1px solid #fff;
+    //     box-shadow: 0px;
+    //     color: black !important;
+    // }
+
     button {
-        position: absolute;
-        display: block;
-        top: 50%;
-        background: #fff!important;
-        border: 1px solid #fff;
-        box-shadow: 0px;
-        color: black !important;
+        color: white;
+    
+        &.button-rounded {
+            display: block;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            border: 2px solid white;
+            border-radius: 50%;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            font-size: 10px;
+            font-weight: bold;
+        }
     }
+
+    .avatar {
+        border-radius: 100%;
+
+      }
+
+      .center {
+        align-items: center;
+      }
+
+    .margin-top {
+        height: 100%;
+  display: block;
+  vertical-align: middle;
+    }
+
+    .edit-button {
+        color: white;
+        font-size: 13px; 
+        border-radius: 10px;
+        padding: 5px;
+        font-weight: bold;
+
+      }
+
+
     
 }

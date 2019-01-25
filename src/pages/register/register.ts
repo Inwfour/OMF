@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController,AlertController,ToastController } from 'ionic-angular';
 import { User } from '../../models/user';
-
+import { Camera, CameraOptions } from '@ionic-native/camera';
 import firebase from 'firebase';
 
 @IonicPage()
@@ -11,14 +11,38 @@ import firebase from 'firebase';
 })
 export class RegisterPage {
   user: User = new User;
-
+  image: string = "";
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public loadingCtrl: LoadingController,
     public alertCtrl:AlertController,
-    public toastCtrl:ToastController
+    public toastCtrl:ToastController,
+    private camera: Camera
   ) {
+  }
+
+  addPhoto() {
+    this.lunchCamera();
+  }
+
+  lunchCamera() {
+    let options: CameraOptions = {
+      quality: 100,
+      sourceType: this.camera.PictureSourceType.CAMERA,
+      destinationType: this.camera.DestinationType.DATA_URL,
+      encodingType: this.camera.EncodingType.PNG,
+      mediaType: this.camera.MediaType.PICTURE,
+      correctOrientation: true,
+      targetHeight: 512,
+      targetWidth: 512,
+    }
+
+    this.camera.getPicture(options).then((base64Image) => {
+      this.image = "data:image/png;base64," + base64Image;
+    }).catch((err) => {
+      console.log(err);
+    })
   }
 
   save() {

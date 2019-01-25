@@ -44,22 +44,26 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
+
+  <div id="posts">
   <ion-card *ngFor="let post of posts">
-    <ion-item-divider color="headertop">
-      {{ post.data().owner_name }} Says
-      <ion-icon *ngIf="post.data().owner == _uid" name="ios-create" item-right (click)="edit(post)"></ion-icon>
+    
+      <ion-item-divider color="headertop">
+          <ion-avatar item-start>
+              <img src="assets/imgs/user.png">
+          </ion-avatar>
+          <h2 style="color: white">{{ post.data().owner_name }}</h2>
+          <p *ngIf="post.data().created" > {{ post.data().created.toDate() | date: "dd/MM/yyyy HH:mm" }} </p>
+          <ion-icon *ngIf="post.data().owner == _uid" name="ios-create" item-right (click)="edit(post)"></ion-icon>
       <ion-icon *ngIf="post.data().owner == _uid" name="trash" item-right (click)="delete(post)"></ion-icon>
-      <!-- <button *ngIf="post.data().owner == _uid" ion-button item-end outline color="light" (click)="edit(post)">Edit</button>
-      <button *ngIf="post.data().owner == _uid" ion-button item-end outline color="light" (click)="delete(post)">Delete</button> -->
-    </ion-item-divider>
-    <ion-item text-right *ngIf="post.data().created">
-        <small> {{ post.data().created.toDate() | date: 'dd/MM/yyyy h:mm:ss a' }} </small>
-    </ion-item>
+        </ion-item-divider>
+
+        <img [src]="post.data().image" *ngIf="post.data().image">
+        
     <ion-item item-wrap>
       <ion-label style="white-space: pre-line">{{ post.data().text }}</ion-label>
     </ion-item>
 
-    <img [src]="post.data().image" *ngIf="post.data().image">
 
     <ion-row class="bottom-bar">
       <ion-col>
@@ -81,9 +85,14 @@
           </ion-col>
     </ion-row>
   </ion-card>
+</div>
+
+
 
   <ion-infinite-scroll (ionInfinite)="loadMorePosts($event)">
-    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+    <ion-infinite-scroll-content >
+      
+    </ion-infinite-scroll-content>
   </ion-infinite-scroll>
 
 </ion-content>

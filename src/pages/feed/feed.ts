@@ -86,22 +86,6 @@ export class FeedPage {
 
   }
 
-  // getComment(){
-  //   firebase.firestore().collection("posts").get().then(docs => {
-  //     docs.forEach((doc) => {
-  //       firebase.firestore().collection("comments").where("post", "==", doc.id)
-  //       .get()
-  //       .then(data => {
-  //           data.forEach((dataDocs) => {
-  //             console.log(dataDocs);
-  //           })
-              
-  //       })
-        
-  //     })
-  //   })
-  // }
-
   addPhoto() {
     this.lunchCamera();
   }
@@ -200,7 +184,6 @@ export class FeedPage {
   }
 
   post() {
-
     let loader = this.loadingCtrl.create({
       spinner: 'hide',
       content: `<img src="assets/imgs/loading.svg">`
@@ -224,7 +207,6 @@ export class FeedPage {
       console.log(doc);
 
       if (this.image) {
-
         await this.upload(doc.id);
       }
 
@@ -330,62 +312,6 @@ export class FeedPage {
       "post": post,
       
     }).present();
-    // this.actionSheetCtrl.create({
-    //   buttons: [
-    //     {
-    //       text: "View All Comments",
-    //       handler: () => {
-    //         this.modalCtrl.create(CommentsPage, {
-    //           "post":post
-    //         }).present();
-    //       }
-    //     },
-    //     {
-    //       text: "New comment",
-    //       handler: () => {
-    //           this.alertCtrl.create({
-    //             title: "New Comment",
-    //             message: "Type your comment",
-    //             inputs: [
-    //               {
-    //                 name: "comment",
-    //                 type: "text"
-    //               }
-    //             ],
-    //             buttons: [
-    //               {
-    //                 text: "Cancel"
-    //               },
-    //               {
-    //                 text: "Post",
-    //                 handler: (data) => {
-    //                   if(data.comment){
-    //                     firebase.firestore().collection("comments").add({
-    //                       text: data.comment,
-    //                       post: post.id,
-    //                       owner: firebase.auth().currentUser.uid,
-    //                       owner_name: firebase.auth().currentUser.displayName,
-    //                       created: firebase.firestore.FieldValue.serverTimestamp()
-    //                     }).then((doc) => {
-    //                       this.toastCtrl.create({
-    //                         message: "Comment posted successfully",
-    //                         duration: 3000
-    //                       }).present();
-    //                     }).catch((err) => {
-    //                       this.toastCtrl.create({
-    //                         message: err.message,
-    //                         duration: 3000
-    //                       }).present();
-    //                     })
-    //                   }
-    //                 }
-    //               }
-    //             ]
-    //           }).present();
-    //       }
-    //     }
-    //   ]
-    // }).present();
   }
 
   delete(post) {
