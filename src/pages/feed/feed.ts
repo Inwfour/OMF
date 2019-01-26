@@ -39,6 +39,7 @@ export class FeedPage {
   comments: any;
   textEdit: any;
   checkEdit: boolean;
+  user:any[] = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private loadingCtrl: LoadingController
     , private toastCtrl: ToastController, private camera: Camera, private http: HttpClient, private actionSheetCtrl: ActionSheetController
@@ -120,7 +121,7 @@ export class FeedPage {
     }); loader.present();
 
 
-    let query = this.CollectionService.PostsCollection().orderBy("created", "desc")
+    let query = firebase.firestore().collection("posts").orderBy("created", "desc")
       .limit(this.pageSize)
 
     query.onSnapshot((snapshot) => {
@@ -200,7 +201,8 @@ export class FeedPage {
       likes: {
         [`${firebase.auth().currentUser.uid}`]: false
       },
-      likesCount: 0
+      likesCount: 0,
+      photoUser: firebase.auth().currentUser.photoURL
 
     }).then(async (doc) => {
 

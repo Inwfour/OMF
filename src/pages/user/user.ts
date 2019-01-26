@@ -30,6 +30,7 @@ export class UserPage {
   comments: any;
   textEdit: any;
   checkEdit: boolean;
+  photoURLDisplay:string = "";
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public loadingCtrl: LoadingController,
@@ -38,8 +39,7 @@ export class UserPage {
     public actionSheetCtrl: ActionSheetController
   ) {
     this._uid = firebase.auth().currentUser.uid;
-    
-    
+    this.photoURLDisplay = firebase.auth().currentUser.photoURL;
   }
 
   ionViewWillEnter(){

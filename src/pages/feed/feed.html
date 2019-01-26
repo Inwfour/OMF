@@ -49,7 +49,10 @@
   <ion-card *ngFor="let post of posts">
     
       <ion-item-divider color="headertop">
-          <ion-avatar item-start>
+          <ion-avatar item-start *ngIf="post.data().photoUser">
+              <img src="{{post.data().photoUser}}">
+          </ion-avatar>
+          <ion-avatar item-start *ngIf="post.data().photoUser == null">
               <img src="assets/imgs/user.png">
           </ion-avatar>
           <h2 style="color: white">{{ post.data().owner_name }}</h2>
@@ -58,13 +61,12 @@
       <ion-icon *ngIf="post.data().owner == _uid" name="trash" item-right (click)="delete(post)"></ion-icon>
         </ion-item-divider>
 
-        <img [src]="post.data().image" *ngIf="post.data().image">
-        
     <ion-item item-wrap>
       <ion-label style="white-space: pre-line">{{ post.data().text }}</ion-label>
     </ion-item>
 
-
+        <img [src]="post.data().image" *ngIf="post.data().image">
+        
     <ion-row class="bottom-bar">
       <ion-col>
         <button  ion-button block icon-left clear small [color]="post.data().likes[_uid] ? 'primary':'headertop'" class="border-right" (click)="like(post)">

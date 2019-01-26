@@ -18,8 +18,13 @@
 <ion-content >
     <ion-row padding class="center">
         <!-- Avatar -->
-        <ion-col col-3>
-          <img src="assets/imgs/four.jpg" class="avatar" alt="">
+        <ion-col col-3 >
+          <ion-avatar *ngIf="photoURLDisplay">
+          <img [src]="photoURLDisplay" class="avatar" alt="">
+        </ion-avatar>
+        <ion-avatar *ngIf="!photoURLDisplay">
+        <img src="assets/imgs/user.png" class="avatar" alt="">
+      </ion-avatar>
         </ion-col>
         <!-- Information about user -->
         <ion-col col-3 text-center class="margin-top">
@@ -61,7 +66,7 @@
           
             <ion-item-divider color="headertop">
                 <ion-avatar item-start>
-                    <img src="assets/imgs/user.png">
+                    <img [src]="photoURLDisplay">
                 </ion-avatar>
                 <h2 style="color: white">{{ post.data().owner_name }}</h2>
                 <p *ngIf="post.data().created" > {{ post.data().created.toDate() | date: "dd/MM/yyyy HH:mm" }} </p>
