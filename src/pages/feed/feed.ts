@@ -40,18 +40,17 @@ export class FeedPage {
   textEdit: any;
   checkEdit: boolean;
   user:any[] = [];
-
+  photoDisplay:string;
   constructor(public navCtrl: NavController, public navParams: NavParams, private loadingCtrl: LoadingController
     , private toastCtrl: ToastController, private camera: Camera, private http: HttpClient, private actionSheetCtrl: ActionSheetController
     , private alertCtrl: AlertController, private modalCtrl: ModalController, private firebaseCordova: Firebase
     , private CollectionService: CollectionServicesProvider, private element: ElementRef
   ) {
-    this.text = "";
     // this.getComment();
     this.getPosts();
 
     this._uid = firebase.auth().currentUser.uid;
-
+    this.photoDisplay = firebase.auth().currentUser.photoURL
     this.firebaseCordova.getToken().then((token) => {
       console.log(token);
       this.updateToken(token, firebase.auth().currentUser.uid);
@@ -202,7 +201,7 @@ export class FeedPage {
         [`${firebase.auth().currentUser.uid}`]: false
       },
       likesCount: 0,
-      photoUser: firebase.auth().currentUser.photoURL
+      photoUser: this.photoDisplay
 
     }).then(async (doc) => {
 

@@ -18,6 +18,26 @@
 </ion-header>
 
 
-<ion-content padding>
-
-</ion-content>
+<ion-content text-center padding>
+  <ion-list>
+    <ion-item >
+      <ion-textarea type="text" [(ngModel)]="textEdit" rows="1" maxLength="500" (keyup)="adjust()" [value]="comment.data().text"></ion-textarea>
+    </ion-item>
+  </ion-list>
+  </ion-content>
+  
+  
+  <ion-footer>
+    <div style="background-color:blanchedalmond">
+    <ion-grid style="background-color: burlywood">
+      <ion-row>
+        <ion-col col-6>
+          <button ion-button block color="danger" (click)="close()">กลับ</button>
+        </ion-col>
+        <ion-col col-6>
+            <button ion-button block color="secondary" (click)="edit()">ยืนยันการแก้ไข</button>
+          </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+  </ion-footer>

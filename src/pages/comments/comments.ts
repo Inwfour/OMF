@@ -30,15 +30,20 @@ export class CommentsPage {
   likesCount: number;
   _uid: any;
   editTextComment: any;
-
+  photoDisplay:string;
   constructor(public navCtrl: NavController, public navParams: NavParams, private viewCtrl: ViewController, private loadingCtrl: LoadingController, private toastCtrl: ToastController
     , private actionSheetCtrl: ActionSheetController, private element: ElementRef,private modalCtrl:ModalController
   ) {
     this._uid = firebase.auth().currentUser.uid;
-    console.log(this._uid)
+    this.photoDisplay = firebase.auth().currentUser.photoURL
     this.post = this.navParams.get("post");
+
+  }
+
+  ionViewWillEnter(){    
     this.getComment();
     this.getLike();
+    console.log("Success");
   }
 
   ngAfterViewInit() {
@@ -109,7 +114,8 @@ export class CommentsPage {
         post: this.post.id,
         owner: firebase.auth().currentUser.uid,
         owner_name: firebase.auth().currentUser.displayName,
-        created: firebase.firestore.FieldValue.serverTimestamp()
+        created: firebase.firestore.FieldValue.serverTimestamp(),
+        photoUser: this.photoDisplay
       }).then((doc) => {
         console.log(doc);
         this.text = "";
