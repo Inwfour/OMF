@@ -21,16 +21,20 @@ export class UserPage {
   text: string = "";
   posts: any[] = [];
   getPost: any = {};
-  // commentsLength: any[] = [];
+  getInfoUser: any = {};
+  getInfoUserData: any= {};
   pageSize: number = 10;
   cursor: any;
   infiniteEvent: any;
   image: string = "";
   _uid: any;
+  DisplayName: string;
   comments: any;
   textEdit: any;
   checkEdit: boolean;
   photoURLDisplay:string = "";
+  postLength:any;
+
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public loadingCtrl: LoadingController,
@@ -39,11 +43,26 @@ export class UserPage {
     public actionSheetCtrl: ActionSheetController
   ) {
     this._uid = firebase.auth().currentUser.uid;
+    
     this.photoURLDisplay = firebase.auth().currentUser.photoURL;
   }
 
   ionViewWillEnter(){
+    this.getInformationUser();
     this.getPosts();
+  }
+
+  getInformationUser() {
+    firebase.firestore().collection("informationUser")
+    .where("owner", "==", this._uid)
+    .get()
+    .then((data) => {
+       data.forEach((doc) => {
+        this.getInfoUserData = doc.data();
+        this.getInfoUser = doc;
+       });
+        
+    })
   }
 
   getPosts() {
@@ -88,6 +107,7 @@ export class UserPage {
       docs.forEach((doc) => {
         this.posts.push(doc);
       })
+      this.postLength = docs.docs.length;
 
       // loader.dismiss();
 
@@ -98,6 +118,8 @@ export class UserPage {
       console.log(err);
     })
   }
+
+  
 
   refresh(event) {
     this.posts = [];
@@ -242,5 +264,11 @@ export class UserPage {
       "post": post
     }).present();
   }
+
+  // addDetail() {
+  //    firebase.firestore().collection("informationUser").doc(this.getInfoUser.id).set({
+  //      detail: 
+  //    })
+  // }
 
 }

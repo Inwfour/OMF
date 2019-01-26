@@ -28,7 +28,7 @@
         </ion-col>
         <!-- Information about user -->
         <ion-col col-3 text-center class="margin-top">
-          <h3 id="profile-name">21</h3>
+          <h3 id="profile-name">{{postLength}}</h3>
           <p no-padding no-margin>โพสต์</p>
         </ion-col>
         <ion-col col-3 text-center class="margin-top">
@@ -50,7 +50,9 @@
     </ion-row>
   
     <div padding>
-      <p no-margin no-padding><b>นรากร วิเชียรไชย</b></p>
+      <p no-margin no-padding><b>{{getInfoUserData.owner_name}}</b></p>
+      <!-- <button ion-button block round color="primary" *ngIf="!getInfoUserData.detail" (click)="addDetail()">เพิ่มข้อมูล</button>
+      <p *ngIf="getInfoUserData.detail" no-padding no-margin class="info">เป็นคนน่ารักสดใส และหล่อมาก ๆ</p> -->
       <p no-padding no-margin class="info">เป็นคนน่ารักสดใส และหล่อมาก ๆ</p>
       <p no-padding no-margin class="info"><a href="#">FB: นรากร วิเชียรไชย</a></p>
     </div>
