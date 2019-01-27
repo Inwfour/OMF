@@ -25,6 +25,7 @@ import { CollectionServicesProvider } from '../providers/get-collections/get-col
 import { EditPostPage } from '../pages/edit-post/edit-post';
 import { EditCommentPage } from '../pages/edit-comment/edit-comment';
 import { TabsCameraPage } from '../pages/tabs-camera/tabs-camera';
+import { Geolocation } from '@ionic-native/geolocation';
 
 firebase.initializeApp(FIREBASE_CONFIG);
 firebase.firestore().settings( { timestampsInSnapshots: true })
@@ -77,9 +78,10 @@ firebase.firestore().settings( { timestampsInSnapshots: true })
     SplashScreen,
     GoogleMaps,
     TextToSpeech,
+    Geolocation,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     Camera,
-    CollectionServicesProvider,
+    CollectionServicesProvider
   ]
 })
 export class AppModule {}
