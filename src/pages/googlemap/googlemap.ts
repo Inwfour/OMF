@@ -1,22 +1,13 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
+
 import {
   GoogleMaps,
   GoogleMap,
   GoogleMapsEvent,
   GoogleMapOptions,
-  CameraPosition,
-  MarkerOptions,
   Marker,
-  Environment
 } from '@ionic-native/google-maps'
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
-/**
- * Generated class for the GooglemapPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
@@ -25,13 +16,43 @@ import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 })
 export class GooglemapPage {
   map : GoogleMap;
-  constructor(public navCtrl: NavController, public navParams: NavParams,private googleMaps:GoogleMaps,public plt:Platform) {
-  
+  locationUser: {
+    lat:any,
+    long:any
   }
-
-  loadMap(){
+  wathchUser: {
+    lat:any,
+    long:any
+  }
+  constructor(public navCtrl: NavController, 
+    public navParams: NavParams,
+    private googleMaps:GoogleMaps,
+    public plt:Platform,
 
     
+    ) {
+      // this.geolocation.getCurrentPosition().then((resp) => {
+      //  this.locationUser.lat = resp.coords.latitude;
+      //   this.locationUser.long = resp.coords.longitude;
+      //  }).catch((error) => {
+      //    console.log('Error getting location', error);
+      //  });
+       
+      //  let watch = this.geolocation.watchPosition();
+      //  watch.subscribe((data) => {
+      //   console.log("data (lat) = ", data.coords.latitude);
+      //   console.log("data (long) = ", data.coords.longitude);
+      //   // data can be a set of coordinates, or an error (if an error occurred).
+      //   // data.coords.latitude
+      //   // data.coords.longitude
+      //  });
+  }
+
+  // Location() {
+
+  // }
+
+  loadMap(){
     let mapOptions: GoogleMapOptions = {
       camera: {
          target: {
@@ -59,8 +80,8 @@ export class GooglemapPage {
     });
   }
 
-  ionViewDidLoad() {
-    this.loadMap();
-  }
+  // ionViewWillEnter() {
+  //   this.loadMap();
+  // }
 
 }

@@ -4,7 +4,6 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { LoginPage } from '../pages/login/login';
 import { timer } from 'rxjs/observable/timer';
-import { AngularFireAuth } from 'angularfire2/auth';
 import { TabsPage } from '../pages/tabs/tabs';
 import firebase from 'firebase';
 
@@ -16,8 +15,7 @@ declare var window;
 export class MyApp {
   rootPage:any = LoginPage;
   showSplash = true;
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen,afAuth:AngularFireAuth) {
-
+  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
     const unsubscribe = firebase.auth().onAuthStateChanged(user => {
       console.log(user);
       if (!user) {
