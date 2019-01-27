@@ -16,14 +16,7 @@ import {
 })
 export class GooglemapPage {
   map : GoogleMap;
-  locationUser: {
-    lat:any,
-    long:any
-  }
-  wathchUser: {
-    lat:any,
-    long:any
-  }
+
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
     private googleMaps:GoogleMaps,
@@ -80,8 +73,8 @@ export class GooglemapPage {
     });
   }
 
-  // ionViewWillEnter() {
-  //   this.loadMap();
-  // }
+  ionViewDidLoad() {
+    this.loadMap();
+  }
 
 }
