@@ -42,11 +42,13 @@
       </ion-row>
 
   <ion-row no-padding class="button-up">
-      <ion-col no-padding col-4></ion-col>
+      <ion-col padding col-4>
+        <button ion-button block round color="secondary"><p style="font-size: 1em" (click)="changeProfilePicture()">เปลี่ยนรูป</p></button>
+      </ion-col>
         <ion-col no-padding text-center col-8>
         <button class="edit-button" (click)="goEditProfile()">แก้ไขข้อมูลส่วนตัว</button>
       </ion-col>
-      <ion-col col-3></ion-col>
+     
     </ion-row>
   
     <div padding>
@@ -109,8 +111,8 @@
       </div>
   
       <ion-infinite-scroll (ionInfinite)="loadMorePosts($event)">
-        <ion-infinite-scroll-content >
-          
+        <ion-infinite-scroll-content text-center>
+          <ion-label>ข้อมูลเพิ่มเติม</ion-label>
         </ion-infinite-scroll-content>
       </ion-infinite-scroll>
 

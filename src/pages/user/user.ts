@@ -5,6 +5,9 @@ import moment from 'moment';
 import { CommentsPage } from '../comments/comments';
 import { HttpClient } from '@angular/common/http';
 import { EditPostPage } from '../edit-post/edit-post';
+import { Camera, CameraOptions } from '@ionic-native/camera';
+import { PreloaderProvider } from '../../providers/preloader/preloader';
+import { ImageProvider } from '../../providers/image/image';
 /**
  * Generated class for the UserPage page.
  *
@@ -22,7 +25,7 @@ export class UserPage {
   posts: any[] = [];
   getPost: any = {};
   getInfoUser: any = {};
-  getInfoUserData: any= {};
+  getInfoUserData: any = {};
   pageSize: number = 10;
   cursor: any;
   infiniteEvent: any;
@@ -32,48 +35,50 @@ export class UserPage {
   comments: any;
   textEdit: any;
   checkEdit: boolean;
-  photoURLDisplay:string = "";
-  postLength:any;
+  photoURLDisplay: string = "";
+  postLength: any;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public loadingCtrl: LoadingController,
     public http: HttpClient,
     public modalCtrl: ModalController,
-    public actionSheetCtrl: ActionSheetController
+    public actionSheetCtrl: ActionSheetController,
+    public camera: Camera,
+    public _IMG:ImageProvider
   ) {
     this._uid = firebase.auth().currentUser.uid;
-    
+
     this.photoURLDisplay = firebase.auth().currentUser.photoURL;
   }
 
-  ionViewWillEnter(){
+  ionViewWillEnter() {
     this.getInformationUser();
     this.getPosts();
   }
 
   getInformationUser() {
     firebase.firestore().collection("informationUser")
-    .where("owner", "==", this._uid)
-    .get()
-    .then((data) => {
-       data.forEach((doc) => {
-        this.getInfoUserData = doc.data();
-        this.getInfoUser = doc;
-       });
-        
-    })
+      .where("owner", "==", this._uid)
+      .get()
+      .then((data) => {
+        data.forEach((doc) => {
+          this.getInfoUserData = doc.data();
+          this.getInfoUser = doc;
+        });
+
+      })
   }
 
   getPosts() {
 
     this.posts = [];
+    let postUser = firebase.firestore().collection("posts")
+      .where("owner", "==", this._uid);
 
-    // let loader = this.loadingCtrl.create({
-    //   spinner: 'hide',
-    //   content: `<img src="assets/imgs/loading.svg">`
-
-    // }); loader.present();
+    postUser.get().then((data) => {
+      this.postLength = data.docs.length;
+    })
 
 
     let query = firebase.firestore().collection("posts")
@@ -107,7 +112,7 @@ export class UserPage {
       docs.forEach((doc) => {
         this.posts.push(doc);
       })
-      this.postLength = docs.docs.length;
+
 
       // loader.dismiss();
 
@@ -119,7 +124,7 @@ export class UserPage {
     })
   }
 
-  
+
 
   refresh(event) {
     this.posts = [];
@@ -130,9 +135,12 @@ export class UserPage {
     event.complete();
   }
 
-  
+
   loadMorePosts(event) {
-    firebase.firestore().collection("posts").orderBy("created", "desc").startAfter(this.cursor)
+    firebase.firestore().collection("posts")
+      .where("owner", "==", this._uid)
+      .orderBy("created", "desc")
+      .startAfter(this.cursor)
       .limit(this.pageSize).get().then((docs) => {
 
         docs.forEach((doc) => {
@@ -263,6 +271,37 @@ export class UserPage {
     this.modalCtrl.create(EditPostPage, {
       "post": post
     }).present();
+  }
+
+  changeProfilePicture() {
+    let alert = this.actionSheetCtrl.create({
+      title: "คุณต้องการรูปในลักษณะใด ?",
+      buttons: [
+        {
+          text: "กล้องถ่ายรูป",
+          handler: () => {
+            this._IMG.camera().then(data => {
+              console.log(data);
+            })
+          }
+        },
+        {
+          text: "เลือกจากอัลบั้มรูปภาพ",
+          handler: () => {
+            this._IMG.selectImage().then(data => {
+              console.log(data);
+            })
+          }
+        },
+        {
+          text: "กลับ",
+          handler: () => {
+            console.log("ไม่ได้ลบข้อมูล");
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
   // addDetail() {

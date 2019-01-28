@@ -25,6 +25,10 @@ import { CollectionServicesProvider } from '../providers/get-collections/get-col
 import { EditPostPage } from '../pages/edit-post/edit-post';
 import { EditCommentPage } from '../pages/edit-comment/edit-comment';
 import { TabsCameraPage } from '../pages/tabs-camera/tabs-camera';
+import { ImageProvider } from '../providers/image/image';
+import { PreloaderProvider } from '../providers/preloader/preloader';
+import { HttpModule } from '@angular/http';
+import { UploadImgProvider } from '../providers/upload-img/upload-img';
 
 firebase.initializeApp(FIREBASE_CONFIG);
 firebase.firestore().settings( { timestampsInSnapshots: true })
@@ -48,6 +52,7 @@ firebase.firestore().settings( { timestampsInSnapshots: true })
   imports: [
     BrowserModule,
     HttpClientModule,
+    HttpModule,
     IonicModule.forRoot(MyApp,{
       // scrollAssist: true,
       // autoFocusAssist: true 
@@ -79,7 +84,10 @@ firebase.firestore().settings( { timestampsInSnapshots: true })
     TextToSpeech,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     Camera,
-    CollectionServicesProvider
+    CollectionServicesProvider,
+    ImageProvider,
+    PreloaderProvider,
+    UploadImgProvider
   ]
 })
 export class AppModule {}

@@ -321,7 +321,7 @@ export class FeedPage {
       title: "คุณต้องการที่จะลบโพสท์ ?",
       buttons: [
         {
-          text: "Confirm",
+          text: "ยืนยัน",
           handler: () => {
             let loader = this.loadingCtrl.create({
               spinner: 'hide',
