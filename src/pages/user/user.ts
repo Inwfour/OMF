@@ -8,6 +8,7 @@ import { EditPostPage } from '../edit-post/edit-post';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { PreloaderProvider } from '../../providers/preloader/preloader';
 import { ImageProvider } from '../../providers/image/image';
+import { UserProvider } from '../../providers/user/user';
 /**
  * Generated class for the UserPage page.
  *
@@ -23,9 +24,7 @@ import { ImageProvider } from '../../providers/image/image';
 export class UserPage {
   text: string = "";
   posts: any[] = [];
-  getPost: any = {};
-  getInfoUser: any = {};
-  getInfoUserData: any = {};
+  getUser:any = {};
   pageSize: number = 10;
   cursor: any;
   infiniteEvent: any;
@@ -44,12 +43,12 @@ export class UserPage {
     public http: HttpClient,
     public modalCtrl: ModalController,
     public actionSheetCtrl: ActionSheetController,
-    public camera: Camera,
-    public _IMG:ImageProvider
+    public _IMG:ImageProvider,
+    public _USER: UserProvider
   ) {
     this._uid = firebase.auth().currentUser.uid;
-
     this.photoURLDisplay = firebase.auth().currentUser.photoURL;
+    console.log(this.photoURLDisplay)
   }
 
   ionViewWillEnter() {
@@ -58,16 +57,9 @@ export class UserPage {
   }
 
   getInformationUser() {
-    firebase.firestore().collection("informationUser")
-      .where("owner", "==", this._uid)
-      .get()
-      .then((data) => {
-        data.forEach((doc) => {
-          this.getInfoUserData = doc.data();
-          this.getInfoUser = doc;
-        });
-
-      })
+    this._USER.getInformationUser(this._uid).then(data => {
+      this.getUser = data;
+    })
   }
 
   getPosts() {
@@ -123,8 +115,6 @@ export class UserPage {
       console.log(err);
     })
   }
-
-
 
   refresh(event) {
     this.posts = [];
@@ -280,16 +270,24 @@ export class UserPage {
         {
           text: "กล้องถ่ายรูป",
           handler: () => {
-            this._IMG.camera().then(data => {
-              console.log(data);
+            this._IMG.camera().then(img => {
+              this._USER.uploadImgUser(firebase.auth().currentUser.uid,img).then((url) => {
+                this._USER.updateImgUser(firebase.auth().currentUser.displayName,url).then(() => {
+                  this.getInformationUser();
+                })
+              })
             })
           }
         },
         {
           text: "เลือกจากอัลบั้มรูปภาพ",
           handler: () => {
-            this._IMG.selectImage().then(data => {
-              console.log(data);
+            this._IMG.selectImage().then(img => {
+              this._USER.uploadImgUser(firebase.auth().currentUser.uid,img).then((url) => {
+                this._USER.updateImgUser(firebase.auth().currentUser.displayName,url).then(() => {
+                  this.getInformationUser();
+                })
+              })
             })
           }
         },

@@ -28,7 +28,8 @@ import { TabsCameraPage } from '../pages/tabs-camera/tabs-camera';
 import { ImageProvider } from '../providers/image/image';
 import { PreloaderProvider } from '../providers/preloader/preloader';
 import { HttpModule } from '@angular/http';
-import { UploadImgProvider } from '../providers/upload-img/upload-img';
+import { UserProvider } from '../providers/user/user';
+import { PostProvider } from '../providers/post/post';
 
 firebase.initializeApp(FIREBASE_CONFIG);
 firebase.firestore().settings( { timestampsInSnapshots: true })
@@ -87,7 +88,8 @@ firebase.firestore().settings( { timestampsInSnapshots: true })
     CollectionServicesProvider,
     ImageProvider,
     PreloaderProvider,
-    UploadImgProvider
+    UserProvider,
+    PostProvider
   ]
 })
 export class AppModule {}

@@ -3,7 +3,6 @@ import {
   IonicPage, NavController, NavParams, LoadingController, ToastController, ActionSheetController, AlertController,
   ModalController
 } from 'ionic-angular';
-import { Camera, CameraOptions } from '@ionic-native/camera';
 import { HttpClient } from '@angular/common/http';
 import firebase from 'firebase';
 import moment from 'moment';
@@ -11,7 +10,10 @@ import { CommentsPage } from '../comments/comments';
 import { Firebase } from '@ionic-native/firebase';
 import { CollectionServicesProvider } from '../../providers/get-collections/get-collections';
 import { EditPostPage } from '../edit-post/edit-post';
-
+// Provider
+import { PostProvider } from '../../providers/post/post';
+import { ImageProvider } from '../../providers/image/image';
+import { UserProvider } from '../../providers/user/user';
 @IonicPage()
 @Component({
   selector: 'page-feed',
@@ -30,6 +32,7 @@ export class FeedPage {
   text: string = "";
   posts: any[] = [];
   getPost: any = {};
+  getUser:any = {};
   // commentsLength: any[] = [];
   pageSize: number = 10;
   cursor: any;
@@ -39,12 +42,16 @@ export class FeedPage {
   comments: any;
   textEdit: any;
   checkEdit: boolean;
-  user:any[] = [];
-  photoDisplay:string;
+  user: any[] = [];
+  photoDisplay: string;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private loadingCtrl: LoadingController
-    , private toastCtrl: ToastController, private camera: Camera, private http: HttpClient, private actionSheetCtrl: ActionSheetController
-    , private alertCtrl: AlertController, private modalCtrl: ModalController, private firebaseCordova: Firebase
+    , private http: HttpClient, private actionSheetCtrl: ActionSheetController
+    , private modalCtrl: ModalController, private firebaseCordova: Firebase
     , private CollectionService: CollectionServicesProvider, private element: ElementRef
+    , public _POST: PostProvider
+    , public _IMG: ImageProvider
+    , public _USER: UserProvider
   ) {
     // this.getComment();
     this.getPosts();
@@ -86,27 +93,35 @@ export class FeedPage {
 
   }
 
-  addPhoto() {
-    this.lunchCamera();
-  }
-
-  lunchCamera() {
-    let options: CameraOptions = {
-      quality: 100,
-      sourceType: this.camera.PictureSourceType.CAMERA,
-      destinationType: this.camera.DestinationType.DATA_URL,
-      encodingType: this.camera.EncodingType.PNG,
-      mediaType: this.camera.MediaType.PICTURE,
-      correctOrientation: true,
-      targetHeight: 512,
-      targetWidth: 512,
-    }
-
-    this.camera.getPicture(options).then((base64Image) => {
-      this.image = "data:image/png;base64," + base64Image;
-    }).catch((err) => {
-      console.log(err);
-    })
+  changePostPicture() {
+    let alert = this.actionSheetCtrl.create({
+      title: "คุณต้องการรูปในลักษณะใด ?",
+      buttons: [
+        {
+          text: "กล้องถ่ายรูป",
+          handler: () => {
+            this._IMG.camera().then(data => {
+              this.image = data;
+            })
+          }
+        },
+        {
+          text: "เลือกจากอัลบั้มรูปภาพ",
+          handler: () => {
+            this._IMG.selectImage().then(data => {
+              this.image = data;
+            })
+          }
+        },
+        {
+          text: "กลับ",
+          handler: () => {
+            console.log("ไม่ได้ลบข้อมูล");
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
   getPosts() {
@@ -148,6 +163,11 @@ export class FeedPage {
 
       docs.forEach((doc) => {
         this.posts.push(doc);
+        console.log(doc.data().owner);
+        firebase.firestore().collection("informationUser").doc(doc.data().owner).get().then((data) => {
+          this.getUser = data;
+        })
+        
       })
 
       loader.dismiss();
@@ -201,14 +221,14 @@ export class FeedPage {
         [`${firebase.auth().currentUser.uid}`]: false
       },
       likesCount: 0,
-      photoUser: this.photoDisplay
+      photoUser: firebase.auth().currentUser.photoURL
 
     }).then(async (doc) => {
 
       console.log(doc);
 
       if (this.image) {
-        await this.upload(doc.id);
+        await this._POST.uploadImgPost(doc.id, this.image);
       }
 
       this.text = "";
@@ -236,47 +256,6 @@ export class FeedPage {
     return moment.duration(difference).humanize();
   }
 
-  upload(name: string) {
-    return new Promise((resolve, reject) => {
-
-      let loader = this.loadingCtrl.create({
-        spinner: 'hide',
-        content: `<img src="assets/imgs/loading.svg">`,
-
-      });
-      loader.present();
-
-      let ref = firebase.storage().ref("postImages/" + name);
-
-      let uploadTask = ref.putString(this.image.split(',')[1], "base64");
-
-      uploadTask.on("state_changed", (taskSnapshot: any) => {
-        console.log(taskSnapshot)
-        let percentage = taskSnapshot.bytesTransferred / taskSnapshot.totalBytes * 100;
-        loader.setContent("Uploaded " + percentage + "% ...")
-
-      }, (error) => {
-        console.log(error)
-      }, () => {
-        console.log("The upload is complete!!!");
-
-        uploadTask.snapshot.ref.getDownloadURL().then((url) => {
-          firebase.firestore().collection("posts").doc(name).update({
-            image: url
-          }).then(() => {
-            loader.dismiss();
-            resolve()
-          }).catch((err) => {
-            loader.dismiss();
-            reject()
-          })
-        }).catch((err) => {
-          reject()
-        })
-      })
-    })
-
-  }
 
   like(post) {
     let loader = this.loadingCtrl.create({
@@ -311,7 +290,7 @@ export class FeedPage {
   comment(post) {
     this.modalCtrl.create(CommentsPage, {
       "post": post,
-      
+
     }).present();
   }
 
@@ -326,9 +305,9 @@ export class FeedPage {
             let loader = this.loadingCtrl.create({
               spinner: 'hide',
               content: `<img src="assets/imgs/loading.svg">`
-        
+
             });
-        
+
             loader.present();
             // Delete Posts
             this.CollectionService.PostsCollection().doc(post.id).delete()
@@ -360,7 +339,7 @@ export class FeedPage {
 
                     console.log(err);
                   })
-              
+
               }).catch((error) => {
                 console.error("Error removing document: ", error);
                 this.getPosts();
@@ -368,11 +347,11 @@ export class FeedPage {
           }
         },
         {
-        text: "กลับ",
-        handler: () => {
-           console.log("ไม่ได้ลบข้อมูล");
+          text: "กลับ",
+          handler: () => {
+            console.log("ไม่ได้ลบข้อมูล");
+          }
         }
-      }
       ]
     });
     alert.present();

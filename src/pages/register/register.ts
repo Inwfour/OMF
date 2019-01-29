@@ -5,7 +5,7 @@ import firebase from 'firebase';
 import { LoginPage } from '../login/login';
 import { ImageProvider } from '../../providers/image/image';
 import { PreloaderProvider } from '../../providers/preloader/preloader';
-import { UploadImgProvider } from '../../providers/upload-img/upload-img';
+import { UserProvider } from '../../providers/user/user';
 
 @IonicPage()
 @Component({
@@ -15,8 +15,8 @@ import { UploadImgProvider } from '../../providers/upload-img/upload-img';
 export class RegisterPage {
   user: User = new User;
   image: string = "assets/imgs/user.png";
-  _uid:any;
-  url:any;
+  _uid: any;
+  url: any="";
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
@@ -24,7 +24,7 @@ export class RegisterPage {
     public alertCtrl: AlertController,
     public _IMG: ImageProvider,
     public _LOADER: PreloaderProvider,
-    public _UPIMG: UploadImgProvider,
+    public _USER: UserProvider,
     public actionSheetCtrl: ActionSheetController
   ) {
   }
@@ -59,45 +59,40 @@ export class RegisterPage {
     });
     alert.present();
   }
-  
 
-  save() {
-    this._LOADER.displayPreloader();
 
-    firebase.auth().createUserWithEmailAndPassword(this.user.email, this.user.password)
+  save(user) {
+    // this._LOADER.displayPreloader();
+
+    firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
       .then(async () => {
         if (this.image != "assets/imgs/user.png") {
-          await this._UPIMG.uploadImgProfile(this.user.name,this.image)
-          .then((data) => {
+          await this._USER.uploadImgUser(firebase.auth().currentUser.uid, this.image)
+            .then((data) => {
               this.url = data;
-          });
+            });
         }
-        var newUser = firebase.auth().currentUser;
-        newUser.updateProfile({
-          displayName: this.user.name,
+          var newUser = firebase.auth().currentUser;
+          var newInformationUser = firebase.firestore().collection("informationUser").doc(firebase.auth().currentUser.uid);
+         newUser.updateProfile({
+          displayName: user.name,
           photoURL: this.url
         }).then(() => {
-        }).catch((err) => {
-        })
-        firebase.firestore().collection("informationUser").add({
-          photoURL: firebase.auth().currentUser.photoURL,
-          owner_name: this.user.name,
-          owner: firebase.auth().currentUser.uid,
-          email: firebase.auth().currentUser.email,
-          created: firebase.firestore.FieldValue.serverTimestamp()
-        }).then((data) => {
-          console.log(data.id);
+          
+          newInformationUser.set({
+            photoURL: this.url,
+            owner_name: user.name,
+            owner: firebase.auth().currentUser.uid,
+            email: firebase.auth().currentUser.email,
+            created: firebase.firestore.FieldValue.serverTimestamp()
+          }).then(() => {
+            console.log(firebase.auth().currentUser.displayName);
+          }).catch((err) => {
+            });
         }).catch((err) => {
           console.log(err);
         })
-        this._LOADER.hidePreloader();
-        this.navCtrl.setRoot(LoginPage);
-      }).catch((err) => {
-        this._LOADER.hidePreloader();
-        console.log(err);
+
       })
-  }
-
-
-
+    }
 }
