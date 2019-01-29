@@ -30,6 +30,8 @@ import { PreloaderProvider } from '../providers/preloader/preloader';
 import { HttpModule } from '@angular/http';
 import { UserProvider } from '../providers/user/user';
 import { PostProvider } from '../providers/post/post';
+import { HideHeaderDirective } from '../directives/hide-header/hide-header';
+import { SettingsPage } from '../pages/settings/settings';
 
 firebase.initializeApp(FIREBASE_CONFIG);
 firebase.firestore().settings( { timestampsInSnapshots: true })
@@ -48,7 +50,9 @@ firebase.firestore().settings( { timestampsInSnapshots: true })
     GooglemapPage,
     EditPostPage,
     EditCommentPage,
-    TabsCameraPage
+    TabsCameraPage,
+    SettingsPage,
+    HideHeaderDirective
   ],
   imports: [
     BrowserModule,
@@ -75,6 +79,7 @@ firebase.firestore().settings( { timestampsInSnapshots: true })
     GooglemapPage,
     EditPostPage,
     EditCommentPage,
+    SettingsPage,
     TabsCameraPage
   ],
   providers: [

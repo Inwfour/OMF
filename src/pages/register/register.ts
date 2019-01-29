@@ -86,7 +86,7 @@ export class RegisterPage {
             email: firebase.auth().currentUser.email,
             created: firebase.firestore.FieldValue.serverTimestamp()
           }).then(() => {
-            console.log(firebase.auth().currentUser.displayName);
+            this.navCtrl.setRoot(LoginPage);
           }).catch((err) => {
             });
         }).catch((err) => {

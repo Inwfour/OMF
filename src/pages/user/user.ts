@@ -46,6 +46,7 @@ export class UserPage {
     public _IMG:ImageProvider,
     public _USER: UserProvider
   ) {
+    
     this._uid = firebase.auth().currentUser.uid;
     this.photoURLDisplay = firebase.auth().currentUser.photoURL;
     console.log(this.photoURLDisplay)
@@ -56,6 +57,7 @@ export class UserPage {
     this.getPosts();
   }
 
+
   getInformationUser() {
     this._USER.getInformationUser(this._uid).then(data => {
       this.getUser = data;
@@ -65,6 +67,13 @@ export class UserPage {
   getPosts() {
 
     this.posts = [];
+
+    let loader = this.loadingCtrl.create({
+      spinner: 'hide',
+      content: `<img src="assets/imgs/loading.svg">`
+
+    }); loader.present();
+    
     let postUser = firebase.firestore().collection("posts")
       .where("owner", "==", this._uid);
 
@@ -72,13 +81,15 @@ export class UserPage {
       this.postLength = data.docs.length;
     })
 
-
     let query = firebase.firestore().collection("posts")
       .where("owner", "==", this._uid)
       .orderBy("created", "desc")
       .limit(this.pageSize)
 
-    query.onSnapshot((snapshot) => {
+      let user = firebase.firestore().collection("informationUser")
+      .where("owner", "==", this._uid)
+
+    user.onSnapshot((snapshot) => {
       let changedDocs = snapshot.docChanges();
 
       changedDocs.forEach((change) => {
@@ -86,12 +97,36 @@ export class UserPage {
           // TODO
         }
         if (change.type == "modified") {
-          // TODO
           for (let i = 0; i < this.posts.length; i++) {
             if (this.posts[i].id == change.doc.id) {
               this.posts[i] = change.doc;
             }
           }
+
+          // Edit posts 
+          firebase.firestore().collection("posts").where("owner", "==", this._uid)
+          .get()
+          .then(data => {
+              data.forEach((docs) => {
+                  console.log("update post",docs.id);
+                  firebase.firestore().collection("posts").doc(docs.id).update({
+                      photoUser: change.doc.data().photoURL
+                  })
+              })
+          })
+
+          // Edit comments
+          firebase.firestore().collection("comments").where("owner", "==", this._uid)
+          .get()
+          .then(data => {
+            data.forEach((docs) => {
+              console.log("update comments",docs.id);
+              firebase.firestore().collection("comments").doc(docs.id).update({
+                  photoUser: change.doc.data().photoURL
+              })
+          })
+          })
+          
         }
         if (change.type == "removed") {
           // TODO
@@ -106,7 +141,7 @@ export class UserPage {
       })
 
 
-      // loader.dismiss();
+      loader.dismiss();
 
       this.cursor = this.posts[this.posts.length - 1];
       console.log(this.posts);

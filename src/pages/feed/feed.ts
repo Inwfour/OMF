@@ -165,7 +165,8 @@ export class FeedPage {
         this.posts.push(doc);
         console.log(doc.data().owner);
         firebase.firestore().collection("informationUser").doc(doc.data().owner).get().then((data) => {
-          this.getUser = data;
+          this.getUser = data.data();
+          console.log(this.getUser.owner_name);
         })
         
       })

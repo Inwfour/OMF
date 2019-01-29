@@ -1,6 +1,7 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 import * as corsLib from 'cors';
+
 admin.initializeApp(functions.config().firebase);
 const cors = corsLib({origin: true});
 // Push Notification Firebase functions
@@ -123,3 +124,26 @@ export const deleteCommentsCount = functions.firestore.document('comments/{comme
         return false;
     }
 })
+
+export const editProfile = functions.firestore.document('informationUser/{informationUser}').onUpdate((change,context) => {
+    let data = change.after.data();
+    let uid = data.owner;
+    let img = data.photoURL;
+
+    console.log("1",uid);
+    console.log("2",img);
+
+    // admin.firestore().collection("posts").where("owner", "==", uid)
+    // .get()
+    // .then(data => {
+    //     data.forEach((docs) => {
+    //         admin.firestore().collection("posts").doc(docs.id).update({
+    //             photoUser: img
+    //         })
+            
+    //     })
+    //     return true;
+    // }).catch(() => {
+    //     return false;
+    // })
+    })
