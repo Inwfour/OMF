@@ -2,6 +2,8 @@ import { Component, NgZone, ViewChild, ChangeDetectorRef} from '@angular/core';
 import { IonicPage, NavController, NavParams, Content } from 'ionic-angular';
 import { TextToSpeech } from '@ionic-native/text-to-speech';
 import { SpeechRecognition } from '@ionic-native/speech-recognition';
+import firebase from 'firebase';
+import { UserProvider } from '../../providers/user/user';
 
 declare var window;
 
@@ -19,6 +21,9 @@ export class ChatbotPage {
   textVoice: any;
   matches: String[];
   isRecording = false
+  img:any = firebase.auth().currentUser.photoURL;
+  photoUser:string = "";
+  getUser:any = {};
 
   @ViewChild(Content) content:Content;
 
@@ -27,18 +32,30 @@ export class ChatbotPage {
     public navParams: NavParams, 
     public ngZone: NgZone,
     public speechRecognition: SpeechRecognition,
-    public cd: ChangeDetectorRef
+    public cd: ChangeDetectorRef,
+    public _USER: UserProvider
     ) {
-      
-    // this.messages.push({
-    //   text: "ต้องการความรู้อะไรกับปู่ไหม ???",
-    //   sender: "api"
-    // })
+      console.log(this.img);
+    this.messages.push({
+      text: "ต้องการความรู้อะไรกับปู่ไหม ???",
+      sender: "api"
+    })
+  }
+
+  ionViewWillEnter() {
+    this.getInformationUser();
+  }
+
+
+  getInformationUser() {
+    this._USER.getInformationUser(firebase.auth().currentUser.uid).then(data => {
+      this.getUser = data;
+    })
   }
 
   startListening() {
     let options = {
-      language: 'th-IN'
+      language: 'th-TH'
     }
     this.speechRecognition.startListening(options).subscribe((matches) => {
       this.matches = matches;
@@ -65,6 +82,8 @@ export class ChatbotPage {
 
   sendVoice(match) {
     this.text = match;
+    this.sendText();
+    this.matches = String[""];
   }
 
   sendText() {
@@ -92,7 +111,7 @@ export class ChatbotPage {
       // voice
       this.tts.speak({
         text: response.result.fulfillment.speech,
-        locale: "th-IN",
+        locale: "th-TH",
         rate: 1
       })
     }, (error) => {
