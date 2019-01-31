@@ -55,7 +55,7 @@
           <ion-avatar item-start *ngIf="post.data().photoUser == null">
               <img src="assets/imgs/user.png">
           </ion-avatar>
-          <h2 style="color: white">{{ getUser.owner_name }}</h2>
+          <h2 style="color: white">{{ post.data().owner_name }}</h2>
           <p *ngIf="post.data().created" > {{ post.data().created.toDate() | date: "dd/MM/yyyy HH:mm" }} </p>
           <ion-icon *ngIf="post.data().owner == _uid" name="ios-create" item-right (click)="edit(post)"></ion-icon>
       <ion-icon *ngIf="post.data().owner == _uid" name="trash" item-right (click)="delete(post)"></ion-icon>

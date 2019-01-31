@@ -1,5 +1,5 @@
 <ion-header >
-    <ion-navbar text-center>
+    <ion-navbar text-center [color]="isRecording ? 'danger' : 'primary'">
       <ion-title>
         ปู่จอห์น
       </ion-title>
@@ -7,12 +7,25 @@
   </ion-header>
   
   <ion-content padding>
-  
+    
+      <!-- <button ion-button full (click)="getPermissions()">Get Permission</button>
+    <button ion-button full (click)="startListening()">Start Listening</button>
+    <button ion-button full (click)="stopListening()">Get Permission</button> -->
+
     <ion-fab bottom right>
-      <button ion-fab color="danger" (click)="sendVoice()">
+      <button ion-fab color="danger" (click)="startListening()">
         <ion-icon name="mic"></ion-icon>
       </button>
     </ion-fab>
+
+    <ion-card>
+        <ion-card-header>This is what I understand...</ion-card-header>
+        <ion-card-content>
+          <ion-item *ngFor="let match of matches" (click)="sendVoice(match)">
+            {{ match }}
+          </ion-item>
+        </ion-card-content>
+    </ion-card>
   
     <ion-list no-lines class="chat-list">
       <ion-item *ngFor="let message of messages" class="chat-item" text-wrap>
@@ -36,7 +49,7 @@
     <ion-toolbar color="light">
       <ion-item>
       <ion-textarea rows="1" placeholder="กรอกข้อความขอบคุณ" [(ngModel)]="text"></ion-textarea>
-      <button ion-button icon-only item-right clear (click)="sendText(); input.setFocus()">
+      <button ion-button icon-only item-right clear (click)="sendText()">
         <ion-icon name="send"></ion-icon>
       </button>
     </ion-item>

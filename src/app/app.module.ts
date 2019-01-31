@@ -32,6 +32,7 @@ import { UserProvider } from '../providers/user/user';
 import { PostProvider } from '../providers/post/post';
 import { HideHeaderDirective } from '../directives/hide-header/hide-header';
 import { SettingsPage } from '../pages/settings/settings';
+import { SpeechRecognition } from '@ionic-native/speech-recognition';
 
 firebase.initializeApp(FIREBASE_CONFIG);
 firebase.firestore().settings( { timestampsInSnapshots: true })
@@ -94,7 +95,8 @@ firebase.firestore().settings( { timestampsInSnapshots: true })
     ImageProvider,
     PreloaderProvider,
     UserProvider,
-    PostProvider
+    PostProvider,
+    SpeechRecognition
   ]
 })
 export class AppModule {}

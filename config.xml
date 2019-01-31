@@ -98,6 +98,7 @@
         <variable name="LOCATION_ALWAYS_USAGE_DESCRIPTION" value="This app wants to get your location always, even this app runs in background." />
     </plugin>
     <plugin name="cordova-plugin-geolocation" spec="^4.0.1" />
+    <plugin name="cordova-plugin-speechrecognition" spec="1.2.0" />
     <engine name="ios" spec="4.5.5" />
     <engine name="android" spec="6.4.0" />
 </widget>
