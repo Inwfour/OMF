@@ -3,10 +3,26 @@
       <ion-title>
         ปู่จอห์น
       </ion-title>
+      
     </ion-navbar>
+
   </ion-header>
   
   <ion-content padding>
+
+      <ion-fab top right>
+          <button ion-fab color="vibrant" mini><ion-icon name="add"></ion-icon></button>
+          <ion-fab-list>
+            <button ion-fab>
+              <ion-icon name="logo-facebook">
+            </ion-icon>
+          </button>
+            <button ion-fab><ion-icon name="logo-twitter"></ion-icon>
+            </button>
+            <button ion-fab><ion-icon name="logo-vimeo"></ion-icon></button>
+            <button ion-fab><ion-icon name="logo-googleplus"></ion-icon></button>
+          </ion-fab-list>
+        </ion-fab>
 
     <ion-fab bottom right>
       <button ion-fab color="danger" (click)="startListening()">
@@ -20,9 +36,12 @@
         <ion-avatar item-left *ngIf="message.sender == 'api'">
           <img src = "assets/imgs/bot.png">
         </ion-avatar>
-        <ion-avatar item-right *ngIf="message.sender == 'me'">
-            <img src = "{{img}} != null ? '{{img}}' : 'assets/imgs/user.png'">
+        <ion-avatar item-right *ngIf="message.sender == 'me' && img">
+            <img *ngIf="img" [src] = "img" class="avatar">
           </ion-avatar>
+          <ion-avatar item-right *ngIf="message.sender == 'me' && !img" >
+              <img src = "assets/imgs/user.png" class="avatar">
+            </ion-avatar>
           <div *ngIf="message.sender == 'api'" class="bubble me">
             <h3>{{message.text}}</h3>
           </div>

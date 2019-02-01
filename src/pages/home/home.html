@@ -3,6 +3,11 @@
     <ion-title>
       Home
     </ion-title>
+    <ion-buttons end (click)="logout()">
+      <button ion-button icon-only>
+          <ion-icon name="log-out"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 </ion-header>
 
@@ -74,7 +79,7 @@
     </ion-row>
   </ion-card>
 
-  <ion-card class="card" style="background-color: #FF6262;" (click)="logout()">
+  <!-- <ion-card class="card" style="background-color: #FF6262;" (click)="logout()">
     <ion-row>
       <ion-col>
         <img class="card-img" src="assets/imgs/singout.png">
@@ -83,6 +88,6 @@
         <ion-label class="card-text">ออกจากระบบ</ion-label>
       </ion-col>
     </ion-row>
-  </ion-card>
+  </ion-card> -->
 
 </ion-content>
