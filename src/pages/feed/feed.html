@@ -20,14 +20,14 @@
 </ion-header>
 
 
-<ion-content hide-header [header]="head">
+<ion-content hide-header [header]="head" style="background-color: #69D07D">
 
   <ion-row margin class="rowStyle">
     <button ion-button icon-only color="headertop" clear (click)="changePostPicture()">
       <ion-icon name="images"></ion-icon>
     </button>
 
-    <ion-textarea (keyup)="resize()" rows="1" placeholder="Say something..." [(ngModel)]="text"></ion-textarea>
+    <ion-textarea (keyup)="resize()" rows="1" placeholder="คุณกำลังคิดอะไรอยู่ ???" [(ngModel)]="text"></ion-textarea>
 
     <button ion-button icon-only color="headertop" clear (click)="post()">
         <ion-icon name="send"></ion-icon>
@@ -48,14 +48,14 @@
   <div id="posts">
   <ion-card *ngFor="let post of posts">
     
-      <ion-item-divider color="headertop">
+      <ion-item-divider color="semi-light">
           <ion-avatar item-start *ngIf="post.data().photoUser">
               <img src="{{post.data().photoUser}}">
           </ion-avatar>
           <ion-avatar item-start *ngIf="post.data().photoUser == null">
               <img src="assets/imgs/user.png">
           </ion-avatar>
-          <h2 style="color: white">{{ post.data().owner_name }}</h2>
+          <h2 style="color: black">{{ post.data().owner_name }}</h2>
           <p *ngIf="post.data().created" > {{ post.data().created.toDate() | date: "dd/MM/yyyy HH:mm" }} </p>
           <ion-icon *ngIf="post.data().owner == _uid" name="ios-create" item-right (click)="edit(post)"></ion-icon>
       <ion-icon *ngIf="post.data().owner == _uid" name="trash" item-right (click)="delete(post)"></ion-icon>

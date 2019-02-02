@@ -5,7 +5,8 @@ page-feed {
     .rowStyle {
         border: solid map-get($colors , headertop ) 1px;
         border-radius: 30px;
-        margin-top: 15px;
+        margin-top: 20px;
+        background-color: white;
     }
     ion-textarea {
         margin-top: 5px;

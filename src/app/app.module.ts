@@ -33,6 +33,10 @@ import { PostProvider } from '../providers/post/post';
 import { HideHeaderDirective } from '../directives/hide-header/hide-header';
 import { SettingsPage } from '../pages/settings/settings';
 import { SpeechRecognition } from '@ionic-native/speech-recognition';
+import { FriendsPage } from '../pages/friends/friends';
+import { TabsfriendsPage } from '../pages/tabsfriends/tabsfriends';
+import { BuddiesPage } from '../pages/buddies/buddies';
+import { RequestsProvider } from '../providers/requests/requests';
 
 firebase.initializeApp(FIREBASE_CONFIG);
 firebase.firestore().settings( { timestampsInSnapshots: true })
@@ -53,7 +57,10 @@ firebase.firestore().settings( { timestampsInSnapshots: true })
     EditCommentPage,
     TabsCameraPage,
     SettingsPage,
-    HideHeaderDirective
+    HideHeaderDirective,
+    FriendsPage,
+    TabsfriendsPage,
+    BuddiesPage
   ],
   imports: [
     BrowserModule,
@@ -81,7 +88,10 @@ firebase.firestore().settings( { timestampsInSnapshots: true })
     EditPostPage,
     EditCommentPage,
     SettingsPage,
-    TabsCameraPage
+    TabsCameraPage,
+    FriendsPage,
+    TabsfriendsPage,
+    BuddiesPage
   ],
   providers: [
     StatusBar,
@@ -96,7 +106,9 @@ firebase.firestore().settings( { timestampsInSnapshots: true })
     PreloaderProvider,
     UserProvider,
     PostProvider,
-    SpeechRecognition
+    SpeechRecognition,
+    RequestsProvider,
+    
   ]
 })
 export class AppModule {}

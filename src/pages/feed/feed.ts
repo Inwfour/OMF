@@ -44,6 +44,7 @@ export class FeedPage {
   checkEdit: boolean;
   user: any[] = [];
   photoDisplay: string;
+  all: any = {};
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private loadingCtrl: LoadingController
     , private http: HttpClient, private actionSheetCtrl: ActionSheetController
@@ -75,7 +76,7 @@ export class FeedPage {
       this.element.nativeElement.getElementsByTagName('textarea')[0];
     textArea.style.overflow = 'hidden';
     textArea.style.height = 'auto';
-    textArea.style.height = (textArea.scrollHeight + 16) + "px";
+    textArea.style.height = (textArea.scrollHeight + 6) + "px";
   }
 
   updateToken(token: string, uid: string) {
@@ -163,10 +164,12 @@ export class FeedPage {
 
       docs.forEach((doc) => {
         this.posts.push(doc);
+
+    
         console.log(doc.data().owner);
         firebase.firestore().collection("informationUser").doc(doc.data().owner).get().then((data) => {
           this.getUser = data.data();
-          console.log(this.getUser.owner_name);
+          console.log("user : " + this.getUser);
         })
         
       })

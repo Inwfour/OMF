@@ -3,26 +3,22 @@
       <ion-title>
         ปู่จอห์น
       </ion-title>
-      
-    </ion-navbar>
 
+    </ion-navbar>
+    <ion-fab style="margin-top: -18px;margin-right: -10px" top right>
+        <button color="headertop" ion-fab mini><ion-icon name="menu"></ion-icon></button>
+        <ion-fab-list>
+          <button ion-fab>
+              <ion-icon name="body"></ion-icon>
+        </button>
+          <button ion-fab><ion-icon name="cloudy"></ion-icon>
+          </button>
+          <button ion-fab><ion-icon name="eye"></ion-icon></button>
+        </ion-fab-list>
+      </ion-fab>
   </ion-header>
   
   <ion-content padding>
-
-      <ion-fab top right>
-          <button ion-fab color="vibrant" mini><ion-icon name="add"></ion-icon></button>
-          <ion-fab-list>
-            <button ion-fab>
-              <ion-icon name="logo-facebook">
-            </ion-icon>
-          </button>
-            <button ion-fab><ion-icon name="logo-twitter"></ion-icon>
-            </button>
-            <button ion-fab><ion-icon name="logo-vimeo"></ion-icon></button>
-            <button ion-fab><ion-icon name="logo-googleplus"></ion-icon></button>
-          </ion-fab-list>
-        </ion-fab>
 
     <ion-fab bottom right>
       <button ion-fab color="danger" (click)="startListening()">

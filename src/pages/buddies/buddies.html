@@ -1,0 +1,40 @@
+<!--
+  Generated template for the BuddiesPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>buddies</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-searchbar [(ngModel)]="searchstring" (ionInput)="searchuser($event)" placeholder="ค้นหาเพื่อน"></ion-searchbar>
+  <ion-list no-lines>
+    <ion-list>
+      <ion-item-sliding *ngFor="let user of filteruser" >
+        <ion-item (click)="test(user)">
+            <ion-avatar item-left *ngIf="user.data().photoURL">
+                <img src="{{user.data().photoURL}}">
+              </ion-avatar>
+          <ion-avatar item-left *ngIf="!user.data().photoURL">
+            <img src="assets/imgs/user.png">
+          </ion-avatar>
+          <h2>{{user.data().owner_name}}</h2>
+        </ion-item>
+        <ion-item-options slide="left">
+          <button ion-button color="headertop" (click)="sendreq(user)">
+            <ion-icon name="person-add"></ion-icon>
+            Add
+          </button>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+  </ion-list>
+
+</ion-content>

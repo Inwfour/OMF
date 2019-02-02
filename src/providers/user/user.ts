@@ -14,6 +14,21 @@ export class UserProvider {
     
   }
 
+  // get All user
+  getalluser() {
+    return new Promise((resolve, reject) => {
+      firebase.firestore().collection("informationUser").get().then((snapshot) => {
+        let temparr = [];
+        snapshot.forEach((docs) => {
+          temparr.push(docs);
+        })
+        resolve(temparr);
+      }).catch(err => {
+        reject(err);
+      })
+    })
+  }
+
   // รับค่า User
   getInformationUser(uid:any) {
     return new Promise((resolve, reject) => {

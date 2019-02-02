@@ -1,0 +1,50 @@
+<!--
+  Generated template for the TabsfriendsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>เพื่อน</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="addbuddy()">
+        <ion-icon name="person-add"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+    <ion-segment [(ngModel)]="friends" color="headertop">
+        <ion-segment-button style="height: 50px" icon-only value="Chats">
+            <ion-icon name="chatbubbles"></ion-icon>
+            <div style="text-align: center;margin-top: -13px !important; ">
+              แชท
+            </div>
+          </ion-segment-button>
+          <ion-segment-button style="height: 50px" icon-only value="Groups">
+              <ion-icon name="contacts"></ion-icon>
+              <div style="text-align: center;margin-top: -13px !important; ">
+                กลุ่ม
+              </div>
+            </ion-segment-button>
+            <ion-segment-button style="height: 50px" icon-only value="Friend">
+                <ion-icon name="contact"></ion-icon>
+                <div style="text-align: center;margin-top: -13px !important; ">
+                  เพื่อน
+                </div>
+              </ion-segment-button>
+      </ion-segment>
+
+      <div [ngSwitch]="friends" >
+        <br>
+          <ion-list *ngSwitchCase="'Friend'">
+              <page-friends></page-friends>
+          </ion-list>
+        </div>
+
+</ion-content>
