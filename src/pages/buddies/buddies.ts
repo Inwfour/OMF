@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, Alert } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, Alert, Events } from 'ionic-angular';
 import { UserProvider } from '../../providers/user/user';
 import firebase from 'firebase';
 import { connreq } from '../../models/request';
@@ -11,42 +11,36 @@ import { RequestsProvider } from '../../providers/requests/requests';
   templateUrl: 'buddies.html',
 })
 export class BuddiesPage {
-  _uid:any;
-  newrequest =  {} as connreq;
-  filteruser:any = [];
-  temprr = [];
+  _uid: any;
+  newrequest = {} as connreq;
+  filteruser: any = [];
+  temprr: any = [];
+  myrequest:any = [];
+  myfriends:any = [];
+  friend:any = [];
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    public userservice : UserProvider,
+    public userservice: UserProvider,
     public alertCtrl: AlertController,
-    public requestservice: RequestsProvider
-    ) {
-      this._uid = firebase.auth().currentUser.uid;
-      this.userservice.getalluser().then((res:any) => {
+    public requestservice: RequestsProvider,
+    public events:Events
+  ) {
+
+    this._uid = firebase.auth().currentUser.uid;
+          this.userservice.getalluser().then((res: any) => {
         this.filteruser = res;
         this.temprr = res;
-      })
-      // firebase.firestore().collection("informationUser").get().then((query) => {
-      //   query.forEach(docs => {
-      //     this.filteruser.push(docs);
-      //     console.log(this.filteruser);
-      //     this.temprr.push(docs);
-      //   }) 
-      // })
-  }
-
-  test(user){
-    console.log(user);
+    })
   }
 
   searchuser(searchbar) {
     this.filteruser = this.temprr;
     var q = searchbar.target.value;
-    if(q.trim() == ''){
+    if (q.trim() == '') {
       return;
     }
     this.filteruser = this.filteruser.filter((v) => {
-      if(v.data().owner_name && q) {
-        if(v.data().owner_name.toLowerCase().indexOf(q.toLowerCase()) > -1) {
+      if (v.data().owner_name && q) {
+        if (v.data().owner_name.toLowerCase().indexOf(q.toLowerCase()) > -1) {
           return true;
         }
         return false;
@@ -56,35 +50,68 @@ export class BuddiesPage {
   }
 
   sendreq(recipient) {
+    let checkrequest;
+    let checkfriend;
     this.newrequest.sender = firebase.auth().currentUser.uid;
     this.newrequest.recipient = recipient.id;
-    console.log(this.newrequest.sender);
-    console.log(this.newrequest.recipient);
-    if(this.newrequest.sender == this.newrequest.recipient){
-      alert('You are your friend always');
-    }else {
-        let successalert = this.alertCtrl.create({
-            title: 'ส่งคำร้องขอ',
-            subTitle: 'คุณได้ส่งคำร้องขำไปที่ ' + recipient.data().owner_name,
+
+    if (this.newrequest.sender == this.newrequest.recipient) {
+      let alert = this.alertCtrl.create({
+        title: 'คุณไม่สามารถเพิ่มตัวคุณเป็นเพื่อนได้ !!!',
+        buttons: [
+          {
+            text: "ตกลง"
+          }
+        ]
+      })
+      alert.present();
+    } else if (this.newrequest.sender != this.newrequest.recipient) {
+      this.requestservice.checkrequests(this.newrequest).then((docs) => {
+        checkrequest = docs;
+        if (checkrequest == "") {
+          this.requestservice.checkfriend(this.newrequest).then((docs) => {
+            checkfriend = docs
+            if (checkfriend == "") {
+              let successalert = this.alertCtrl.create({
+                title: 'ส่งคำร้องขอ',
+                subTitle: 'คุณได้ส่งคำร้องขอไปที่ ' + recipient.data().owner_name,
+                buttons: [
+                  {
+                    text: "ตกลง"
+                  }
+                ]
+              });
+              this.requestservice.sendrequest(this.newrequest).then((res: any) => {
+                if (res.success) {
+                  successalert.present();
+                  let sentuser = this.filteruser.indexOf(recipient);
+                  this.filteruser.splice(sentuser, 1);
+                }
+              }).catch((err) => {
+                alert(err);
+              })
+            } else {
+              this.alertCtrl.create({
+                title: 'คุณได้เป็นเพื่อนกับ ' + recipient.data().owner_name + ' แล้ว',
+                buttons: [
+                  {
+                    text: "ตกลง"
+                  }
+                ]
+              }).present();
+            }
+          })
+        } else {
+          this.alertCtrl.create({
+            title: 'คุณได้ส่งคำขอเพิ่มเพื่อนกับ ' + recipient.data().owner_name + ' แล้ว',
             buttons: [
               {
-                text:"Cancel"
+                text: "ตกลง"
               }
             ]
-        });
-        this.requestservice.sendrequest(this.newrequest).then((res:any) => {
-          if (res.success){
-          successalert.present();
-          let sentuser = this.filteruser.indexOf(recipient);
-          this.filteruser.splice(sentuser, 1);
+          }).present();
         }
-        }).catch((err) => {
-          alert(err);
-        })
+      })
     }
   }
-
-
-
-
 }

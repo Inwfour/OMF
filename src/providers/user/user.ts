@@ -7,6 +7,8 @@ import { ImageProvider } from '../image/image';
 
 @Injectable()
 export class UserProvider {
+  firereq = firebase.firestore().collection('requests');
+  firefriends = firebase.firestore().collection('friends');
   constructor(  public http: HttpClient,
                 public _LOADER: PreloaderProvider,
                 public _IMG: ImageProvider

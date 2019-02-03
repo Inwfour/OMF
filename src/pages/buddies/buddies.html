@@ -15,6 +15,7 @@
 
 <ion-content padding>
   <ion-searchbar [(ngModel)]="searchstring" (ionInput)="searchuser($event)" placeholder="ค้นหาเพื่อน"></ion-searchbar>
+  <br>
   <ion-list no-lines>
     <ion-list>
       <ion-item-sliding *ngFor="let user of filteruser" >
