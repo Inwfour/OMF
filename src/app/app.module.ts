@@ -37,6 +37,8 @@ import { FriendsPage } from '../pages/friends/friends';
 import { TabsfriendsPage } from '../pages/tabsfriends/tabsfriends';
 import { BuddiesPage } from '../pages/buddies/buddies';
 import { RequestsProvider } from '../providers/requests/requests';
+import { ChatProvider } from '../providers/chat/chat';
+import { BuddychatPage } from '../pages/buddychat/buddychat';
 
 firebase.initializeApp(FIREBASE_CONFIG);
 firebase.firestore().settings( { timestampsInSnapshots: true })
@@ -60,7 +62,8 @@ firebase.firestore().settings( { timestampsInSnapshots: true })
     HideHeaderDirective,
     FriendsPage,
     TabsfriendsPage,
-    BuddiesPage
+    BuddiesPage,
+    BuddychatPage
   ],
   imports: [
     BrowserModule,
@@ -91,7 +94,8 @@ firebase.firestore().settings( { timestampsInSnapshots: true })
     TabsCameraPage,
     FriendsPage,
     TabsfriendsPage,
-    BuddiesPage
+    BuddiesPage,
+    BuddychatPage
   ],
   providers: [
     StatusBar,
@@ -108,6 +112,7 @@ firebase.firestore().settings( { timestampsInSnapshots: true })
     PostProvider,
     SpeechRecognition,
     RequestsProvider,
+    ChatProvider,
     
   ]
 })

@@ -1,7 +1,8 @@
 import { Component, SimpleChange, OnChanges, Input } from '@angular/core';
 import { IonicPage, NavController, NavParams , Events, AlertController, Alert} from 'ionic-angular';
 import { RequestsProvider } from '../../providers/requests/requests';
-
+import { ChatProvider } from '../../providers/chat/chat';
+import { BuddychatPage } from '../buddychat/buddychat';
 @IonicPage()
 @Component({
   selector: 'page-friends',
@@ -13,7 +14,8 @@ export class FriendsPage{
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public requestservice:RequestsProvider,
     public events:Events ,
-    public alertCtrl: AlertController
+    public alertCtrl: AlertController,
+    public chatservice: ChatProvider
     ) {
   }
 
@@ -80,5 +82,10 @@ export class FriendsPage{
       }).catch((err) => {
         alert(err);
       })
+    }
+
+    buddychat(buddy) {
+      this.chatservice.initializebuddy(buddy);
+      this.navCtrl.push(BuddychatPage)
     }
 }

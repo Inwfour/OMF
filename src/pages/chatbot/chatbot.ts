@@ -120,22 +120,5 @@ export class ChatbotPage {
 
   }
 
-  // sendVoice(){
-  //   window["ApiAIPlugin"].requestVoice({
-  //   },
-    
-  //     (response) => {
-  //       this.tts.speak({
-  //         text: response.result.fulfillment.speech,
-  //         locale: "th-IN",
-  //         rate: 1
-  //       })
-  //       console.log(this.text);
-  //       console.log(response.result.fulfillment.speech);
-  //     }, (error) => {
-  //       alert(error);
-  //     });
-  // }
-
 
 }
