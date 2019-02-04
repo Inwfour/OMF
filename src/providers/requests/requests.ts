@@ -75,6 +75,37 @@ export class RequestsProvider {
       })
     }
 
+    unfriend(buddy) {
+      return new Promise((resolve, reject) => {
+        let myuid;
+        let frienduid;
+        this.firefriends.doc(firebase.auth().currentUser.uid).collection('friend').where("uid", "==", buddy.id)
+        .get()
+        .then((snapshot) => {
+          frienduid = snapshot.docs
+          this.firefriends.doc(firebase.auth().currentUser.uid).collection('friend').doc(frienduid[0].id)
+          .delete()
+          .then(() => {
+            resolve(true);
+          }).catch(err => {
+            reject(err);
+          })
+        })
+        this.firefriends.doc(buddy.id).collection('friend').where("uid", "==", firebase.auth().currentUser.uid)
+        .get()
+        .then((snapshot) => {
+          myuid = snapshot.docs
+          this.firefriends.doc(buddy.id).collection('friend').doc(myuid[0].id)
+          .delete()
+          .then(() => {
+            resolve(true);
+          }).catch(err => {
+            reject(err);
+          })
+        })
+      })
+    }
+
     getmyrequests() {
       let allmyrequests;
       var myrequests = [];
@@ -90,7 +121,7 @@ export class RequestsProvider {
         this.userservice.getalluser().then((res:any) => {
           var allusers = [];
           allusers = res;
-          console.log(myrequests);
+          // console.log(myrequests);
           this.userdetails = [];
           for(var j in myrequests){
           for(var key in allusers) {
@@ -127,7 +158,7 @@ export class RequestsProvider {
           // console.log("b ",allusers[key].id);
           if(friendsuid[j] === allusers[key].id) {
             this.myfriends.push(allusers[key]);
-            console.log(this.myfriends);
+            // console.log(this.myfriends);
           }
         }
       }
@@ -139,6 +170,17 @@ export class RequestsProvider {
     checkrequests(req: connreq) {
       return new Promise((resolve,reject) => {
         this.firereq.doc(req.recipient).collection("request").where("sender" , "==" , req.sender)
+        .get().then((snapshot) => {
+          resolve(snapshot.docs);
+        }).catch((err) => {
+          reject(err)
+        })
+      })
+    }
+
+    checkconfirmrequests(req: connreq) {
+      return new Promise((resolve,reject) => {
+        this.firereq.doc(req.sender).collection("request").where("sender" , "==" , req.recipient)
         .get().then((snapshot) => {
           resolve(snapshot.docs);
         }).catch((err) => {

@@ -63,11 +63,11 @@ export class RegisterPage {
 
   save(user) {
     // this._LOADER.displayPreloader();
-    let loader= this.loadingCtrl.create({
-      spinner: 'hide',
-      content: `<img src="assets/imgs/loading.svg">`
+    // let loader= this.loadingCtrl.create({
+    //   spinner: 'hide',
+    //   content: `<img src="assets/imgs/loading.svg">`
 
-    }); loader.present();
+    // }); loader.present();
 
     firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
       .then(async () => {
@@ -91,7 +91,7 @@ export class RegisterPage {
             email: firebase.auth().currentUser.email,
             created: firebase.firestore.FieldValue.serverTimestamp()
           }).then(() => {
-            loader.dismiss();
+            // loader.dismiss();
             console.log("Success !!!");
             this.navCtrl.setRoot(LoginPage);
           }).catch((err) => {

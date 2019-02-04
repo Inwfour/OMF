@@ -45,6 +45,7 @@ export class FriendsPage{
 
   accept(item) {
     this.requestservice.acceptrequest(item).then(() => {
+      this.getfriends();
       let alert = this.alertCtrl.create({
         title: 'เพิ่มเพื่อน',
         subTitle: 'คุณสามารถแชทกันได้แล้ว',
@@ -55,9 +56,24 @@ export class FriendsPage{
   }
     ignore(item) {
       this.requestservice.deleterequest(item).then(() => {
+        this.getfriends();
         let alert = this.alertCtrl.create({
           title: 'ยกเลิกคำขอ',
           subTitle: 'คุณได้ยกเลิกคำขอเสร็จเรียบร้อย',
+          buttons: ['ตกลง']
+        });
+        alert.present();
+      }).catch((err) => {
+        alert(err);
+      })
+    }
+
+    unfriend(item) {
+      this.requestservice.unfriend(item).then(() => {
+        this.getfriends();
+        let alert = this.alertCtrl.create({
+          title: 'เรียบร้อย',
+          subTitle: 'ได้ลบเพื่อนเรียบร้อย',
           buttons: ['ตกลง']
         });
         alert.present();

@@ -25,7 +25,8 @@
   <ion-list-header>
       เพื่อนของคุณ
     </ion-list-header>
-    <ion-item *ngFor="let item of myfriends" (click)="buddyfriends(item)">
+    <ion-item-sliding *ngFor="let item of myfriends">
+    <ion-item>
       <ion-avatar item-left *ngIf="item.data().photoURL">
         <img src="{{item.data().photoURL}}">
       </ion-avatar>
@@ -34,4 +35,10 @@
         </ion-avatar>
       <h3>{{item.data().owner_name}}</h3>
     </ion-item>
+    <ion-item-options>
+      <button ion-button color="danger" (click)="unfriend(item)">
+          <ion-icon name="trash"></ion-icon>
+        </button>
+    </ion-item-options>
+  </ion-item-sliding>
 </ion-list>

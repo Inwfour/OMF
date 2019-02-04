@@ -17,7 +17,7 @@ export class BuddiesPage {
   temprr: any = [];
   myrequest:any = [];
   myfriends:any = [];
-  friend:any = [];
+  nofriend:any = [];
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public userservice: UserProvider,
     public alertCtrl: AlertController,
@@ -26,10 +26,10 @@ export class BuddiesPage {
   ) {
 
     this._uid = firebase.auth().currentUser.uid;
-          this.userservice.getalluser().then((res: any) => {
+       this.userservice.getalluser().then((res: any) => {
         this.filteruser = res;
         this.temprr = res;
-    })
+            })
   }
 
   searchuser(searchbar) {
@@ -51,6 +51,7 @@ export class BuddiesPage {
 
   sendreq(recipient) {
     let checkrequest;
+    let checkconfirmrequest;
     let checkfriend;
     this.newrequest.sender = firebase.auth().currentUser.uid;
     this.newrequest.recipient = recipient.id;
@@ -65,10 +66,16 @@ export class BuddiesPage {
         ]
       })
       alert.present();
+
+
     } else if (this.newrequest.sender != this.newrequest.recipient) {
       this.requestservice.checkrequests(this.newrequest).then((docs) => {
         checkrequest = docs;
+        
         if (checkrequest == "") {
+          this.requestservice.checkconfirmrequests(this.newrequest).then((docs) => {
+            checkconfirmrequest = docs;
+            if (checkconfirmrequest == ""){
           this.requestservice.checkfriend(this.newrequest).then((docs) => {
             checkfriend = docs
             if (checkfriend == "") {
@@ -103,6 +110,18 @@ export class BuddiesPage {
           })
         } else {
           this.alertCtrl.create({
+            title: 'ได้เพิ่มเพื่อนเพื่อรอการยืนยันแล้วจาก ' + recipient.data().owner_name,
+            buttons: [
+              {
+                text: "ตกลง"
+              }
+            ]
+          }).present();
+        }
+        })
+        
+        } else {
+          this.alertCtrl.create({
             title: 'คุณได้ส่งคำขอเพิ่มเพื่อนกับ ' + recipient.data().owner_name + ' แล้ว',
             buttons: [
               {
@@ -111,7 +130,8 @@ export class BuddiesPage {
             ]
           }).present();
         }
-      })
+     
+    })
     }
   }
 }
