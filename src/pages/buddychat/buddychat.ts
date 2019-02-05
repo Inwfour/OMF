@@ -1,4 +1,4 @@
-import { Component ,NgZone,ViewChild} from '@angular/core';
+import { Component ,NgZone,ViewChild, ElementRef} from '@angular/core';
 import { IonicPage, NavController, NavParams , Events, Content , AlertController} from 'ionic-angular';
 import { ChatProvider } from '../../providers/chat/chat';
 import firebase from 'firebase';
@@ -9,10 +9,13 @@ import firebase from 'firebase';
 })
 export class BuddychatPage {
   @ViewChild('content') content: Content;
+  @ViewChild('chat_input') messageInput: ElementRef;
   buddy:any;
   newmessage:any;
   allmessages = [];
   photoURL:any;
+  editorMsg = '';
+  showEmojiPicker = false;
   firebuddychats = firebase.firestore().collection('buddychats');
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public chatservice:ChatProvider,
@@ -34,11 +37,26 @@ export class BuddychatPage {
   }
 
   addmessage() {
+    if(this.newmessage == "" && this.newmessage == null){
+
+    }else{
     this.chatservice.addnewmessage(this.newmessage).then(() => {
       this.content.scrollToBottom();
       this.newmessage = '';
+
+      if (!this.showEmojiPicker) {
+        this.focus();
+      }
+      
       this.ionViewDidEnter()
     })
+  }
+  }
+
+  onFocus() {
+    this.showEmojiPicker = false;
+    this.content.resize();
+    this.scrollToBottom();
   }
 
   ionViewDidEnter() {
@@ -72,8 +90,40 @@ export class BuddychatPage {
 
   scrollto() {
     setTimeout(() => {
-      this.content.scrollToBottom();
+      this.scrollToBottom();
     }, 1000);
+  }
+
+  switchEmojiPicker() {
+    this.showEmojiPicker = !this.showEmojiPicker;
+    if (!this.showEmojiPicker) {
+      this.focus();
+    } else {
+      this.content.resize();
+      this.scrollToBottom();
+      // this.setTextareaScroll();
+    }
+    this.content.resize();
+    this.scrollToBottom();
+  }
+
+  private focus() {
+    if (this.messageInput && this.messageInput.nativeElement) {
+      this.messageInput.nativeElement.focus();
+    }
+  }
+
+  // private setTextareaScroll() {
+  //   const textarea =this.messageInput.nativeElement;
+  //   textarea.scrollTop = textarea.scrollto;
+  // }
+
+  scrollToBottom() {
+    setTimeout(() => {
+      if (this.content.scrollToBottom) {
+        this.content.scrollToBottom();
+      }
+    }, 400)
   }
 
   remove(msg) {

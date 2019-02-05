@@ -39,6 +39,9 @@ import { BuddiesPage } from '../pages/buddies/buddies';
 import { RequestsProvider } from '../providers/requests/requests';
 import { ChatProvider } from '../providers/chat/chat';
 import { BuddychatPage } from '../pages/buddychat/buddychat';
+import { EmojiProvider } from '../providers/emoji/emoji';
+import { EmojiPickerComponent } from '../components/emoji-picker/emoji-picker';
+import { HistorychatPage } from '../pages/historychat/historychat';
 
 firebase.initializeApp(FIREBASE_CONFIG);
 firebase.firestore().settings( { timestampsInSnapshots: true })
@@ -63,7 +66,9 @@ firebase.firestore().settings( { timestampsInSnapshots: true })
     FriendsPage,
     TabsfriendsPage,
     BuddiesPage,
-    BuddychatPage
+    BuddychatPage,
+    EmojiPickerComponent,
+    HistorychatPage
   ],
   imports: [
     BrowserModule,
@@ -95,7 +100,9 @@ firebase.firestore().settings( { timestampsInSnapshots: true })
     FriendsPage,
     TabsfriendsPage,
     BuddiesPage,
-    BuddychatPage
+    BuddychatPage,
+    EmojiPickerComponent,
+    HistorychatPage
   ],
   providers: [
     StatusBar,
@@ -113,6 +120,7 @@ firebase.firestore().settings( { timestampsInSnapshots: true })
     SpeechRecognition,
     RequestsProvider,
     ChatProvider,
+    EmojiProvider,
     
   ]
 })

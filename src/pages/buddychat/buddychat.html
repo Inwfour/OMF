@@ -42,13 +42,26 @@
   </div>
 </ion-content>
 
-<ion-footer fixed>
+<ion-footer no-border [style.height]="showEmojiPicker ? '255px' : '55px'">
   <ion-toolbar color="light">
     <ion-item>
-      <ion-textarea rows="1" placeholder="กรอกข้อความขอบคุณ" [(ngModel)]="newmessage"></ion-textarea>
+        <button ion-button clear icon-only item-left (click)="switchEmojiPicker()">
+            <ion-icon name="md-happy"></ion-icon>
+          </button>
+      <ion-textarea #chat_input
+                    rows="1" 
+                    placeholder="กรอกข้อความขอบคุณ" 
+                    [(ngModel)]="newmessage"
+                    (focusin)="onFocus()"
+                    (keyup.enter)="addmessage()"
+                    >
+                  
+      </ion-textarea>
       <button ion-button icon-only item-right clear (click)="addmessage()">
         <ion-icon name="send"></ion-icon>
       </button>
     </ion-item>
+    <emoji-picker [(ngModel)]="newmessage"></emoji-picker>
   </ion-toolbar>
+
 </ion-footer>

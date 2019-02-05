@@ -20,27 +20,31 @@
 
 <ion-content padding>
     <ion-segment [(ngModel)]="friends" color="headertop">
-        <ion-segment-button style="height: 50px" icon-only value="Chats">
+        <ion-segment-button icon-only value="Chats">
             <ion-icon name="chatbubbles"></ion-icon>
-            <div style="text-align: center;margin-top: -13px !important; ">
+            <!-- <div style="text-align: center;margin-top: -13px !important; ">
               แชท
-            </div>
+            </div> -->
           </ion-segment-button>
-          <ion-segment-button style="height: 50px" icon-only value="Groups">
+          <ion-segment-button icon-only value="Groups">
               <ion-icon name="contacts"></ion-icon>
-              <div style="text-align: center;margin-top: -13px !important; ">
+              <!-- <div style="text-align: center;margin-top: -13px !important; ">
                 กลุ่ม
-              </div>
+              </div> -->
             </ion-segment-button>
-            <ion-segment-button style="height: 50px" icon-only value="Friend">
+            <ion-segment-button icon-only value="Friend">
                 <ion-icon name="contact"></ion-icon>
-                <div style="text-align: center;margin-top: -13px !important; ">
+                <!-- <div style="text-align: center;margin-top: -13px !important; ">
                   เพื่อน
-                </div>
+                </div> -->
               </ion-segment-button>
       </ion-segment>
 
+
       <div [ngSwitch]="friends" >
+          <ion-list *ngSwitchCase="'Chats'">
+              <page-historychat></page-historychat>
+          </ion-list>
         <br>
           <ion-list *ngSwitchCase="'Friend'">
               <page-friends></page-friends>

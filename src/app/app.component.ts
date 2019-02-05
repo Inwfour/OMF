@@ -13,17 +13,19 @@ declare var window;
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage:any = LoginPage;
+  rootPage:any;
   showSplash = true;
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
-    const unsubscribe = firebase.auth().onAuthStateChanged(user => {
+firebase.auth().onAuthStateChanged(user => {
       console.log(user);
       if (!user) {
+        this.showSplash = false;
         this.rootPage = LoginPage;
-        unsubscribe();
+ 
       } else {
+        this.showSplash = false;
         this.rootPage = TabsPage;
-        unsubscribe();
+
       }
     });
     
@@ -33,7 +35,7 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
       splashScreen.hide();
-      timer(3000).subscribe(() => this.showSplash = false);
+      // timer(3000).subscribe(() => this.showSplash = false);
 
 
 

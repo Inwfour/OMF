@@ -15,8 +15,12 @@ import { BuddiesPage } from '../buddies/buddies';
   templateUrl: 'tabsfriends.html',
 })
 export class TabsfriendsPage {
-
+  friends:any;
   constructor(public navCtrl: NavController, public navParams: NavParams) {
+  }
+
+  ngOnInit(){
+    this.friends = "Chats";
   }
 
   addbuddy() {
