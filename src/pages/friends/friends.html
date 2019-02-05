@@ -34,10 +34,11 @@
           <img src="assets/imgs/user.png">
         </ion-avatar>
       <h3>{{item.data().owner_name}}</h3>
+      <ion-icon item-right name="chatbubbles"></ion-icon>
     </ion-item>
     <ion-item-options>
       <button ion-button color="danger" (click)="unfriend(item)">
-          <ion-icon name="trash"></ion-icon>
+          <ion-icon name="trash" ></ion-icon>
         </button>
     </ion-item-options>
   </ion-item-sliding>

@@ -63,11 +63,11 @@ export class RegisterPage {
 
   save(user) {
     // this._LOADER.displayPreloader();
-    // let loader= this.loadingCtrl.create({
-    //   spinner: 'hide',
-    //   content: `<img src="assets/imgs/loading.svg">`
+    let loader= this.loadingCtrl.create({
+      spinner: 'hide',
+      content: `<img src="assets/imgs/loading.svg">`
 
-    // }); loader.present();
+    }); loader.present();
 
     firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
       .then(async () => {
@@ -78,13 +78,12 @@ export class RegisterPage {
             });
         }
           var newUser = firebase.auth().currentUser;
-          var newInformationUser = firebase.firestore().collection("informationUser").doc(firebase.auth().currentUser.uid);
          newUser.updateProfile({
           displayName: user.name,
           photoURL: this.url
         }).then(() => {
-          
-          newInformationUser.set({
+          loader.dismiss();
+          firebase.firestore().collection("informationUser").doc(firebase.auth().currentUser.uid).set({
             photoURL: this.url,
             owner_name: user.name,
             owner: firebase.auth().currentUser.uid,
@@ -95,6 +94,7 @@ export class RegisterPage {
             console.log("Success !!!");
             this.navCtrl.setRoot(LoginPage);
           }).catch((err) => {
+            console.log(err);
             });
         }).catch((err) => {
           console.log(err);

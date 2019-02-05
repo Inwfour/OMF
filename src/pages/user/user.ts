@@ -36,6 +36,7 @@ export class UserPage {
   checkEdit: boolean;
   photoURLDisplay: string = "";
   postLength: any;
+  friendsLength: any;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -74,11 +75,20 @@ export class UserPage {
 
     }); loader.present();
     
+    //Post length
     let postUser = firebase.firestore().collection("posts")
       .where("owner", "==", this._uid);
 
     postUser.get().then((data) => {
       this.postLength = data.docs.length;
+    })
+
+    //Friends length
+    firebase.firestore().collection("friends").doc(firebase.auth().currentUser.uid)
+    .collection("friend")
+    .get()
+    .then((snapshot) => {
+      this.friendsLength = snapshot.docs.length;
     })
 
     let query = firebase.firestore().collection("posts")

@@ -71,12 +71,6 @@ export class UserProvider {
 
   }
 
-  // เพิ่มข้อมูลลง auth() และ informationUser
-  uploadInformationUser(name:any,url:any) {
-
-   
-}
-
 // อัพเดทรูปภาพหน้า User
 updateImgUser(name:any,url:any) {
 

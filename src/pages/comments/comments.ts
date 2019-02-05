@@ -31,13 +31,14 @@ export class CommentsPage {
   _uid: any;
   editTextComment: any;
   photoDisplay:string;
+  infiniteEvent: any;
+
   constructor(public navCtrl: NavController, public navParams: NavParams, private viewCtrl: ViewController, private loadingCtrl: LoadingController, private toastCtrl: ToastController
     , private actionSheetCtrl: ActionSheetController, private element: ElementRef,private modalCtrl:ModalController
   ) {
     this._uid = firebase.auth().currentUser.uid;
     this.photoDisplay = firebase.auth().currentUser.photoURL
     this.post = this.navParams.get("post");
-
   }
 
   ionViewWillEnter(){    
@@ -71,7 +72,6 @@ export class CommentsPage {
 
     });
     loader.present();
-
     firebase.firestore().collection("comments").where("post", "==", this.post.id)
       .orderBy("created", "asc")
       .get()
@@ -79,24 +79,38 @@ export class CommentsPage {
         loader.dismiss();
         console.log(data.docs);
         this.comments = data.docs;
+        
       }).catch((err) => {
         loader.dismiss();
         console.log(err);
       })
-
-    firebase.firestore().collection("posts")
-    .onSnapshot(function(snapshot) {
-      snapshot.docChanges().forEach(function(change) {
-      if (change.type === "added") {
-      }
-      if (change.type === "modified") {
-          console.log("Modified city: ", change.doc.data().commentsCount);
-      }
-      if (change.type === "removed") {
-      }
-      });
-    })
   }
+
+  refresh(event) {
+    this.comments = [];
+    if (this.infiniteEvent) {
+      this.infiniteEvent.enable(true);
+    }
+    this.getComment();
+    event.complete();
+  }
+
+  // realtimecomment() {
+  //   firebase.firestore().collection("comments").where("post", "==", this.post.id)
+  //   .onSnapshot(function(snapshot) {
+  //     snapshot.docChanges().forEach(function(change) {
+  //     if (change.type === "added") {
+  //      this.getComment();
+  //     }
+  //     if (change.type === "modified") {
+  //       this.getComment();
+  //     }
+  //     if (change.type === "removed") {
+  //       this.getComment();
+  //     }
+  //     });
+  //   })
+  // }
 
   sendComment() {
 
