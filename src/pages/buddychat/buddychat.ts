@@ -1,5 +1,5 @@
 import { Component ,NgZone,ViewChild} from '@angular/core';
-import { IonicPage, NavController, NavParams , Events, Content} from 'ionic-angular';
+import { IonicPage, NavController, NavParams , Events, Content , AlertController} from 'ionic-angular';
 import { ChatProvider } from '../../providers/chat/chat';
 import firebase from 'firebase';
 @IonicPage()
@@ -17,7 +17,8 @@ export class BuddychatPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public chatservice:ChatProvider,
     public events:Events,
-    public zone:NgZone
+    public zone:NgZone,
+    public alertCtrl:AlertController
     ) {
     
       this.photoURL = firebase.auth().currentUser.photoURL;
@@ -55,7 +56,6 @@ export class BuddychatPage {
         if (change.type == "added") {
           // TODO
           this.ionViewDidEnter();
-          
         }
         if (change.type == "modified") {
           // TODO
@@ -63,6 +63,8 @@ export class BuddychatPage {
         }
         if (change.type == "removed") {
           // TODO
+          // this.ionViewDidEnter();
+          console.log("delete");
         }
       });
     })
@@ -72,5 +74,43 @@ export class BuddychatPage {
     setTimeout(() => {
       this.content.scrollToBottom();
     }, 1000);
+  }
+
+  remove(msg) {
+    this.alertCtrl.create({
+      title: "คุณต้องการลบข้อความนี้หรือไม่ ?",
+      buttons: [
+        {
+          text: "ไม่ตกลง"
+        },
+        {
+          text: "ตกลง",
+          handler: () => {
+            this.chatservice.remove(msg).then(() => {
+              this.ionViewDidEnter();
+            })
+          }
+        }
+      ]
+    }).present();
+  }
+
+  removeall() {
+    this.alertCtrl.create({
+      title: "คุณต้องการลบข้อความทั้งหมดหรือไม่ ?",
+      buttons: [
+        {
+          text: "ไม่ตกลง"
+        },
+        {
+          text: "ตกลง",
+          handler: () => {
+            this.chatservice.removeall().then(() => {
+              this.ionViewDidEnter();
+            })
+          }
+        }
+      ]
+    }).present();
   }
 }

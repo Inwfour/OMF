@@ -2,6 +2,11 @@
 
   <ion-navbar color="headertop">
     <ion-title>{{buddy.data().owner_name}}</ion-title>
+    <ion-buttons end>
+      <button (click)="removeall()" ion-button ion-icon>
+        <ion-icon name="trash"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
@@ -17,7 +22,7 @@
         <ion-avatar item-left *ngIf="item.data().sentby == buddy.id && !buddy.data().photoURL">
             <img src="assets/imgs/user.png">
           </ion-avatar>
-        <div class="bubble me" *ngIf="item.data().sentby == buddy.id">
+        <div (click)="remove(item)" class="bubble me" *ngIf="item.data().sentby == buddy.id">
             <p *ngIf="item.data().timestamp" > {{ item.data().timestamp.toDate() | date: "dd/MM/yyyy HH:mm" }} </p>
           <h3>{{item.data().message}}</h3>
         </div>
@@ -28,7 +33,7 @@
         <ion-avatar item-right *ngIf="item.data().sentby != buddy.id && !photoURL">
             <img src="assets/imgs/user.png">
           </ion-avatar>
-        <div class="bubbleme you" *ngIf="item.data().sentby != buddy.id">
+        <div (click)="remove(item)" class="bubbleme you" *ngIf="item.data().sentby != buddy.id">
             <p *ngIf="item.data().timestamp" style="color: white"> {{ item.data().timestamp.toDate() | date: "dd/MM/yyyy HH:mm" }} </p>
           <h3 style="color: white">{{item.data().message}}</h3>
         </div>
@@ -37,7 +42,7 @@
   </div>
 </ion-content>
 
-<ion-footer>
+<ion-footer fixed>
   <ion-toolbar color="light">
     <ion-item>
       <ion-textarea rows="1" placeholder="กรอกข้อความขอบคุณ" [(ngModel)]="newmessage"></ion-textarea>

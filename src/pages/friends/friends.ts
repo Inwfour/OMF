@@ -3,12 +3,15 @@ import { IonicPage, NavController, NavParams , Events, AlertController, Alert} f
 import { RequestsProvider } from '../../providers/requests/requests';
 import { ChatProvider } from '../../providers/chat/chat';
 import { BuddychatPage } from '../buddychat/buddychat';
+import firebase from 'firebase';
 @IonicPage()
 @Component({
   selector: 'page-friends',
   templateUrl: 'friends.html',
 })
 export class FriendsPage{
+  firereq = firebase.firestore().collection('requests');
+  firefriends = firebase.firestore().collection('friends');
  myrequest:any = [];
  myfriends:any = [];
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -17,26 +20,71 @@ export class FriendsPage{
     public alertCtrl: AlertController,
     public chatservice: ChatProvider
     ) {
+      this.getrequestschanges();
+      this.getfriendschanges();
   }
 
-  getfriends(){
+  getrequests(){
     this.requestservice.getmyrequests();
-    this.requestservice.getmyfriends();
     this.events.subscribe('gotrequests', () => {
       this.myrequest = this.requestservice.userdetails;
     })
+  }
+
+  getfriends(){
+    this.requestservice.getmyfriends();
     this.events.subscribe('friends', () => {
       this.myfriends = this.requestservice.myfriends;
     })
   }
 
   ngOnInit() {
-    console.log("start");
+    this.getrequests();
     this.getfriends();
   }
 
-  ngOnChanges(change:SimpleChange) {
-    console.log(change);
+  getrequestschanges() {
+    this.firereq.doc(firebase.auth().currentUser.uid).collection('request')
+    .onSnapshot((snapshot) => {
+      let changedDocs = snapshot.docChanges();
+
+      changedDocs.forEach((change) => {
+        if (change.type == "added") {
+          // TODO
+          this.getrequests();
+        }
+        if (change.type == "modified") {
+          // TODO
+          this.getrequests();
+        }
+        if (change.type == "removed") {
+          // TODO
+          this.getrequests();
+        }
+      });
+    })
+  }
+
+  getfriendschanges() {
+    this.firefriends.doc(firebase.auth().currentUser.uid).collection('friend')
+    .onSnapshot((snapshot) => {
+      let changedDocs = snapshot.docChanges();
+
+      changedDocs.forEach((change) => {
+        if (change.type == "added") {
+          // TODO
+          this.getfriends();
+        }
+        if (change.type == "modified") {
+          // TODO
+          this.getfriends();
+        }
+        if (change.type == "removed") {
+          // TODO
+          this.getfriends();
+        }
+      });
+    })
   }
 
 
@@ -47,7 +95,8 @@ export class FriendsPage{
 
   accept(item) {
     this.requestservice.acceptrequest(item).then(() => {
-      this.getfriends();
+      // this.getrequests();
+      // this.getfriends();
       let alert = this.alertCtrl.create({
         title: 'เพิ่มเพื่อน',
         subTitle: 'คุณสามารถแชทกันได้แล้ว',
@@ -58,7 +107,8 @@ export class FriendsPage{
   }
     ignore(item) {
       this.requestservice.deleterequest(item).then(() => {
-        this.getfriends();
+        // this.getrequests();
+        // this.getfriends();
         let alert = this.alertCtrl.create({
           title: 'ยกเลิกคำขอ',
           subTitle: 'คุณได้ยกเลิกคำขอเสร็จเรียบร้อย',
@@ -72,7 +122,8 @@ export class FriendsPage{
 
     unfriend(item) {
       this.requestservice.unfriend(item).then(() => {
-        this.getfriends();
+        // this.getrequests();
+        // this.getfriends();
         let alert = this.alertCtrl.create({
           title: 'เรียบร้อย',
           subTitle: 'ได้ลบเพื่อนเรียบร้อย',

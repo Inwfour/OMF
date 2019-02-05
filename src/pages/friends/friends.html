@@ -25,8 +25,8 @@
   <ion-list-header>
       เพื่อนของคุณ
     </ion-list-header>
-    <ion-item-sliding *ngFor="let item of myfriends" (click)="buddychat(item)">
-    <ion-item>
+    <ion-item-sliding *ngFor="let item of myfriends">
+    <ion-item (click)="buddychat(item)">
       <ion-avatar item-left *ngIf="item.data().photoURL">
         <img src="{{item.data().photoURL}}">
       </ion-avatar>
