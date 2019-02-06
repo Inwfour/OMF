@@ -88,7 +88,7 @@ export class FriendsPage{
   }
 
 
-  ionViewDidLeave() {
+  ngOnDestroy() {
     this.events.unsubscribe('gotrequests');
     this.events.unsubscribe('friends');
   }

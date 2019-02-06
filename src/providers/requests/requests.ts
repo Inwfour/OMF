@@ -13,6 +13,7 @@ import { Events } from 'ionic-angular';
 export class RequestsProvider {
   firereq = firebase.firestore().collection('requests');
   firefriends = firebase.firestore().collection('friends');
+  firefriendchat = firebase.firestore().collection('buddychats')
   userdetails:any;
   myfriends:any;
   constructor(public userservice:UserProvider,
@@ -154,15 +155,42 @@ export class RequestsProvider {
         for(var j in friendsuid){
           
         for(var key in allusers) {
-          // console.log("a ",friendsuid[j]);
-          // console.log("b ",allusers[key].id);
           if(friendsuid[j] === allusers[key].id) {
             this.myfriends.push(allusers[key]);
-            // console.log(this.myfriends);
           }
         }
       }
         this.events.publish('friends')
+      })
+    })
+    }
+
+    getmyfriendchat() {
+      let allfriendschat;
+      var friendschatuid = [];
+      this.firefriendchat.doc(firebase.auth().currentUser.uid).collection('buddys')
+      .get().then((snapshot) => {
+        allfriendschat = snapshot.docs;
+        console.log(allfriendschat);
+        friendschatuid = [];
+        for(var i in allfriendschat){
+          friendschatuid.push(allfriendschat[i]);   
+        }
+        
+      }).then(() => {
+        this.userservice.getalluser().then((res:any) => {
+        var allusers = [];
+        allusers = res;
+        
+        this.myfriends = [];
+        for(var j in friendschatuid){
+        for(var key in allusers) {
+          if(friendschatuid[j].id === allusers[key].id) {
+            this.myfriends.push(allusers[key]);
+          }
+        }
+      }
+        this.events.publish('friendschat')
       })
     })
     }

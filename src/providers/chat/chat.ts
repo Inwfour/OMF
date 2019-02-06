@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 import firebase from 'firebase';
 import { Events } from 'ionic-angular'
+import { UserProvider } from '../user/user';
 @Injectable()
 export class ChatProvider {
   firebuddychats = firebase.firestore().collection('buddychats');
   buddy: any;
   buddymessages = [];
+  url: string = "";
   constructor(public events: Events,
+    public _USER: UserProvider
   ) {
   }
 
@@ -14,21 +17,47 @@ export class ChatProvider {
     this.buddy = buddy;
   }
 
-  addnewmessage(msg) {
+  addnewmessage(msg, img) {
     if (this.buddy) {
       var promise = new Promise((resolve, reject) => {
+        //add message me
         this.firebuddychats.doc(firebase.auth().currentUser.uid).collection("buddys").doc(this.buddy.id).collection('buddy')
           .add({
             sentby: firebase.auth().currentUser.uid,
             message: msg,
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
-          }).then(() => {
+          }).then((data) => {
+            //check add img me
+            if (img !== null && img !== "") {
+              this._USER.uploadImgChat(firebase.auth().currentUser.uid,this.buddy.id, img, data.id).then((url) => {
+                this.firebuddychats.doc(firebase.auth().currentUser.uid).collection("buddys").doc(this.buddy.id)
+                  .collection('buddy').doc(data.id).set({
+                    sentby: firebase.auth().currentUser.uid,
+                    message: msg,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                    img: url
+                  });
+              })
+            }
+            //add message buddy
             this.firebuddychats.doc(this.buddy.id).collection("buddys").doc(firebase.auth().currentUser.uid).collection('buddy')
               .add({
                 sentby: firebase.auth().currentUser.uid,
                 message: msg,
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
-              }).then(() => {
+              }).then((data2) => {
+                //check add img you
+                if (img !== null && img !== "") {
+                  this._USER.uploadImgChat(this.buddy.id,firebase.auth().currentUser.uid, img, data2.id).then((url1) => {
+                    this.firebuddychats.doc(this.buddy.id).collection("buddys").doc(firebase.auth().currentUser.uid)
+                      .collection('buddy').doc(data2.id).set({
+                        sentby: firebase.auth().currentUser.uid,
+                        message: msg,
+                        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                        img: url1
+                      });
+                  })
+                }
                 resolve(true);
               }).catch((err) => {
                 reject(err);
@@ -65,7 +94,14 @@ export class ChatProvider {
         .collection("buddy").doc(msg.id)
         .delete()
         .then(() => {
+          if(msg.data().img) {
+          firebase.storage().ref().child("chatImages/" + firebase.auth().currentUser.uid + "/" + this.buddy.id + "/" + msg.id)
+          .delete().then(() => {
+            resolve(true);
+          })
+        }else {
           resolve(true);
+        }
         }).catch(err => {
           reject(err);
         })
@@ -81,13 +117,18 @@ export class ChatProvider {
         .then((snapshot) => {
           snapshot.forEach((doc) => {
             this.firebuddychats.doc(firebase.auth().currentUser.uid)
-            .collection("buddys").doc(this.buddy.id)
-            .collection("buddy").doc(doc.id)
-            .delete()
-            .then(() => {
-            }).catch(err => {
-              reject(err);
-            })
+              .collection("buddys").doc(this.buddy.id)
+              .collection("buddy").doc(doc.id)
+              .delete()
+              .then(() => {
+                  firebase.storage().ref().child("chatImages/" + firebase.auth().currentUser.uid + "/" + this.buddy.id + "/" + doc.id)
+                  .delete().then(() => {
+                    resolve(true);
+                  })
+                  resolve(true);
+              }).catch(err => {
+                reject(err);
+              })
           })
           resolve(true);
         }).catch(err => {

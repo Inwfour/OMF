@@ -71,6 +71,32 @@ export class UserProvider {
 
   }
 
+  //เพิ่มรูปภาพแชท
+  uploadImgChat(_uid:any,buddyid,img:any,_chatuid:any) {
+    return new Promise((resolve, reject) => {
+
+      let ref = firebase.storage().ref("chatImages/" + _uid + "/" + buddyid + "/" +_chatuid);
+      let uploadTask = ref.putString(img.split(',')[1], "base64");
+
+      uploadTask.on("state_changed", (taskSnapshot: any) => {
+        console.log(taskSnapshot)
+        let percentage = taskSnapshot.bytesTransferred / taskSnapshot.totalBytes * 100;
+
+      }, (error) => {
+        console.log(error)
+      }, () => {
+        console.log("The upload is complete!!!");
+
+        uploadTask.snapshot.ref.getDownloadURL().then((url) => {
+          resolve(url)
+        }).catch((err) => {
+          reject(err)
+        })
+      })
+    })
+
+  }
+
 // อัพเดทรูปภาพหน้า User
 updateImgUser(name:any,url:any) {
 

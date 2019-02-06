@@ -1,12 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
-
-/**
- * Generated class for the HistorychatPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
+import { RequestsProvider } from '../../providers/requests/requests';
 
 @IonicPage()
 @Component({
@@ -14,12 +8,24 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'historychat.html',
 })
 export class HistorychatPage {
-
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  myfriendschat:any = [];
+  myfriends:any = [];
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+              public requestservice: RequestsProvider,
+              public events: Events
+    ) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad HistorychatPage');
+  ngOnInit() {
+    this.requestservice.getmyfriendchat();
+    this.events.subscribe('friendschat', () => {
+      this.myfriends = this.requestservice.myfriends;
+      console.log(this.myfriends);
+    })
+  }
+
+  ngOnDestroy() {
+    this.events.unsubscribe('friendschat');
   }
 
 }

@@ -347,10 +347,5 @@ export class UserPage {
     alert.present();
   }
 
-  // addDetail() {
-  //    firebase.firestore().collection("informationUser").doc(this.getInfoUser.id).set({
-  //      detail: 
-  //    })
-  // }
 
 }

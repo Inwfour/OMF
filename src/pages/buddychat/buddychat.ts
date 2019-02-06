@@ -1,7 +1,8 @@
 import { Component ,NgZone,ViewChild, ElementRef} from '@angular/core';
-import { IonicPage, NavController, NavParams , Events, Content , AlertController} from 'ionic-angular';
+import { IonicPage, NavController, NavParams , Events, Content , AlertController, ActionSheetController} from 'ionic-angular';
 import { ChatProvider } from '../../providers/chat/chat';
 import firebase from 'firebase';
+import { ImageProvider } from '../../providers/image/image';
 @IonicPage()
 @Component({
   selector: 'page-buddychat',
@@ -16,12 +17,15 @@ export class BuddychatPage {
   photoURL:any;
   editorMsg = '';
   showEmojiPicker = false;
+  image:string = "";
   firebuddychats = firebase.firestore().collection('buddychats');
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public chatservice:ChatProvider,
     public events:Events,
     public zone:NgZone,
-    public alertCtrl:AlertController
+    public alertCtrl:AlertController,
+    public actionSheetCtrl:ActionSheetController,
+    public _IMG : ImageProvider
     ) {
     
       this.photoURL = firebase.auth().currentUser.photoURL;
@@ -36,13 +40,18 @@ export class BuddychatPage {
       this.getmessage();
   }
 
-  addmessage() {
-    if(this.newmessage == "" && this.newmessage == null){
+  ngOnDestroy() {
+    this.events.unsubscribe('newmessage');
+  }
 
+  addmessage() {
+    if(this.newmessage == "" || this.newmessage == null || this.image == ""){
+      console.log("null");
     }else{
-    this.chatservice.addnewmessage(this.newmessage).then(() => {
+    this.chatservice.addnewmessage(this.newmessage,this.image).then(() => {
       this.content.scrollToBottom();
       this.newmessage = '';
+      this.image = undefined;
 
       if (!this.showEmojiPicker) {
         this.focus();
@@ -107,6 +116,37 @@ export class BuddychatPage {
     this.scrollToBottom();
   }
 
+  sendPicMsg() {
+    let alert = this.actionSheetCtrl.create({
+      title: "คุณต้องการรูปในลักษณะใด ?",
+      buttons: [
+        {
+          text: "กล้องถ่ายรูป",
+          handler: () => {
+            this._IMG.camera().then(data => {
+              this.image = data;
+            })
+          }
+        },
+        {
+          text: "เลือกจากอัลบั้มรูปภาพ",
+          handler: () => {
+            this._IMG.selectImage().then(data => {
+              this.image = data;
+            })
+          }
+        },
+        {
+          text: "กลับ",
+          handler: () => {
+            console.log("ไม่ได้ลบข้อมูล");
+          }
+        }
+      ]
+    });
+    alert.present();
+  }
+
   private focus() {
     if (this.messageInput && this.messageInput.nativeElement) {
       this.messageInput.nativeElement.focus();
@@ -125,6 +165,8 @@ export class BuddychatPage {
       }
     }, 400)
   }
+
+
 
   remove(msg) {
     this.alertCtrl.create({

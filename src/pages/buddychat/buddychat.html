@@ -25,8 +25,8 @@
         <div (click)="remove(item)" class="bubble me" *ngIf="item.data().sentby == buddy.id">
             <p *ngIf="item.data().timestamp" > {{ item.data().timestamp.toDate() | date: "dd/MM/yyyy HH:mm" }} </p>
           <h3>{{item.data().message}}</h3>
+          <img *ngIf="item.data().img" [src]="item.data().img">
         </div>
-
         <ion-avatar item-right *ngIf="item.data().sentby != buddy.id && photoURL">
           <img src="{{photoURL}}">
         </ion-avatar>
@@ -36,6 +36,7 @@
         <div (click)="remove(item)" class="bubbleme you" *ngIf="item.data().sentby != buddy.id">
             <p *ngIf="item.data().timestamp" style="color: white"> {{ item.data().timestamp.toDate() | date: "dd/MM/yyyy HH:mm" }} </p>
           <h3 style="color: white">{{item.data().message}}</h3>
+          <img *ngIf="item.data().img" [src]="item.data().img">
         </div>
       </ion-item>
     </ion-list>
@@ -45,8 +46,14 @@
 <ion-footer no-border [style.height]="showEmojiPicker ? '255px' : '55px'">
   <ion-toolbar color="light">
     <ion-item>
+        <img *ngIf="image" [src]="image" width="40%">
+    </ion-item>
+    <ion-item>
         <button ion-button clear icon-only item-left (click)="switchEmojiPicker()">
             <ion-icon name="md-happy"></ion-icon>
+          </button>
+          <button ion-button clear icon-only item-left (click)="sendPicMsg()">
+            <ion-icon name="image"></ion-icon>
           </button>
       <ion-textarea #chat_input
                     rows="1" 
