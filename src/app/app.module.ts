@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { ErrorHandler, NgModule } from '@angular/core';
+import { ErrorHandler, NgModule, group } from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
@@ -42,9 +42,16 @@ import { BuddychatPage } from '../pages/buddychat/buddychat';
 import { EmojiProvider } from '../providers/emoji/emoji';
 import { EmojiPickerComponent } from '../components/emoji-picker/emoji-picker';
 import { HistorychatPage } from '../pages/historychat/historychat';
+import { GroupsPage } from '../pages/groups/groups';
+import { NewgroupPage } from '../pages/newgroup/newgroup';
+import { GroupsProvider } from '../providers/groups/groups';
+import { GroupchatPage } from '../pages/groupchat/groupchat';
+import { GroupbuddiesPage } from '../pages/groupbuddies/groupbuddies';
+import { GroupmembersPage } from '../pages/groupmembers/groupmembers';
+import { GroupinfoPage } from '../pages/groupinfo/groupinfo';
 
 firebase.initializeApp(FIREBASE_CONFIG);
-firebase.firestore().settings( { timestampsInSnapshots: true })
+firebase.firestore().settings({ timestampsInSnapshots: true })
 
 @NgModule({
   declarations: [
@@ -68,18 +75,25 @@ firebase.firestore().settings( { timestampsInSnapshots: true })
     BuddiesPage,
     BuddychatPage,
     EmojiPickerComponent,
-    HistorychatPage
+    HistorychatPage,
+    GroupsPage,
+    NewgroupPage,
+    GroupchatPage,
+    // detail groupchat
+    GroupbuddiesPage,
+    GroupmembersPage,
+    GroupinfoPage
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     HttpModule,
-    IonicModule.forRoot(MyApp,{
+    IonicModule.forRoot(MyApp, {
       // scrollAssist: true,
       // autoFocusAssist: true 
       tabsHideOnSubPages: true,
     }),
-    
+
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -102,7 +116,14 @@ firebase.firestore().settings( { timestampsInSnapshots: true })
     BuddiesPage,
     BuddychatPage,
     EmojiPickerComponent,
-    HistorychatPage
+    HistorychatPage,
+    GroupsPage,
+    NewgroupPage,
+    GroupchatPage,
+    // detail groupchat
+    GroupbuddiesPage,
+    GroupmembersPage,
+    GroupinfoPage
   ],
   providers: [
     StatusBar,
@@ -110,7 +131,7 @@ firebase.firestore().settings( { timestampsInSnapshots: true })
     SplashScreen,
     GoogleMaps,
     TextToSpeech,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
     Camera,
     CollectionServicesProvider,
     ImageProvider,
@@ -121,7 +142,7 @@ firebase.firestore().settings( { timestampsInSnapshots: true })
     RequestsProvider,
     ChatProvider,
     EmojiProvider,
-    
+    GroupsProvider
   ]
 })
-export class AppModule {}
+export class AppModule { }

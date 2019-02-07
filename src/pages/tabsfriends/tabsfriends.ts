@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { BuddiesPage } from '../buddies/buddies';
+import { UserProvider } from '../../providers/user/user';
 
 /**
  * Generated class for the TabsfriendsPage page.
@@ -16,7 +17,9 @@ import { BuddiesPage } from '../buddies/buddies';
 })
 export class TabsfriendsPage {
   friends:any;
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+    public _USER : UserProvider
+    ) {
   }
 
   ngOnInit(){
@@ -24,6 +27,7 @@ export class TabsfriendsPage {
   }
 
   addbuddy() {
+    this._USER.getalluserevents();
     this.navCtrl.push(BuddiesPage);
   }
 

@@ -159,6 +159,7 @@ export class RequestsProvider {
             this.myfriends.push(allusers[key]);
           }
         }
+        console.log(this.myfriends);
       }
         this.events.publish('friends')
       })

@@ -42,10 +42,15 @@
 
 
       <div [ngSwitch]="friends" >
+        <br>
           <ion-list *ngSwitchCase="'Chats'">
               <page-historychat></page-historychat>
           </ion-list>
         <br>
+        <ion-list *ngSwitchCase="'Groups'">
+            <page-groups></page-groups>
+        </ion-list>
+       <br>
           <ion-list *ngSwitchCase="'Friend'">
               <page-friends></page-friends>
           </ion-list>

@@ -1,0 +1,25 @@
+
+<ion-list no-lines padding>
+  <button ion-button block round color="headertop" (click)="addgroup()">
+    <p>เพิ่มกลุ่ม</p>
+  </button>
+  <br>
+  <ion-list-header>
+    กลุ่มของฉัน
+  </ion-list-header>
+  <ion-item *ngFor="let item of groupowner">
+    <ion-avatar item-left>
+      <img src="{{item.groupimage}}">
+    </ion-avatar>
+    <h3 (click)="openchat(item)">{{item.groupName}}</h3>
+  </ion-item>
+  <ion-list-header>
+    กลุ่มที่ฉันเป็นสมาชิก
+  </ion-list-header>
+  <ion-item *ngFor="let item of groupfriend">
+    <ion-avatar item-left>
+      <img src="{{item.groupimage}}">
+    </ion-avatar>
+    <h3 (click)="openchat(item)">{{item.groupName}}</h3>
+  </ion-item>
+</ion-list>

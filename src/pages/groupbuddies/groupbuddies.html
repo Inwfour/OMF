@@ -1,0 +1,39 @@
+<!--
+  Generated template for the GroupbuddiesPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>groupbuddies</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+    <ion-searchbar [(ngModel)]="searchstring" (input)="searchuser($event)"
+                    placeholder="Search">
+    </ion-searchbar>
+  <ion-list no-lines>
+    <ion-item-sliding *ngFor="let key of myfriends">
+      <ion-item>
+        <ion-avatar item-left *ngIf="key.data().photoURL">
+          <img src="{{key.data().photoURL}}">
+        </ion-avatar>
+        <ion-avatar item-left  *ngIf="!key.data().photoURL">
+            <img src="assets/imgs/user.png">
+          </ion-avatar>
+        <h2>{{key.data().owner_name}}</h2>
+      </ion-item>
+      <ion-item-options slide="left">
+        <button ion-button color="primary" (click)="addbuddy(key)">
+          <ion-icon name="person-add"></ion-icon>
+          เพิ่มสมาชิก
+        </button>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+  </ion-content>

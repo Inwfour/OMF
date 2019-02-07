@@ -69,7 +69,6 @@ export class BuddychatPage {
           this.allmessages = this.chatservice.buddymessages;
         })
       })
-      this.scrollToBottom();
   }
 
   getmessage() {

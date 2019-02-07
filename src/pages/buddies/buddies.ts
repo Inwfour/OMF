@@ -15,21 +15,20 @@ export class BuddiesPage {
   newrequest = {} as connreq;
   filteruser: any = [];
   temprr: any = [];
-  myrequest:any = [];
-  myfriends:any = [];
-  nofriend:any = [];
+  myrequest: any = [];
+  myfriends: any = [];
+  nofriend: any = [];
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public userservice: UserProvider,
     public alertCtrl: AlertController,
     public requestservice: RequestsProvider,
-    public events:Events
+    public events: Events
   ) {
-
     this._uid = firebase.auth().currentUser.uid;
-       this.userservice.getalluser().then((res: any) => {
-        this.filteruser = res;
-        this.temprr = res;
-            })
+    this.userservice.getalluser().then((res: any) => {
+      this.filteruser = res;
+      this.temprr = res;
+    })
   }
 
   searchuser(searchbar) {
@@ -71,35 +70,46 @@ export class BuddiesPage {
     } else if (this.newrequest.sender != this.newrequest.recipient) {
       this.requestservice.checkrequests(this.newrequest).then((docs) => {
         checkrequest = docs;
-        
+
         if (checkrequest == "") {
           this.requestservice.checkconfirmrequests(this.newrequest).then((docs) => {
             checkconfirmrequest = docs;
-            if (checkconfirmrequest == ""){
-          this.requestservice.checkfriend(this.newrequest).then((docs) => {
-            checkfriend = docs
-            if (checkfriend == "") {
-              let successalert = this.alertCtrl.create({
-                title: 'ส่งคำร้องขอ',
-                subTitle: 'คุณได้ส่งคำร้องขอไปที่ ' + recipient.data().owner_name,
-                buttons: [
-                  {
-                    text: "ตกลง"
-                  }
-                ]
-              });
-              this.requestservice.sendrequest(this.newrequest).then((res: any) => {
-                if (res.success) {
-                  successalert.present();
-                  let sentuser = this.filteruser.indexOf(recipient);
-                  this.filteruser.splice(sentuser, 1);
+            if (checkconfirmrequest == "") {
+              this.requestservice.checkfriend(this.newrequest).then((docs) => {
+                checkfriend = docs
+                if (checkfriend == "") {
+                  let successalert = this.alertCtrl.create({
+                    title: 'ส่งคำร้องขอ',
+                    subTitle: 'คุณได้ส่งคำร้องขอไปที่ ' + recipient.data().owner_name,
+                    buttons: [
+                      {
+                        text: "ตกลง"
+                      }
+                    ]
+                  });
+                  this.requestservice.sendrequest(this.newrequest).then((res: any) => {
+                    if (res.success) {
+                      successalert.present();
+                      let sentuser = this.filteruser.indexOf(recipient);
+                      this.filteruser.splice(sentuser, 1);
+                    }
+                  }).catch((err) => {
+                    alert(err);
+                  })
+                } else {
+                  this.alertCtrl.create({
+                    title: 'คุณได้เป็นเพื่อนกับ ' + recipient.data().owner_name + ' แล้ว',
+                    buttons: [
+                      {
+                        text: "ตกลง"
+                      }
+                    ]
+                  }).present();
                 }
-              }).catch((err) => {
-                alert(err);
               })
             } else {
               this.alertCtrl.create({
-                title: 'คุณได้เป็นเพื่อนกับ ' + recipient.data().owner_name + ' แล้ว',
+                title: 'ได้เพิ่มเพื่อนเพื่อรอการยืนยันแล้วจาก ' + recipient.data().owner_name,
                 buttons: [
                   {
                     text: "ตกลง"
@@ -108,18 +118,7 @@ export class BuddiesPage {
               }).present();
             }
           })
-        } else {
-          this.alertCtrl.create({
-            title: 'ได้เพิ่มเพื่อนเพื่อรอการยืนยันแล้วจาก ' + recipient.data().owner_name,
-            buttons: [
-              {
-                text: "ตกลง"
-              }
-            ]
-          }).present();
-        }
-        })
-        
+
         } else {
           this.alertCtrl.create({
             title: 'คุณได้ส่งคำขอเพิ่มเพื่อนกับ ' + recipient.data().owner_name + ' แล้ว',
@@ -130,8 +129,8 @@ export class BuddiesPage {
             ]
           }).present();
         }
-     
-    })
+
+      })
     }
   }
 }
