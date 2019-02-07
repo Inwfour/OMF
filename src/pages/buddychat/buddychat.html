@@ -44,10 +44,10 @@
 </ion-content>
 
 <ion-footer no-border [style.height]="showEmojiPicker ? '255px' : '55px'">
-  <ion-toolbar color="light">
-    <ion-item>
+    <ion-card bottom right *ngIf="matches">
         <img *ngIf="image" [src]="image" width="40%">
-    </ion-item>
+    </ion-card>
+  <ion-toolbar color="light">
     <ion-item>
         <button ion-button clear icon-only item-left (click)="switchEmojiPicker()">
             <ion-icon name="md-happy"></ion-icon>

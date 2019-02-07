@@ -27,16 +27,8 @@ export class BuddychatPage {
     public actionSheetCtrl:ActionSheetController,
     public _IMG : ImageProvider
     ) {
-    
       this.photoURL = firebase.auth().currentUser.photoURL;
       this.buddy = this.chatservice.buddy;
-      this.scrollto();
-      this.events.subscribe('newmessage', () => {
-        this.allmessages = [];
-        this.zone.run(() => {
-          this.allmessages = this.chatservice.buddymessages;
-        })
-      })
       this.getmessage();
   }
 
@@ -45,7 +37,7 @@ export class BuddychatPage {
   }
 
   addmessage() {
-    if(this.newmessage == "" || this.newmessage == null || this.image == ""){
+    if(this.newmessage == "" && this.newmessage == null){
       console.log("null");
     }else{
     this.chatservice.addnewmessage(this.newmessage,this.image).then(() => {
@@ -56,8 +48,8 @@ export class BuddychatPage {
       if (!this.showEmojiPicker) {
         this.focus();
       }
-      
-      this.ionViewDidEnter()
+
+      this.ionViewDidEnter();
     })
   }
   }
@@ -69,8 +61,15 @@ export class BuddychatPage {
   }
 
   ionViewDidEnter() {
-    this.chatservice.getbuddymessages()
-
+    this.scrollto();
+    this.chatservice.getbuddymessages();
+          this.events.subscribe('newmessage', () => {
+        this.allmessages = [];
+        this.zone.run(() => {
+          this.allmessages = this.chatservice.buddymessages;
+        })
+      })
+      this.scrollToBottom();
   }
 
   getmessage() {
@@ -82,16 +81,13 @@ export class BuddychatPage {
       changedDocs.forEach((change) => {
         if (change.type == "added") {
           // TODO
-          this.ionViewDidEnter();
-        }
-        if (change.type == "modified") {
-          // TODO
-          
-        }
-        if (change.type == "removed") {
-          // TODO
-          // this.ionViewDidEnter();
-          console.log("delete");
+          this.firebuddychats.doc(firebase.auth().currentUser.uid)
+          .collection("buddys").doc(this.buddy.id)
+          .collection('buddy').doc(change.doc.id)
+          .get()
+          .then(() => {
+
+          })
         }
       });
     })

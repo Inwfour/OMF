@@ -28,7 +28,7 @@ export class ChatProvider {
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
           }).then((data) => {
             //check add img me
-            if (img !== null && img !== "") {
+            if (img != null && img != "") {
               this._USER.uploadImgChat(firebase.auth().currentUser.uid,this.buddy.id, img, data.id).then((url) => {
                 this.firebuddychats.doc(firebase.auth().currentUser.uid).collection("buddys").doc(this.buddy.id)
                   .collection('buddy').doc(data.id).set({
@@ -36,7 +36,9 @@ export class ChatProvider {
                     message: msg,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                     img: url
-                  });
+                  }).then(() => {
+                    resolve(true);
+                  })
               })
             }
             //add message buddy
@@ -47,7 +49,7 @@ export class ChatProvider {
                 timestamp: firebase.firestore.FieldValue.serverTimestamp()
               }).then((data2) => {
                 //check add img you
-                if (img !== null && img !== "") {
+                if (img != null && img != "") {
                   this._USER.uploadImgChat(this.buddy.id,firebase.auth().currentUser.uid, img, data2.id).then((url1) => {
                     this.firebuddychats.doc(this.buddy.id).collection("buddys").doc(firebase.auth().currentUser.uid)
                       .collection('buddy').doc(data2.id).set({
@@ -55,7 +57,9 @@ export class ChatProvider {
                         message: msg,
                         timestamp: firebase.firestore.FieldValue.serverTimestamp(),
                         img: url1
-                      });
+                      }).then(() => {
+                        resolve(true);
+                      })
                   })
                 }
                 resolve(true);
@@ -75,14 +79,16 @@ export class ChatProvider {
       .get()
       .then((snapshot) => {
         this.buddymessages = [];
-        temp = snapshot.docs;
-        for (var tempkey in temp) {
-          this.buddymessages.push(temp[tempkey]);
-          console.log(this.buddymessages);
-        }
+        this.buddymessages = snapshot.docs;
+        console.log(this.buddymessages);
+        // for (var tempkey in temp) {
+        //   this.buddymessages.push(temp[tempkey]);
+        //   console.log(this.buddymessages);
+        // }
         this.events.publish('newmessage')
       })
   }
+  
 
   remove(msg) {
     return new Promise((resolve, reject) => {
