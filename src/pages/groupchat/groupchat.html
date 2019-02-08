@@ -6,21 +6,53 @@
 -->
 <ion-header>
 
-    <ion-navbar text-center>
-        <ion-title>{{groupName}}</ion-title>
-        <ion-buttons end>
-          <button *ngIf="owner" ion-button icon-only (click)="presentOwnerSheet()">
-            <ion-icon name="menu"></ion-icon>
-          </button>
-          <button *ngIf="!owner" ion-button icon-only (click)="presentMemberSheet()">
-            <ion-icon name="menu"></ion-icon>
-          </button>
-        </ion-buttons>
-      </ion-navbar>
+  <ion-navbar text-center>
+    <ion-title>{{groupName}}</ion-title>
+    <ion-buttons end>
+      <button *ngIf="owner" ion-button icon-only (click)="presentOwnerSheet()">
+        <ion-icon name="menu"></ion-icon>
+      </button>
+      <button *ngIf="!owner" ion-button icon-only (click)="presentMemberSheet()">
+        <ion-icon name="menu"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
 
 </ion-header>
 
-
-<ion-content padding>
-
+<ion-content #content>
+  <div class="chatwindow">
+    <ion-list no-lines>
+      <ion-item *ngFor="let item of allgroupmsgs; let i = index" text-wrap>
+        <ion-avatar item-left *ngIf="item.data().sentby === alignuid">
+          <img src="{{photoURL}}">
+        </ion-avatar>
+        <div class="bubble me" *ngIf="item.data().sentby === alignuid">
+          <h6 style="color: mediumpurple;">{{item.data().displayName}}</h6>
+          <h3 *ngIf="!imgornot[i]">{{item.data().message}}</h3>
+          <img src="{{item.data().message}}" *ngIf="imgornot[i]">
+          <p><small>{{item.data().timestamp}}</small></p>
+        </div>
+        <ion-avatar item-right *ngIf="item.data().sentby != alignuid">
+          <img src="{{item.data().photoURL}}">
+        </ion-avatar>
+        <div class="bubble you" *ngIf="item.data().sentby != alignuid">
+          <h6 style="color: mediumvioletred;">{{item.data().displayName}}</h6>
+          <h3 *ngIf="!imgornot[i]">{{item.data().message}}</h3>
+          <img src="{{item.data().message}}" *ngIf="imgornot[i]">
+          <p><small>{{item.data().timestamp}}</small></p>
+        </div>
+      </ion-item>
+    </ion-list>
+  </div>
 </ion-content>
+<ion-footer ion-fixed>
+  <ion-toolbar class="no-border" color="white">
+    <ion-input [(ngModel)]="newmessage" placeholder="ระบุข้อความของคุณ ..."></ion-input>
+    <ion-buttons end>
+      <button ion-button (click)="addgroupmsg()">
+        <ion-icon name="send" color="primary"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

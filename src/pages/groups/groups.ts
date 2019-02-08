@@ -39,7 +39,7 @@ export class GroupsPage {
         }
         if (change.type == "removed") {
           // TODO
-          console.log("remove");
+          console.log(change.doc.id);
           this.ionViewDidEnter();
         }
       })

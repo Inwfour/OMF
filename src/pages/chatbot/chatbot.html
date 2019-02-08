@@ -58,7 +58,7 @@
       </ion-card>
     <ion-toolbar color="light">
       <ion-item>
-      <ion-textarea rows="1" placeholder="กรอกข้อความขอบคุณ" [(ngModel)]="text"></ion-textarea>
+      <ion-textarea autocomplete="on" spellcheck="true" rows="1" placeholder="กรอกข้อความขอบคุณ" [(ngModel)]="text"></ion-textarea>
       <button ion-button icon-only item-right clear (click)="sendText()">
         <ion-icon name="send"></ion-icon>
       </button>

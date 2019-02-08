@@ -1,16 +1,10 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ActionSheetController } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { IonicPage, NavController, NavParams, ActionSheetController, Events, Content } from 'ionic-angular';
 import { GroupsProvider } from '../../providers/groups/groups';
 import { GroupbuddiesPage } from '../groupbuddies/groupbuddies';
 import { GroupmembersPage } from '../groupmembers/groupmembers';
 import { GroupinfoPage } from '../groupinfo/groupinfo';
-
-/**
- * Generated class for the GroupchatPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import firebase from 'firebase';
 
 @IonicPage()
 @Component({
@@ -18,12 +12,20 @@ import { GroupinfoPage } from '../groupinfo/groupinfo';
   templateUrl: 'groupchat.html',
 })
 export class GroupchatPage {
+  @ViewChild('content') content : Content;
   owner: boolean = false;
   groupName;
+  newmessage;
+  allgroupmsgs;
+  alignuid;
+  photoURL;
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public groupservice:GroupsProvider,
-    public actionSheetCtrl:ActionSheetController
+    public actionSheetCtrl:ActionSheetController,
+    public events : Events
     ) {
+      this.alignuid = firebase.auth().currentUser.uid;
+      this.photoURL = firebase.auth().currentUser.photoURL;
       this.groupName = this.navParams.get('groupName');
       this.groupservice.getownership(this.groupName).then((res) => {
           if(res){
@@ -31,6 +33,12 @@ export class GroupchatPage {
           }
       }).catch(err => {
         alert(err);
+      })
+      this.groupservice.getgroupmsgs(this.groupName);
+      this.events.subscribe('newgroupmsg', () => {
+        this.allgroupmsgs = [];
+        this.allgroupmsgs = this.groupservice.groupmsgs;
+        this.scrollto();
       })
   }
 
@@ -118,6 +126,18 @@ export class GroupchatPage {
     sheet.present();
   }
 
+  addgroupmsg() {
+    this.groupservice.addgroupmsg(this.newmessage).then(() => {
+      this.scrollto();
+      this.newmessage = '';
+    })
+  }
 
+
+  scrollto() {
+    setTimeout(() => {
+      this.content.scrollToBottom();
+    }, 1000);
+  }
 
 }
