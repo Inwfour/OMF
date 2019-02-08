@@ -41,7 +41,6 @@ export class BuddychatPage {
       console.log("null");
     }else{
     this.chatservice.addnewmessage(this.newmessage,this.image).then(() => {
-      this.content.scrollToBottom();
       this.newmessage = '';
       this.image = undefined;
 
@@ -54,11 +53,11 @@ export class BuddychatPage {
   }
   }
 
-  onFocus() {
-    this.showEmojiPicker = false;
-    this.content.resize();
-    this.scrollToBottom();
-  }
+  // onFocus() {
+  //   this.showEmojiPicker = false;
+  //   this.content.resize();
+  //   this.scrollToBottom();
+  // }
 
   ionViewDidEnter() {
     this.scrollto();
@@ -67,6 +66,7 @@ export class BuddychatPage {
         this.allmessages = [];
         this.zone.run(() => {
           this.allmessages = this.chatservice.buddymessages;
+          console.log(this.allmessages);
         })
       })
   }
@@ -80,13 +80,7 @@ export class BuddychatPage {
       changedDocs.forEach((change) => {
         if (change.type == "added") {
           // TODO
-          this.firebuddychats.doc(firebase.auth().currentUser.uid)
-          .collection("buddys").doc(this.buddy.id)
-          .collection('buddy').doc(change.doc.id)
-          .get()
-          .then(() => {
-
-          })
+          this.ionViewDidEnter();
         }
       });
     })

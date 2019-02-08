@@ -119,6 +119,7 @@ export class GroupsProvider {
   getownership(groupname) {
     return new Promise((resolve, reject) => {
       this.firegroup.doc(firebase.auth().currentUser.uid).collection("newgroups").doc(groupname)
+      
         .get()
         .then((snapshot) => {
           var temp = snapshot.data().owner;
@@ -261,91 +262,112 @@ export class GroupsProvider {
           for (var key in tempmembers) {
             console.log(tempmembers[key].data().owner);
             this.firegroup.doc(tempmembers[key].data().owner).collection("newgroups").doc(this.currentgroupname)
+            .collection("msgboard").get().then((snapshot) => {
+              var tempmsg = snapshot.docs
+              for (var i in tempmsg) {
+                this.firegroup.doc(tempmembers[key].data().owner).collection("newgroups").doc(this.currentgroupname)
+                .collection("msgboard").doc(tempmsg[i].id).delete();
+              }
+              this.firegroup.doc(tempmembers[key].data().owner).collection("newgroups").doc(this.currentgroupname)
               .delete();
-            this.firegroup.doc(firebase.auth().currentUser.uid).collection("newgroups").doc(this.currentgroupname)
-            .collection("members").doc(tempmembers[key].id).delete();
-          }
-          this.firegroup.doc(firebase.auth().currentUser.uid).collection("newgroups").doc(this.currentgroupname)
-            .delete().then(() => {
-              resolve(true);  
-            }).catch(err => {
-              reject(err);
             })
+
+            this.firegroup.doc(firebase.auth().currentUser.uid).collection("newgroups").doc(this.currentgroupname)
+              .collection("members").doc(tempmembers[key].id).delete();
+          }
+          
+          // delete msgowner before delete doc
+          this.firegroup.doc(firebase.auth().currentUser.uid).collection("newgroups").doc(this.currentgroupname)
+              .collection("msgboard").get().then((snapshot) => {
+                let msgowner = snapshot.docs;
+                for(var i in msgowner) {
+                  this.firegroup.doc(firebase.auth().currentUser.uid).collection("newgroups").doc(this.currentgroupname)
+              .collection("msgboard").doc(msgowner[i].id).delete();
+                }
+                this.firegroup.doc(firebase.auth().currentUser.uid).collection("newgroups").doc(this.currentgroupname)
+                .delete().then(() => {
+                  resolve(true);
+                }).catch(err => {
+                  reject(err);
+                })
+              })
         })
     })
   }
 
   addgroupmsg(newmessage) {
-    return new Promise((resolve,reject) => {
-    this.firegroup.doc(firebase.auth().currentUser.uid).collection("newgroups").doc(this.currentgroupname)
-    .get().then((res) => {
-      var temowner = res.data().owner
+    return new Promise((resolve, reject) => {
       this.firegroup.doc(firebase.auth().currentUser.uid).collection("newgroups").doc(this.currentgroupname)
-      .collection("msgboard").add({
-        sentby: firebase.auth().currentUser.uid,
-        displayName: firebase.auth().currentUser.displayName,
-        photoURL: firebase.auth().currentUser.photoURL,
-        message: newmessage,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-      }).then(() => {
-        if(temowner != firebase.auth().currentUser.uid) {
-          this.firegroup.doc(temowner).collection("newgroups").doc(this.currentgroupname)
-          .collection("msgboard").add({
-            sentby: firebase.auth().currentUser.uid,
-            displayName: firebase.auth().currentUser.displayName,
-            photoURL: firebase.auth().currentUser.photoURL,
-            message: newmessage,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-          })
-        }
-        var tempmembers = [];
-        this.firegroup.doc(temowner).collection("newgroups").doc(this.currentgroupname).collection("members")
-        .get().then((snapshot) => {
-          var temmembersobj = snapshot.docs
-          for(var key in temmembersobj) {
-            tempmembers.push(temmembersobj[key])
-          }
-        }).then(() => {
-          let postedmsgs = tempmembers.map((item) => {
-            if(item.id != firebase.auth().currentUser.uid){
-            return new Promise((resolve) => {
-              this.postmsgs(item, newmessage, resolve);
+        .get().then((res) => {
+          var temowner = res.data().owner
+          this.firegroup.doc(firebase.auth().currentUser.uid).collection("newgroups").doc(this.currentgroupname)
+            .collection("msgboard").add({
+              sentby: firebase.auth().currentUser.uid,
+              displayName: firebase.auth().currentUser.displayName,
+              photoURL: firebase.auth().currentUser.photoURL,
+              message: newmessage,
+              timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+              if (temowner != firebase.auth().currentUser.uid) {
+                this.firegroup.doc(temowner).collection("newgroups").doc(this.currentgroupname)
+                  .collection("msgboard").add({
+                    sentby: firebase.auth().currentUser.uid,
+                    displayName: firebase.auth().currentUser.displayName,
+                    photoURL: firebase.auth().currentUser.photoURL,
+                    message: newmessage,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                  })
+              }
+              var tempmembers = [];
+              this.firegroup.doc(temowner).collection("newgroups").doc(this.currentgroupname).collection("members")
+                .get().then((snapshot) => {
+                  var temmembersobj = snapshot.docs
+                  for (var key in temmembersobj) {
+                    tempmembers.push(temmembersobj[key].data().owner)
+                  }
+                }).then(() => {
+                  let postedmsgs = tempmembers.map((item) => {
+                    console.log("item ", item);
+                    if (item != firebase.auth().currentUser.uid) {
+                      return new Promise((resolve) => {
+                        this.postmsgs(item, newmessage, resolve);
+                      })
+                    }
+                  })
+                  Promise.all(postedmsgs).then(() => {
+                    resolve(true);
+                  })
+                })
             })
-          }
-          })
-          Promise.all(postedmsgs).then(() => {
-            this.getgroupmsgs(this.currentgroupname);
-            resolve(true);
-          })
         })
-      })
     })
-  })
   }
 
   postmsgs(member, msg, cb) {
-     this.firegroup.doc(member.id).collection("newgroups").doc(this.currentgroupname).collection("msgboard")
-     .add({
-      sentby: firebase.auth().currentUser.uid,
-      displayName: firebase.auth().currentUser.displayName,
-      photoURL: firebase.auth().currentUser.photoURL,
-      message: msg,
-      timestamp: firebase.firestore.FieldValue.serverTimestamp()
-     }).then(() => {
-       cb();
-     })
+    this.firegroup.doc(member).collection("newgroups").doc(this.currentgroupname).collection("msgboard")
+      .add({
+        sentby: firebase.auth().currentUser.uid,
+        displayName: firebase.auth().currentUser.displayName,
+        photoURL: firebase.auth().currentUser.photoURL,
+        message: msg,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      }).then(() => {
+        cb();
+      })
   }
 
   getgroupmsgs(groupname) {
     this.firegroup.doc(firebase.auth().currentUser.uid).collection("newgroups").doc(groupname)
-    .collection("msgboard").get().then((snapshot) => {
-      this.groupmsgs = [];
-      var tempmsgholder = snapshot.docs;
-      for(var key in tempmsgholder) {
-        this.groupmsgs.push(tempmsgholder[key]);
-      }
-      this.events.publish("newgroupmsg");
-    })
+      .collection("msgboard").orderBy("timestamp").get().then((snapshot) => {
+        this.groupmsgs = [];
+        this.groupmsgs= snapshot.docs;
+        // for (var key in tempmsgholder) {
+        //   this.groupmsgs.push(tempmsgholder[key]);
+        // }
+        this.events.publish("newgroupmsg");
+      })
   }
+
+
 
 }

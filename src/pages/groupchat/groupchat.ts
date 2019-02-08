@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild , NgZone} from '@angular/core';
 import { IonicPage, NavController, NavParams, ActionSheetController, Events, Content } from 'ionic-angular';
 import { GroupsProvider } from '../../providers/groups/groups';
 import { GroupbuddiesPage } from '../groupbuddies/groupbuddies';
@@ -14,6 +14,7 @@ import firebase from 'firebase';
 export class GroupchatPage {
   @ViewChild('content') content : Content;
   owner: boolean = false;
+  firegroup = firebase.firestore().collection("groups");
   groupName;
   newmessage;
   allgroupmsgs;
@@ -22,24 +23,52 @@ export class GroupchatPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public groupservice:GroupsProvider,
     public actionSheetCtrl:ActionSheetController,
-    public events : Events
+    public events : Events,
+    public ngzone : NgZone
     ) {
       this.alignuid = firebase.auth().currentUser.uid;
       this.photoURL = firebase.auth().currentUser.photoURL;
       this.groupName = this.navParams.get('groupName');
       this.groupservice.getownership(this.groupName).then((res) => {
-          if(res){
-            this.owner = true;
-          }
-      }).catch(err => {
-        alert(err);
+        if(res){
+          this.owner = true;
+        }
+    }).catch(err => {
+      alert(err);
+    })
+      this.getrealtime();
+  }
+
+  ionViewDidEnter() {
+    this.scrollto();
+  this.groupservice.getgroupmsgs(this.groupName);
+  this.events.subscribe('newgroupmsg', () => {
+    this.allgroupmsgs = [];
+    this.ngzone.run(() => {
+    this.allgroupmsgs = this.groupservice.groupmsgs;
+    })
+  })
+  }
+
+  getrealtime() {
+    console.log(this.groupName);
+    this.firegroup.doc(firebase.auth().currentUser.uid).collection("newgroups").doc(this.groupName)
+    .collection("msgboard").get().then((snapshot) => {
+      let changedDocs = snapshot.docChanges();
+
+      changedDocs.forEach((change) => {
+        if (change.type == "added") {
+          // TODO
+          console.log("addchatgroup");
+          this.ionViewDidEnter()
+        }
       })
-      this.groupservice.getgroupmsgs(this.groupName);
-      this.events.subscribe('newgroupmsg', () => {
-        this.allgroupmsgs = [];
-        this.allgroupmsgs = this.groupservice.groupmsgs;
-        this.scrollto();
-      })
+    })
+  }
+
+  ngOnDestroy() {
+    console.log("Unsub");
+    this.events.unsubscribe('newgroupmsg');
   }
 
   presentOwnerSheet() {
@@ -128,6 +157,7 @@ export class GroupchatPage {
 
   addgroupmsg() {
     this.groupservice.addgroupmsg(this.newmessage).then(() => {
+      this.ionViewDidEnter();
       this.scrollto();
       this.newmessage = '';
     })
@@ -136,7 +166,7 @@ export class GroupchatPage {
 
   scrollto() {
     setTimeout(() => {
-      this.content.scrollToBottom();
+      this.content.scrollToBottom(200);
     }, 1000);
   }
 

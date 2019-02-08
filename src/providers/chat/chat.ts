@@ -80,7 +80,6 @@ export class ChatProvider {
       .then((snapshot) => {
         this.buddymessages = [];
         this.buddymessages = snapshot.docs;
-        console.log(this.buddymessages);
         // for (var tempkey in temp) {
         //   this.buddymessages.push(temp[tempkey]);
         //   console.log(this.buddymessages);

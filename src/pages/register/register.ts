@@ -70,9 +70,9 @@ export class RegisterPage {
     }); loader.present();
 
     firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
-      .then(async () => {
+      .then(() => {
         if (this.image != "assets/imgs/user.png") {
-          await this._USER.uploadImgUser(firebase.auth().currentUser.uid, this.image)
+          this._USER.uploadImgUser(firebase.auth().currentUser.uid, this.image)
             .then((data) => {
               this.url = data;
             });
