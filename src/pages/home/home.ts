@@ -3,7 +3,7 @@ import { IonicPage, NavController, NavParams, Events,AlertController, Alert } fr
 import { User } from '../../models/user';
 import { ChatbotPage } from '../chatbot/chatbot';
 import { FeedPage } from '../feed/feed';
-import firebase, { messaging } from 'firebase';
+import firebase from 'firebase';
 import { GooglemapPage } from '../googlemap/googlemap';
 
 
@@ -21,11 +21,16 @@ import { GooglemapPage } from '../googlemap/googlemap';
 })
 export class HomePage {
   user :User = new User;
+  photoURL:any;
+  displayName:any;
+
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public events: Events,
     private alertCtrl:AlertController
     ) {
+      this.photoURL = firebase.auth().currentUser.photoURL;
+      this.displayName = firebase.auth().currentUser.displayName;
   }
 
   feed(){

@@ -40,10 +40,19 @@ $colors: (
   light:      #f4f4f4,
   semi-light:   #fff,
   dark:       #222,
-  headertop:  #33B545,
+  headertop:  #127C5B,
+  yellow: #FFFF00,
+
+  john: #E5F4F6,
+  kradan: #bcffbc,
+  family: #f7cfe2,
+  map: #d7efbf,
+  helpme: #ed8282,
+  help: #ffff96
 );
 
-$toolbar-background: #33B545;
+
+$toolbar-background: #127C5B;
 
 .bar-button-default-ios, .bar-button-default.bar-button-ios-default, .bar-button-clear-ios-default {
   background-color: transparent !important;
@@ -54,18 +63,6 @@ $fab-size: 60px;
 $loading-md-background: transparent;
 $loading-md-box-shadow: none;
 
-
-// @font-face {
-//   font-family: 'TH_Fahkwang';
-//   src:url('../assets/fonts/TH\ Fahkwang.ttf') format('truetype');
-//   font-weight: normal;
-//   font-style: normal;
-//   font-size: 20px;
-//  }
-//  $font-family-base: "TH_Fahkwang";
-//  $font-family-ios-base: $font-family-base;
-//  $font-family-md-base: $font-family-base;
-//  $font-family-wp-base: $font-family-base;
 
 // App iOS Variables
 // --------------------------------------------------
@@ -111,3 +108,7 @@ $loading-md-box-shadow: none;
 
 @import "roboto";
 @import "noto-sans";
+@import url('https://fonts.googleapis.com/css?family=Fahkwang');
+*{
+  font-family: 'Fahkwang', sans-serif;
+}

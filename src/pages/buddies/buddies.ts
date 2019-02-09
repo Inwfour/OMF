@@ -97,6 +97,7 @@ export class BuddiesPage {
                     alert(err);
                   })
                 } else {
+                  
                   this.alertCtrl.create({
                     title: 'คุณได้เป็นเพื่อนกับ ' + recipient.data().owner_name + ' แล้ว',
                     buttons: [

@@ -18,15 +18,18 @@
   <br>
   <ion-list no-lines>
     <ion-list>
-      <ion-item-sliding *ngFor="let user of filteruser" >
+      <ion-item-sliding *ngFor="let user of filteruser">
         <ion-item (click)="test(user)">
-            <ion-avatar item-left *ngIf="user.data().photoURL">
-                <img src="{{user.data().photoURL}}">
-              </ion-avatar>
+          <ion-avatar item-left *ngIf="user.data().photoURL">
+            <img src="{{user.data().photoURL}}">
+          </ion-avatar>
           <ion-avatar item-left *ngIf="!user.data().photoURL">
             <img src="assets/imgs/user.png">
           </ion-avatar>
+          <div>
           <h2>{{user.data().owner_name}}</h2>
+          <h4 style="color: gray">เลื่อนไปทางซ้าย</h4>
+        </div>
         </ion-item>
         <ion-item-options slide="left">
           <button ion-button color="headertop" (click)="sendreq(user)">

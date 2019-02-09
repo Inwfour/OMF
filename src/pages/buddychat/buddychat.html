@@ -24,7 +24,7 @@
           </ion-avatar>
         <div (click)="remove(item)" class="bubble me" *ngIf="item.data().sentby == buddy.id">
             <p *ngIf="item.data().timestamp" > {{ item.data().timestamp.toDate() | date: "dd/MM/yyyy HH:mm" }} </p>
-          <h3>{{item.data().message}}</h3>
+          <h2>{{item.data().message}}</h2>
           <img *ngIf="item.data().img" [src]="item.data().img">
         </div>
         <ion-avatar item-right *ngIf="item.data().sentby != buddy.id && photoURL">
@@ -35,7 +35,7 @@
           </ion-avatar>
         <div (click)="remove(item)" class="bubbleme you" *ngIf="item.data().sentby != buddy.id">
             <p *ngIf="item.data().timestamp" style="color: white"> {{ item.data().timestamp.toDate() | date: "dd/MM/yyyy HH:mm" }} </p>
-          <h3 style="color: white">{{item.data().message}}</h3>
+          <h2 style="color: white">{{item.data().message}}</h2>
           <img *ngIf="item.data().img" [src]="item.data().img">
         </div>
       </ion-item>

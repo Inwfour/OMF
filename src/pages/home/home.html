@@ -1,93 +1,67 @@
 <ion-header>
-  <ion-navbar text-center color="headertop">
-    <ion-title>
-      Home
+  <ion-navbar color="headertop">
+    <ion-title text-center>
+      หน้าหลัก
     </ion-title>
-    <ion-buttons  end (click)="logout()">
+    <ion-buttons end (click)="logout()">
       <button ion-button icon-only>
-          <ion-icon style="position: relative" name="log-out"></ion-icon>
+        <ion-icon style="position: relative" name="log-out"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding class="content">
- 
-  <ion-card class="card" style="background-color: #333399;" (click)="feed()">
+<ion-content no-padding style=" background-color: #ECEBED">
+  <section text-center class="section">
+    <br>
+    <img *ngIf="photoURL" class="avatar" src="{{photoURL}}">
+    <img *ngIf="!photoURL" class="avatar" src="assets/imgs/user.png">
+    <br>
+    <h1 style="font-size:1.4em;color: white" no-margin>ยินดีต้อนรับคุณ {{displayName}}</h1>
+    <br>
+  </section>
+  <ion-grid no-padding>
     <ion-row>
-      <ion-col>
-        <img class="card-img" src="assets/imgs/board.png">
+      <ion-col col-6>
+        <ion-card text-center padding color="john" class="card" (click)="chatbot()">
+            <img src="assets/imgs/gf.png">
+            <h2>คุยกับปู่จอห์น</h2>
+        </ion-card>
       </ion-col>
-      <ion-col text-center class="card-col-text">
-        <ion-label class="card-text">กระดานข่าว</ion-label>
+      <ion-col col-6>
+        <ion-card text-center padding color="kradan" class="card" (click)="feed()">
+            <img src="assets/imgs/board.png">
+          <h2>กระดานข่าว</h2>
+        </ion-card>
       </ion-col>
     </ion-row>
-  </ion-card>
-
-  <ion-card class="card" style="background-color: #FF3399;">
     <ion-row>
-      <ion-col>
-        <img class="card-img" src="assets/imgs/family.png">
+      <ion-col col-6>
+        <ion-card text-center padding color="family" class="card">
+            <img src="assets/imgs/family.png">
+          <h2>ครอบครัว</h2>
+        </ion-card>
       </ion-col>
-      <ion-col text-center class="card-col-text">
-        <ion-label class="card-text">ครอบครัว</ion-label>
+      <ion-col col-6>
+        <ion-card text-center padding color="map" class="card" (click)="googleMap()">
+            <img src="assets/imgs/map.png">
+          <h2>ตำแหน่งครอบครัว</h2>
+        </ion-card>
       </ion-col>
     </ion-row>
-  </ion-card>
-
-  <ion-card class="card" style="background-color: #228b22;" (click)="chatbot()">
     <ion-row>
-      <ion-col>
-        <img class="card-img" src="assets/imgs/gf.png">
+      <ion-col col-6>
+        <ion-card text-center padding color="helpme" class="card">
+            <img src="assets/imgs/danger.png">
+          <h2>ฉุกเฉิน</h2>
+        </ion-card>
       </ion-col>
-      <ion-col text-center class="card-col-text">
-        <ion-label class="card-text">ปู่จอห์น</ion-label>
+      <ion-col col-6>
+        <ion-card text-center padding color="help" class="card">
+            <img class="card-img" src="assets/imgs/howto.png">
+          <h2>วิธีใช้งาน</h2>
+        </ion-card>
       </ion-col>
     </ion-row>
-  </ion-card>
-
-  <ion-card class="card" style="background-color: #87cefa;" (click)="googleMap()">
-    <ion-row>
-      <ion-col>
-        <img class="card-img" src="assets/imgs/map.png">
-      </ion-col>
-      <ion-col text-center class="card-col-text">
-        <ion-label class="card-text">ตำแหน่ง</ion-label>
-      </ion-col>
-    </ion-row>
-  </ion-card>
-
-  <ion-card class="card" style="background-color: #ffc500;">
-    <ion-row>
-      <ion-col>
-        <img class="card-img" src="assets/imgs/danger.png">
-      </ion-col>
-      <ion-col text-center class="card-col-text">
-        <ion-label class="card-text">ฉุกเฉิน</ion-label>
-      </ion-col>
-    </ion-row>
-  </ion-card>
-
-  <ion-card class="card" style="background-color: greenyellow;">
-    <ion-row>
-      <ion-col>
-        <img class="card-img" src="assets/imgs/howto.png">
-      </ion-col>
-      <ion-col text-center class="card-col-text">
-        <ion-label class="card-text">วิธีใช้งาน</ion-label>
-      </ion-col>
-    </ion-row>
-  </ion-card>
-
-  <!-- <ion-card class="card" style="background-color: #FF6262;" (click)="logout()">
-    <ion-row>
-      <ion-col>
-        <img class="card-img" src="assets/imgs/singout.png">
-      </ion-col>
-      <ion-col text-center class="card-col-text">
-        <ion-label class="card-text">ออกจากระบบ</ion-label>
-      </ion-col>
-    </ion-row>
-  </ion-card> -->
-
+  </ion-grid>
 </ion-content>

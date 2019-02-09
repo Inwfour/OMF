@@ -18,7 +18,7 @@
       </ion-fab>
   </ion-header>
   
-  <ion-content padding>
+  <ion-content padding style="background-color: #ECEBED">
 
     <ion-fab bottom right>
       <button ion-fab color="danger" (click)="startListening()">
@@ -39,10 +39,10 @@
               <img src = "assets/imgs/user.png" class="avatar">
             </ion-avatar>
           <div *ngIf="message.sender == 'api'" class="bubble me">
-            <h3>{{message.text}}</h3>
+            <h2>{{message.text}}</h2>
           </div>
           <div *ngIf="message.sender == 'me'" class="bubbleme you">
-              <h3>{{message.text}}</h3>
+              <h2>{{message.text}}</h2>
             </div>
       </ion-item>
     </ion-list>

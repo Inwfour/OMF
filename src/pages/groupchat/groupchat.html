@@ -25,7 +25,7 @@
         </ion-avatar>
         <div class="bubble you" *ngIf="item.data().sentby === alignuid">
           <h6 style="color: mediumpurple;">{{item.data().displayName}}</h6>
-          <h3 >{{item.data().message}}</h3>
+          <h2 >{{item.data().message}}</h2>
           <p *ngIf="item.data().timestamp" > {{ item.data().timestamp.toDate() | date: "dd/MM/yyyy HH:mm" }} </p>
         </div>
         <ion-avatar item-left *ngIf="item.data().sentby != alignuid && item.data().photoURL">
@@ -36,14 +36,14 @@
         </ion-avatar>
         <div class="bubble me" *ngIf="item.data().sentby != alignuid">
           <h6 style="color: mediumvioletred;">{{item.data().displayName}}</h6>
-          <h3 >{{item.data().message}}</h3>
+          <h2 >{{item.data().message}}</h2>
           <p *ngIf="item.data().timestamp" > {{ item.data().timestamp.toDate() | date: "dd/MM/yyyy HH:mm" }} </p>
         </div>
       </ion-item>
     </ion-list>
   </div>
 </ion-content>
-<ion-footer ion-fixed>
+<ion-footer>
     <ion-toolbar color="light">
         <ion-item>
         <ion-textarea autocomplete="on" spellcheck="true" rows="1" placeholder="กรอกข้อความขอบคุณ" [(ngModel)]="newmessage"></ion-textarea>

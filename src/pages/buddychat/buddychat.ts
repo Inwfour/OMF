@@ -66,7 +66,6 @@ export class BuddychatPage {
         this.allmessages = [];
         this.zone.run(() => {
           this.allmessages = this.chatservice.buddymessages;
-          console.log(this.allmessages);
         })
       })
   }
@@ -78,8 +77,9 @@ export class BuddychatPage {
       let changedDocs = snapshot.docChanges();
 
       changedDocs.forEach((change) => {
-        if (change.type == "added") {
+        if (change.type === "added") {
           // TODO
+          console.log("add " , change.doc.id);
           this.ionViewDidEnter();
         }
       });
@@ -150,7 +150,7 @@ export class BuddychatPage {
   scrollToBottom() {
     setTimeout(() => {
       if (this.content.scrollToBottom) {
-        this.content.scrollToBottom();
+        this.content.scrollToBottom(200);
       }
     }, 400)
   }

@@ -52,21 +52,21 @@ export class GroupchatPage {
 
   getrealtime() {
     console.log(this.groupName);
-    this.firegroup.doc(firebase.auth().currentUser.uid).collection("newgroups").doc(this.groupName)
-    .collection("msgboard").get().then((snapshot) => {
+    this.firegroup.doc(firebase.auth().currentUser.uid).collection("newgroups")
+    .doc(this.groupName).collection("msgboard").onSnapshot((snapshot) => {
       let changedDocs = snapshot.docChanges();
-
       changedDocs.forEach((change) => {
         if (change.type == "added") {
           // TODO
-          console.log("addchatgroup");
+          console.log("addchatgroup " , change.doc.id);
           this.ionViewDidEnter()
+          this.scrollto()
         }
       })
     })
   }
 
-  ngOnDestroy() {
+  ionViewWillLeave() {
     console.log("Unsub");
     this.events.unsubscribe('newgroupmsg');
   }
