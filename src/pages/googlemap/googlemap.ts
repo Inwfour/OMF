@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
-
+import { Geolocation } from '@ionic-native/geolocation';
 import {
   GoogleMaps,
   GoogleMap,
@@ -8,6 +8,7 @@ import {
   GoogleMapOptions,
   Marker,
 } from '@ionic-native/google-maps'
+import firebase from 'firebase';
 
 @IonicPage()
 @Component({
@@ -16,14 +17,16 @@ import {
 })
 export class GooglemapPage {
   map : GoogleMap;
-
+    lat:any = 0;
+    long:any = 0;
+  photoURL:any;
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
     private googleMaps:GoogleMaps,
     public plt:Platform,
-
-    
-    ) {
+    private geolocation: Geolocation
+    ) {      
+      this.photoURL = firebase.auth().currentUser.photoURL;
       // this.geolocation.getCurrentPosition().then((resp) => {
       //  this.locationUser.lat = resp.coords.latitude;
       //   this.locationUser.long = resp.coords.longitude;
@@ -41,16 +44,24 @@ export class GooglemapPage {
       //  });
   }
 
-  // Location() {
-
-  // }
+  ngAfterViewInit(){
+    this.geolocation.getCurrentPosition().then((resp) => {
+          this.lat = resp.coords.latitude;
+           this.long = resp.coords.longitude;
+         console.log("lat " + this.lat);
+         console.log("long " + this.long);
+         this.loadMap();
+    }).catch((error) => {
+      console.log('Error getting location', error);
+    });
+  }
 
   loadMap(){
     let mapOptions: GoogleMapOptions = {
       camera: {
          target: {
-           lat: 43.0741904,
-           lng: -89.3809802
+           lat: this.lat,
+           lng: this.long
          },
          zoom: 18,
          tilt: 30
@@ -61,20 +72,16 @@ export class GooglemapPage {
 
     let marker: Marker = this.map.addMarkerSync({
       title: 'Ionic',
-      icon: 'blue',
+      icon: { url : '../../assets/imgs/user.png'},
       animation: 'DROP',
       position: {
-        lat: 43.0741904,
-        lng: -89.3809802
+        lat: this.lat,
+        lng: this.long
       }
     });
     marker.on(GoogleMapsEvent.MARKER_CLICK).subscribe(() => {
       alert('clicked');
     });
-  }
-
-  ionViewDidLoad() {
-    this.loadMap();
   }
 
 }

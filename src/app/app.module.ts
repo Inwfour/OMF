@@ -51,6 +51,7 @@ import { GroupmembersPage } from '../pages/groupmembers/groupmembers';
 import { GroupinfoPage } from '../pages/groupinfo/groupinfo';
 import { SlideregisterPage } from '../pages/slideregister/slideregister';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Geolocation } from '@ionic-native/geolocation';
 
 firebase.initializeApp(FIREBASE_CONFIG);
 firebase.firestore().settings({ timestampsInSnapshots: true })
@@ -147,7 +148,9 @@ firebase.firestore().settings({ timestampsInSnapshots: true })
     RequestsProvider,
     ChatProvider,
     EmojiProvider,
-    GroupsProvider
+    GroupsProvider,
+    Geolocation
+    
   ]
 })
 export class AppModule { }

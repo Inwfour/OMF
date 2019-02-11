@@ -29,7 +29,6 @@ export class MyApp {
           }else {
             this.rootPage = TabsPage
             unsubscribe();
-
           }
         })
       } else {
@@ -44,6 +43,9 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
       splashScreen.hide();
+      // if(this.rootPage != "" || this.rootPage != null) {
+      //   this.showSplash = false
+      // }
       timer(3000).subscribe(() => this.showSplash = false)
       
     //Key chatbot >>>>>>>>>>>
