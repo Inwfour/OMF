@@ -69,7 +69,7 @@ export class RegisterPage {
 
     }); loader.present();
 
-    firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
+    firebase.auth().createUserWithEmailAndPassword(user.email + "@omf.com", user.password)
       .then(() => {
         if (this.image != "assets/imgs/user.png") {
           this._USER.uploadImgUser(firebase.auth().currentUser.uid, this.image)
@@ -79,24 +79,30 @@ export class RegisterPage {
         }
           var newUser = firebase.auth().currentUser;
          newUser.updateProfile({
-          displayName: user.name,
+          displayName: "",
           photoURL: this.url
         }).then(() => {
           loader.dismiss();
           firebase.firestore().collection("informationUser").doc(firebase.auth().currentUser.uid).set({
             photoURL: this.url,
-            owner_name: user.name,
+            owner_name: "",
             owner: firebase.auth().currentUser.uid,
             email: firebase.auth().currentUser.email,
-            created: firebase.firestore.FieldValue.serverTimestamp()
+            created: firebase.firestore.FieldValue.serverTimestamp(),
+            age: 0,
+            phone: 0,
+            likeplay: [],
+            disease: []
           }).then(() => {
-            // loader.dismiss();
+            loader.dismiss();
             console.log("Success !!!");
             this.navCtrl.setRoot(LoginPage);
           }).catch((err) => {
+            loader.dismiss();
             console.log(err);
             });
         }).catch((err) => {
+          loader.dismiss();
           console.log(err);
         })
 

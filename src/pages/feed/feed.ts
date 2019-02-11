@@ -53,6 +53,7 @@ export class FeedPage {
     , public _POST: PostProvider
     , public _IMG: ImageProvider
     , public _USER: UserProvider
+    , public alertCtrl: AlertController
   ) {
     // this.getComment();
     this.getPosts();
@@ -208,41 +209,101 @@ export class FeedPage {
   }
 
   post() {
-    let loader = this.loadingCtrl.create({
-      spinner: 'hide',
-      content: `<img src="assets/imgs/loading.svg">`
-
-    });
-
-    loader.present();
-
-    this.CollectionService.PostsCollection().add({
-      text: this.text,
-      created: firebase.firestore.FieldValue.serverTimestamp(),
-      owner: firebase.auth().currentUser.uid,
-      owner_name: firebase.auth().currentUser.displayName,
-      likes: {
-        [`${firebase.auth().currentUser.uid}`]: false
-      },
-      likesCount: 0,
-      photoUser: firebase.auth().currentUser.photoURL
-
-    }).then(async (doc) => {
-
-      console.log(doc);
-
-      if (this.image) {
-        await this._POST.uploadImgPost(doc.id, this.image);
-      }
-
-      this.text = "";
-      this.image = undefined;
-      loader.dismiss();
-      this.getPosts();
-    }).catch((err) => {
-      loader.dismiss();
-      console.log(err);
-    })
+      const alert = this.alertCtrl.create({
+        title: 'ประเภทโพสท์',
+        inputs: [
+          {
+            name: 'type1',
+            type: 'checkbox',
+            label: 'กีฬา',
+            value: 'type1',
+            // checked: true
+          },
+  
+          {
+            name: 'type2',
+            type: 'checkbox',
+            label: 'ดนตรี',
+            value: 'type2'
+          },
+  
+          {
+            name: 'type3',
+            type: 'checkbox',
+            label: 'ศาสนา',
+            value: 'type3'
+          },
+  
+          {
+            name: 'type4',
+            type: 'checkbox',
+            label: 'การเมือง',
+            value: 'type4'
+          },
+  
+          {
+            name: 'type5',
+            type: 'checkbox',
+            label: 'ยานพาหนะ',
+            value: 'type5'
+          },
+  
+          {
+            name: 'type6',
+            type: 'checkbox',
+            label: 'ธรรมะ',
+            value: 'type6'
+          }
+        ],
+        buttons: [
+          {
+            text: 'ยกเลิก',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: () => {
+              console.log('Confirm Cancel');
+            }
+          }, {
+            text: 'โพสท์',
+            handler: (data) => {        
+              let loader = this.loadingCtrl.create({
+                spinner: 'hide',
+                content: `<img src="assets/imgs/loading.svg">`
+              });
+              loader.present();
+              this.CollectionService.PostsCollection().add({
+                text: this.text,
+                created: firebase.firestore.FieldValue.serverTimestamp(),
+                owner: firebase.auth().currentUser.uid,
+                owner_name: firebase.auth().currentUser.displayName,
+                likes: {
+                  [`${firebase.auth().currentUser.uid}`]: false
+                },
+                likesCount: 0,
+                photoUser: firebase.auth().currentUser.photoURL,
+                type: data
+          
+              }).then(async (doc) => {
+          
+                console.log(doc);
+          
+                if (this.image) {
+                  await this._POST.uploadImgPost(doc.id, this.image);
+                }
+          
+                this.text = "";
+                this.image = undefined;
+                loader.dismiss();
+                this.getPosts();
+              }).catch((err) => {
+                loader.dismiss();
+                console.log(err);
+              })
+            }
+          }
+        ]
+      });
+   alert.present();
 
   }
 

@@ -4,13 +4,10 @@ import { User } from '../../models/user';
 import { RegisterPage } from '../register/register';
 import firebase from 'firebase';
 import { TabsPage } from '../tabs/tabs';
+import { SlideregisterPage } from '../slideregister/slideregister';
+import { UserProvider } from '../../providers/user/user';
+import { HomePage } from '../home/home';
 
-/**
- * Generated class for the LoginPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
@@ -24,7 +21,8 @@ export class LoginPage {
     public navParams: NavParams,
     public loadingCtrl: LoadingController,
     public alertCtrl:AlertController,
-    public toastCtrl:ToastController
+    public toastCtrl:ToastController,
+    public _USER : UserProvider
   ) {
   }
 
@@ -45,11 +43,18 @@ export class LoginPage {
   
     loader.present();
 
-    firebase.auth().signInWithEmailAndPassword(this.user.email,this.user.password).then((data) => {
-      loader.dismiss();
+    firebase.auth().signInWithEmailAndPassword(this.user.email + "@omf.com",this.user.password).then((data) => {
       console.log(data);
       firebase.firestore().enableNetwork();
-      this.navCtrl.setRoot(TabsPage);
+      firebase.firestore().collection("informationUser").doc(firebase.auth().currentUser.uid).get().then((res) => {
+        let me = res;
+        loader.dismiss();
+        if(me.data().owner_name == "" || me.data().age == 0 || me.data().phone == 0){
+          this.navCtrl.setRoot(SlideregisterPage);
+        }else {
+          this.navCtrl.setRoot(TabsPage);
+        }
+      })
     }).catch((err) => {
       loader.dismiss();
       this.toastCtrl.create({
@@ -58,38 +63,6 @@ export class LoginPage {
       }).present();
     })
   }
-
-  //   this.serviceAuth.singinUser(user)
-  //   .then(res => {
-  //     loader.dismiss();
-  //     this.navCtrl.setRoot(TabsPage);
-
-  //   }, error => {
-  //     loader.dismiss();
-
-  //     alert(error);
-  //   })
-  // }
-
-  // nextHome() {
-  //   try {
-  //     const result = this.afAuth.auth.signInWithEmailAndPassword(this.user.email + "@domain.xta", this.user.password)
-  //       .then(data => {
-  //         this.service.user.uid = this.afAuth.auth.currentUser.uid;
-  //         this.navCtrl.push(HomePage);
-  //         console.log(this.service.user);
-
-  //       });
-  //   } catch (e) {
-  //     alert("รหัสไม่ถูกต้อง");
-  //   }
-  // }
-
-  // getCurrentUser() {
-  //   this.afAuth.authState.subscribe(data => {
-  //     console.log(data);
-  //   })
-  // }
 
   nextRegister() {
     this.navCtrl.push(RegisterPage);

@@ -29,8 +29,33 @@ export class HomePage {
     public events: Events,
     private alertCtrl:AlertController
     ) {
-      this.photoURL = firebase.auth().currentUser.photoURL;
-      this.displayName = firebase.auth().currentUser.displayName;
+      this.get();
+      this.getimg();
+  }
+
+  get() {
+    let fireuser = firebase.firestore().collection("informationUser").doc(firebase.auth().currentUser.uid);
+    fireuser.get().then((data) => {
+      this.photoURL = data.data().photoURL;
+      this.displayName = data.data().owner_name;
+    })
+  }
+
+  getimg() {
+    
+    let firereal = firebase.firestore().collection("informationUser");
+
+    firereal.onSnapshot((snapshot) => {
+      let changedDocs = snapshot.docChanges();
+
+      changedDocs.forEach((change) => {
+        if (change.type == "modified") {
+          // TODO
+          this.get();
+          }
+    });
+  });
+
   }
 
   feed(){

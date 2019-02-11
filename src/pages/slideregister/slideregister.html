@@ -1,0 +1,86 @@
+<ion-content>
+  <ion-slides pager (ionSlideDidChange)="slideChanged()">
+    <ion-slide>
+      <div class="diag" style="background: url('../../assets/imgs/whitebg.svg') no-repeat">
+        <ion-buttons end (click)="logout()">
+            <button ion-button icon-only clear>
+              <ion-icon style="position: relative;color: #C400FF" name="log-out"></ion-icon>
+            </button>
+          </ion-buttons>
+        <ion-icon name="contact" color="slide" [@bounce]='state'></ion-icon>
+      </div>
+      <div [@bounce]='state' padding>
+        <h2>ปู่อยากรู้ชื่อเล่นนะ ลองตั้งชื่อเล่นดูสิ</h2>
+        <ion-item id="rounded">
+          <ion-input text-center [(ngModel)]="name" placeholder="ระบุชื่อเล่น" type="text"></ion-input>
+        </ion-item>
+      </div>
+      <button ion-button round (click)="next()">ถัดไป</button>
+    </ion-slide>
+
+    <ion-slide>
+      <div class="diag" style="background: url('../../assets/imgs/whitebg.svg') no-repeat">
+        <ion-buttons end (click)="logout()">
+            <button ion-button icon-only clear>
+              <ion-icon style="position: relative;color: #C400FF" name="log-out"></ion-icon>
+            </button>
+          </ion-buttons>
+        <ion-icon name="flag" color="slide" [@bounce]='state'></ion-icon>
+      </div>
+      <div [@bounce]='state' padding>
+        <h2>รู้ชื่อแต่ไม่รู้อายุไม่ได้นะ 😲</h2>
+        <ion-item id="rounded">
+            <ion-input text-center [(ngModel)]="age" placeholder="ระบุอายุ" type="number"></ion-input>
+          </ion-item>
+      </div>
+      <button ion-button round (click)="nextage()">ถัดไป</button>
+    </ion-slide>
+
+    <ion-slide>
+      <div class="diag" style="background: url('../../assets/imgs/whitebg.svg') no-repeat">
+        <ion-buttons end (click)="logout()">
+            <button ion-button icon-only clear>
+              <ion-icon style="position: relative;color: #C400FF" name="log-out"></ion-icon>
+            </button>
+          </ion-buttons>
+        <ion-icon name="call" color="slide" [@bounce]='state'></ion-icon>
+      </div>
+      <div [@bounce]='state' padding>
+        <h2>เบอร์โทรไว้สำหรับติดต่อนะ</h2>
+               <ion-item id="rounded">
+          <ion-input text-center [(ngModel)]="phone" placeholder="ระบุเบอร์โทรศัพท์" type="text"></ion-input>
+        </ion-item>
+      </div>
+      <button ion-button round (click)="nextphone()">ถัดไป</button>
+    </ion-slide>
+
+
+    <ion-slide>
+        <div class="diag" style="background: url('../../assets/imgs/whitebg.svg') no-repeat">
+          <ion-buttons end (click)="logout()">
+              <button ion-button icon-only clear>
+                <ion-icon style="position: relative;color: #C400FF" name="log-out"></ion-icon>
+              </button>
+            </ion-buttons>
+          <ion-icon name="pulse" color="slide" [@bounce]='state'></ion-icon>
+        </div>
+        <div [@bounce]='state' padding>
+          <h2>มีโรคประจำตัวอะไรรึเปล่านะ</h2>
+          <ion-item>
+              <ion-label>โรคประจำตัว</ion-label>
+              <ion-select [(ngModel)]="health" multiple="true">
+                <ion-option>โรคความดันโลหิตสูง</ion-option>
+                <ion-option>โรคเบาหวาน</ion-option>
+                <ion-option>โรคหัวใจขาดเลือด</ion-option>
+                <ion-option>โรคข้อเสื่อม</ion-option>
+                <ion-option>โรคซึมเศร้า</ion-option>
+                <ion-option>โรคเกาต์</ion-option>
+              </ion-select>
+            </ion-item>
+        </div>
+        <button ion-button round (click)="nexthealth()">เสร็จสิ้น</button>
+      </ion-slide>
+
+    <!-- <button (click)="skip()" id="skip">{{ skipMsg }}</button> -->
+  </ion-slides>
+</ion-content>

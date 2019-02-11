@@ -71,15 +71,15 @@ export class FriendsPage{
       let changedDocs = snapshot.docChanges();
 
       changedDocs.forEach((change) => {
-        if (change.type == "added") {
+        if (change.type === "added") {
           // TODO
           this.getfriends();
         }
-        if (change.type == "modified") {
+        if (change.type === "modified") {
           // TODO
           this.getfriends();
         }
-        if (change.type == "removed") {
+        if (change.type === "removed") {
           // TODO
           this.getfriends();
         }
