@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams , Slides ,Events, LoadingController
 import { HomePage } from '../home/home';
 import firebase from 'firebase';
 import { TabsPage } from '../tabs/tabs';
+import { LoginPage } from '../login/login';
 @IonicPage()
 @Component({
   selector: 'page-slideregister',
@@ -127,8 +128,7 @@ export class SlideregisterPage {
 
   logout() {
     firebase.auth().signOut().then((data) => {
-      console.log(data);
-      this.events.publish('user:logout');
+      this.navCtrl.setRoot(LoginPage);
       firebase.firestore().disableNetwork();
     })
   }

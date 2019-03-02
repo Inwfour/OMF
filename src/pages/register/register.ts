@@ -63,16 +63,16 @@ export class RegisterPage {
 
   save(user) {
     // this._LOADER.displayPreloader();
-    let loader= this.loadingCtrl.create({
-      spinner: 'hide',
-      content: `<img src="assets/imgs/loading.svg">`
+    // let loader= this.loadingCtrl.create({
+    //   spinner: 'hide',
+    //   content: `<img src="assets/imgs/loading.svg">`
 
-    }); loader.present();
+    // }); loader.present();
 
     firebase.auth().createUserWithEmailAndPassword(user.email + "@omf.com", user.password)
-      .then(() => {
+      .then(async () => {
         if (this.image != "assets/imgs/user.png") {
-          this._USER.uploadImgUser(firebase.auth().currentUser.uid, this.image)
+          await this._USER.uploadImgUser(firebase.auth().currentUser.uid, this.image)
             .then((data) => {
               this.url = data;
             });
@@ -82,7 +82,6 @@ export class RegisterPage {
           displayName: "",
           photoURL: this.url
         }).then(() => {
-          loader.dismiss();
           firebase.firestore().collection("informationUser").doc(firebase.auth().currentUser.uid).set({
             photoURL: this.url,
             owner_name: "",
@@ -94,15 +93,12 @@ export class RegisterPage {
             likeplay: [],
             disease: []
           }).then(() => {
-            loader.dismiss();
             console.log("Success !!!");
             this.navCtrl.setRoot(LoginPage);
           }).catch((err) => {
-            loader.dismiss();
             console.log(err);
             });
         }).catch((err) => {
-          loader.dismiss();
           console.log(err);
         })
 

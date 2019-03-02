@@ -39,7 +39,20 @@
               <img src = "assets/imgs/user.png" class="avatar">
             </ion-avatar>
           <div *ngIf="message.sender == 'api'" class="bubble me">
-            <h2>{{message.text}}</h2>
+            <h2 *ngIf="message.text">{{message.text}}</h2>
+            <!-- <h2 *ngIf="message.button">{{message.button}}</h2> -->
+            <!-- <div *ngIf="message.button"> -->
+              <div *ngFor="let b of message.button">
+                <h2>{{b}}</h2>
+              </div>
+
+            <!-- </div> -->
+
+
+            <!-- <template *ngIf="message.button" *ngFor="let button of buttons">
+            <h2>{{button}}</h2>
+          </template> -->
+            
           </div>
           <div *ngIf="message.sender == 'me'" class="bubbleme you">
               <h2>{{message.text}}</h2>
@@ -49,13 +62,13 @@
   
   </ion-content>
   <ion-footer>
-      <ion-card bottom right *ngIf="matches">
+      <!-- <ion-card bottom right *ngIf="matches">
           <ion-card-content>
             <ion-item *ngFor="let match of matches" (click)="sendVoice(match)">
               {{ match }}
             </ion-item>
           </ion-card-content>
-      </ion-card>
+      </ion-card> -->
     <ion-toolbar color="light">
       <ion-item>
       <ion-textarea autocomplete="on" spellcheck="true" rows="1" placeholder="กรอกข้อความขอบคุณ" [(ngModel)]="text"></ion-textarea>

@@ -55,10 +55,10 @@ export class LoginPage {
           this.navCtrl.setRoot(TabsPage);
         }
       })
-    }).catch((err) => {
+    }).catch(() => {
       loader.dismiss();
       this.toastCtrl.create({
-        message: err.message,
+        message: "กรุณากรอกชื่อผู้ใช้หรือรหัสผ่านให้ถูกต้อง",
         duration: 3000
       }).present();
     })

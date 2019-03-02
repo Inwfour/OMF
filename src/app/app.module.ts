@@ -52,6 +52,7 @@ import { GroupinfoPage } from '../pages/groupinfo/groupinfo';
 import { SlideregisterPage } from '../pages/slideregister/slideregister';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Geolocation } from '@ionic-native/geolocation';
+import { RegisterDetailPage } from '../pages/register-detail/register-detail';
 
 firebase.initializeApp(FIREBASE_CONFIG);
 firebase.firestore().settings({ timestampsInSnapshots: true })
@@ -86,7 +87,8 @@ firebase.firestore().settings({ timestampsInSnapshots: true })
     // detail groupchat
     GroupbuddiesPage,
     GroupmembersPage,
-    GroupinfoPage
+    GroupinfoPage,
+    RegisterDetailPage
   ],
   imports: [
     BrowserModule,
@@ -129,7 +131,8 @@ firebase.firestore().settings({ timestampsInSnapshots: true })
     GroupbuddiesPage,
     GroupmembersPage,
     GroupinfoPage,
-    SlideregisterPage
+    SlideregisterPage,
+    RegisterDetailPage
   ],
   providers: [
     StatusBar,

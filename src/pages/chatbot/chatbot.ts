@@ -16,6 +16,8 @@ declare var window;
 
 export class ChatbotPage {
 
+  buttons:any = [];
+  lists:any = [];
   messages: any[] = [];
   text: string = "";
   textVoice: any;
@@ -58,7 +60,8 @@ export class ChatbotPage {
       language: 'th-TH'
     }
     this.speechRecognition.startListening(options).subscribe((matches) => {
-      this.matches = matches;
+      this.text = matches[0];
+      this.sendText();
       this.getPermissions();
       this.stopListening();
     }),
@@ -80,11 +83,11 @@ export class ChatbotPage {
     });
   }
 
-  sendVoice(match) {
-    this.text = match;
-    this.sendText();
-    this.matches = String[""];
-  }
+  // sendVoice(match) {
+  //   this.text = match;
+  //   this.sendText();
+  //   this.matches = String[""];
+  // }
 
   sendText() {
 
@@ -102,11 +105,29 @@ export class ChatbotPage {
     }, (response) => {
 
       this.ngZone.run(() => {
+        console.log(response);
+        if(response.result.fulfillment.speech != ""){
         this.messages.push({
           text: response.result.fulfillment.speech,
           sender: "api"
         });
+        }else {
+        firebase.firestore().collection("disease").doc(response.result.parameters.disease)
+        .collection("รายละเอียด").doc(response.result.parameters.desease_detail).get().then((res) => {
+          this.messages.push({
+            text: res.data().text,
+            button: res.data().button,
+            list: res.data().list,
+            sender: "api"
+          });
+          // this.buttons = res.data().button;
+          // this.lists = res.data().list;
+          console.log(this.messages);
+        })
+        }
+        
         this.content.scrollToBottom(200);
+        
       })
       // voice
       this.tts.speak({

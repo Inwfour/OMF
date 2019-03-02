@@ -73,8 +73,8 @@ export class FeedPage {
   }
 
   resize() {
-    let textArea =
-      this.element.nativeElement.getElementsByTagName('textarea')[0];
+    
+    let textArea = this.element.nativeElement.getElementsByTagName('textarea')[0];
     textArea.style.overflow = 'hidden';
     textArea.style.height = 'auto';
     textArea.style.height = (textArea.scrollHeight + 6) + "px";
