@@ -91,7 +91,13 @@ page-chatbot {
         border-radius: 100%;
         
       }
+      .searchbar-search-icon { display:none; width:0; height:0; }
 
-
-
+      .searchbar-input {
+        background: #FFF !important;
+        border-radius: 30px !important;
+        height: 40px !important;
+        max-width: 400px;
+        border: 1px solid transparent;
+    }
 }

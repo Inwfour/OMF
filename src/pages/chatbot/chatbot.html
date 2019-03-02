@@ -40,18 +40,17 @@
             </ion-avatar>
           <div *ngIf="message.sender == 'api'" class="bubble me">
             <h2 *ngIf="message.text">{{message.text}}</h2>
-            <!-- <h2 *ngIf="message.button">{{message.button}}</h2> -->
-            <!-- <div *ngIf="message.button"> -->
-              <div *ngFor="let b of message.button">
-                <h2>{{b}}</h2>
-              </div>
+              <ion-grid *ngIf="message.button">
+                <ion-row *ngFor="let b of message.button">
+                      <button ion-button round color="primary" block (click)="sendButton(b)">{{b}}</button>
+                </ion-row>
+              </ion-grid>
 
-            <!-- </div> -->
-
-
-            <!-- <template *ngIf="message.button" *ngFor="let button of buttons">
-            <h2>{{button}}</h2>
-          </template> -->
+                <div *ngIf="message.list">
+                  <h2 *ngFor="let l of message.list">
+                      {{l}}
+                  </h2>
+                </div>
             
           </div>
           <div *ngIf="message.sender == 'me'" class="bubbleme you">
@@ -62,16 +61,24 @@
   
   </ion-content>
   <ion-footer>
-      <!-- <ion-card bottom right *ngIf="matches">
+      <ion-card bottom right *ngIf="text.length > 2 && disease.length !== 0">
           <ion-card-content>
-            <ion-item *ngFor="let match of matches" (click)="sendVoice(match)">
-              {{ match }}
+            <ion-item *ngFor="let dis of disease | slice:0:3" (click)="sendAutofill(dis)">
+              {{ dis }}
             </ion-item>
           </ion-card-content>
-      </ion-card> -->
+      </ion-card>
     <ion-toolbar color="light">
       <ion-item>
-      <ion-textarea autocomplete="on" spellcheck="true" rows="1" placeholder="กรอกข้อความขอบคุณ" [(ngModel)]="text"></ion-textarea>
+          <ion-searchbar [(ngModel)]="text" (ionInput)="searchuser($event)" placeholder="กรอกข้อความขอบคุณ"></ion-searchbar>
+      <!-- <ion-textarea autocapitalize="sentences" 
+                    autocomplete="on"
+                    spellcheck="true"
+                    autocorrect="on" 
+                    rows="1" 
+                    placeholder="กรอกข้อความขอบคุณ" 
+                    [(ngModel)]="text">
+      </ion-textarea> -->
       <button ion-button icon-only item-right clear (click)="sendText()">
         <ion-icon name="send"></ion-icon>
       </button>
