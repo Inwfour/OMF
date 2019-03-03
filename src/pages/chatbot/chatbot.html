@@ -40,6 +40,7 @@
             </ion-avatar>
           <div *ngIf="message.sender == 'api'" class="bubble me">
             <h2 *ngIf="message.text">{{message.text}}</h2>
+            <!-- <img *ngIf="message.text" src="{{message.text}}"> -->
               <ion-grid *ngIf="message.button">
                 <ion-row *ngFor="let b of message.button">
                       <button ion-button round color="primary" block (click)="sendButton(b)">{{b}}</button>

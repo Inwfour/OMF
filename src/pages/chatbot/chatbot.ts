@@ -40,7 +40,7 @@ export class ChatbotPage {
     public _USER: UserProvider
   ) {
     this.messages.push({
-      text: "ต้องการความรู้อะไรกับปู่ไหม ???",
+      text: "สวัสดี " + firebase.auth().currentUser.displayName + " มีอะไรให้ช่วยไหม ???",
       sender: "api"
     })
   }
