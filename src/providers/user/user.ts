@@ -187,9 +187,11 @@ deleteImgGroup(groupname) {
 
 searchDisease() {
   return new Promise((resolve, reject) => {
-    firebase.firestore().collection("searchdisease").doc("search").get().then((res) => {
-      let disease = {};
-      disease = res.data().questions;
+    firebase.firestore().collection("searchdisease").get().then((snapshot) => {
+      let disease = [];
+      snapshot.forEach((docs) => {
+        disease.push(docs);
+      })
       resolve(disease);
     }).catch(err => {
       reject(err);

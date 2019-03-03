@@ -28,6 +28,7 @@ export class BuddiesPage {
     this.userservice.getalluser().then((res: any) => {
       this.filteruser = res;
       this.temprr = res;
+      console.log(this.filteruser);
     })
   }
 
@@ -45,7 +46,7 @@ export class BuddiesPage {
         return false;
       }
     });
-    console.log(q, this.filteruser.length);
+    console.log(q, this.filteruser.length ,this.filteruser);
   }
 
   sendreq(recipient) {

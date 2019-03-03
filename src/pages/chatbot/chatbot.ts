@@ -39,20 +39,23 @@ export class ChatbotPage {
     public cd: ChangeDetectorRef,
     public _USER: UserProvider
   ) {
-    this._USER.searchDisease().then((res: any) => {
-      this.disease = res;
-      this.temprr = res;
-      console.log(this.disease);
-      // this.temprr = res;
-    })
     this.messages.push({
       text: "ต้องการความรู้อะไรกับปู่ไหม ???",
       sender: "api"
     })
   }
 
+  getSearch(){
+    this._USER.searchDisease().then((res: any) => {
+      this.disease = res;
+      this.temprr = res;
+      console.log(this.disease);
+    })
+  }
+
   ionViewWillEnter() {
     this.getInformationUser();
+    this.getSearch();
   }
 
 
@@ -104,11 +107,27 @@ export class ChatbotPage {
   sendText() {
 
     let messages = this.text;
-
+    var check = [];
     this.messages.push({
       text: messages,
       sender: "me"
     })
+      for(var i in this.disease){
+        if(messages === this.disease[i].data().search){
+        check.push(this.disease[i].data().search);
+        }
+      }
+      console.log("check = " , check);
+      if(check.length === 0 && messages.length > 3){
+    firebase.firestore().collection("searchdisease").add({
+      search: messages
+    }).then(() => {
+      this.getSearch();
+    }).catch(err => {
+      console.log(err);
+    })
+    }
+
     this.content.scrollToBottom(200);
     this.text = "";
 
@@ -123,6 +142,7 @@ export class ChatbotPage {
             text: response.result.fulfillment.speech,
             sender: "api"
           });
+          this.content.scrollToBottom(200);
         } else {
           if (response.result.parameters.disease == "เบาหวานชนิดที่1" || response.result.parameters.disease == "เบาหวานชนิดที่2" || response.result.parameters.disease == "เบาหวานชนิดที่3") {
             firebase.firestore().collection("disease").doc("เบาหวาน")
@@ -133,11 +153,13 @@ export class ChatbotPage {
                   list: res.data().list,
                   sender: "api"
                 });
+                this.content.scrollToBottom(200);
               }).catch(err => {
                 this.messages.push({
                   text: "ปู่ยังไม่มีข้อมูลเลย ปู่ไปหาข้อมูลก่อนนะ",
                   sender: "api"
                 })
+                this.content.scrollToBottom(200);
               })
           } else {
             firebase.firestore().collection("disease").doc(response.result.parameters.disease)
@@ -148,15 +170,16 @@ export class ChatbotPage {
                   list: res.data().list,
                   sender: "api"
                 });
+                this.content.scrollToBottom(200);
               }).catch(err => {
                 this.messages.push({
                   text: "ปู่ยังไม่มีข้อมูลเลย ปู่ไปหาข้อมูลก่อนนะ",
                   sender: "api"
                 })
+                this.content.scrollToBottom(200);
               })
           }
         }
-        this.content.scrollToBottom();
 
       })
       // voice
@@ -178,8 +201,8 @@ export class ChatbotPage {
       return;
     }
     this.disease = this.disease.filter((v) => {
-      if (v && q) {
-        if (v.toLowerCase().indexOf(q.toLowerCase()) > -1) {
+      if (v.data().search && q) {
+        if (v.data().search.toLowerCase().indexOf(q.toLowerCase()) > -1) {
           return true;
         }
         return false;

@@ -63,14 +63,14 @@
   <ion-footer>
       <ion-card bottom right *ngIf="text.length > 2 && disease.length !== 0">
           <ion-card-content>
-            <ion-item *ngFor="let dis of disease | slice:0:3" (click)="sendAutofill(dis)">
-              {{ dis }}
+            <ion-item *ngFor="let dis of disease | slice:0:3" (click)="sendAutofill(dis.data().search)">
+              {{ dis.data().search }}
             </ion-item>
           </ion-card-content>
       </ion-card>
     <ion-toolbar color="light">
       <ion-item>
-          <ion-searchbar [(ngModel)]="text" (ionInput)="searchuser($event)" placeholder="กรอกข้อความขอบคุณ"></ion-searchbar>
+          <ion-searchbar [(ngModel)]="text" (ionInput)="searchuser($event)" placeholder="กรอกข้อความของคุณ"></ion-searchbar>
       <!-- <ion-textarea autocapitalize="sentences" 
                     autocomplete="on"
                     spellcheck="true"
