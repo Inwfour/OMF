@@ -56,6 +56,27 @@ export class ChatbotPage {
   ionViewWillEnter() {
     this.getInformationUser();
     this.getSearch();
+    this.addCountStart();
+  }
+
+  addCountStart() {
+    firebase.firestore().collection("searchdisease").get().then(snapshot => {
+      snapshot.forEach(doc => {
+          firebase.firestore().collection("searchdisease").where("search" , "==" , doc.data().search).get().then(snapshot => {
+            snapshot.forEach((doc) => {
+                if(doc.data()[firebase.auth().currentUser.uid] === undefined){
+                  firebase.firestore().collection("searchdisease").doc(doc.id).update({
+                    [`${firebase.auth().currentUser.uid}`]: 0
+                  }).then(() => {
+                    this.getSearch();
+                  }).catch(err => {
+                    console.log(err);
+                  })
+                }
+            })
+          })
+      })
+    })
   }
 
 
@@ -112,21 +133,27 @@ export class ChatbotPage {
       text: messages,
       sender: "me"
     })
+
+    // save text
       for(var i in this.disease){
         if(messages === this.disease[i].data().search){
         check.push(this.disease[i].data().search);
         }
       }
       console.log("check = " , check);
-      if(check.length === 0 && messages.length > 3){
-    firebase.firestore().collection("searchdisease").add({
-      search: messages
-    }).then(() => {
-      this.getSearch();
-    }).catch(err => {
-      console.log(err);
-    })
-    }
+      if(check.length != 0) {
+        firebase.firestore().collection("searchdisease").where("search" , "==" ,check[0]).get().then(snapshot => {
+          snapshot.forEach((doc) => {
+                firebase.firestore().collection("searchdisease").doc(doc.id).update({
+                  [`${firebase.auth().currentUser.uid}`]: doc.data()[firebase.auth().currentUser.uid]+1
+                }).then(() => {
+                  this.getSearch();
+                }).catch(err => {
+                  console.log(err);
+                })
+          })
+        })
+      }
 
     this.content.scrollToBottom(200);
     this.text = "";
@@ -208,7 +235,7 @@ export class ChatbotPage {
         return false;
       }
     });
-    console.log(q, this.disease.length, this.disease);
+    console.log(q, this.disease.length);
   }
 
   sendAutofill(textAutofill) {

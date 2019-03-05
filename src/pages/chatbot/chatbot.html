@@ -62,7 +62,7 @@
   
   </ion-content>
   <ion-footer>
-      <ion-card bottom right *ngIf="text.length > 2 && disease.length !== 0">
+      <ion-card bottom right *ngIf="text.length > 1 && disease.length !== 0">
           <ion-card-content>
             <ion-item *ngFor="let dis of disease | slice:0:3" (click)="sendAutofill(dis.data().search)">
               {{ dis.data().search }}

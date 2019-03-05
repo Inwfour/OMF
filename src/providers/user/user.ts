@@ -187,7 +187,7 @@ deleteImgGroup(groupname) {
 
 searchDisease() {
   return new Promise((resolve, reject) => {
-    firebase.firestore().collection("searchdisease").get().then((snapshot) => {
+    firebase.firestore().collection("searchdisease").orderBy(firebase.auth().currentUser.uid, "desc").get().then((snapshot) => {
       let disease = [];
       snapshot.forEach((docs) => {
         disease.push(docs);
