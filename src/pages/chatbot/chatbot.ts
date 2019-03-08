@@ -26,8 +26,9 @@ export class ChatbotPage {
   img: any = firebase.auth().currentUser.photoURL;
   photoUser: string = "";
   getUser: any = {};
-  disease:any = [];
-  temprr:any = [];
+  disease: any = [];
+  temprr: any = [];
+  textres: any = {};
 
   @ViewChild(Content) content: Content;
 
@@ -45,7 +46,7 @@ export class ChatbotPage {
     })
   }
 
-  getSearch(){
+  getSearch() {
     this._USER.searchDisease().then((res: any) => {
       this.disease = res;
       this.temprr = res;
@@ -62,19 +63,19 @@ export class ChatbotPage {
   addCountStart() {
     firebase.firestore().collection("searchdisease").get().then(snapshot => {
       snapshot.forEach(doc => {
-          firebase.firestore().collection("searchdisease").where("search" , "==" , doc.data().search).get().then(snapshot => {
-            snapshot.forEach((doc) => {
-                if(doc.data()[firebase.auth().currentUser.uid] === undefined){
-                  firebase.firestore().collection("searchdisease").doc(doc.id).update({
-                    [`${firebase.auth().currentUser.uid}`]: 0
-                  }).then(() => {
-                    this.getSearch();
-                  }).catch(err => {
-                    console.log(err);
-                  })
-                }
-            })
+        firebase.firestore().collection("searchdisease").where("search", "==", doc.data().search).get().then(snapshot => {
+          snapshot.forEach((doc) => {
+            if (doc.data()[firebase.auth().currentUser.uid] === undefined) {
+              firebase.firestore().collection("searchdisease").doc(doc.id).update({
+                [`${firebase.auth().currentUser.uid}`]: 0
+              }).then(() => {
+                this.getSearch();
+              }).catch(err => {
+                console.log(err);
+              })
+            }
           })
+        })
       })
     })
   }
@@ -125,6 +126,7 @@ export class ChatbotPage {
     this.sendText();
   }
 
+
   sendText() {
 
     let messages = this.text;
@@ -134,26 +136,26 @@ export class ChatbotPage {
       sender: "me"
     })
 
-    // save text
-      for(var i in this.disease){
-        if(messages === this.disease[i].data().search){
+    // sort text search
+    for (var i in this.disease) {
+      if (messages === this.disease[i].data().search) {
         check.push(this.disease[i].data().search);
-        }
       }
-      console.log("check = " , check);
-      if(check.length != 0) {
-        firebase.firestore().collection("searchdisease").where("search" , "==" ,check[0]).get().then(snapshot => {
-          snapshot.forEach((doc) => {
-                firebase.firestore().collection("searchdisease").doc(doc.id).update({
-                  [`${firebase.auth().currentUser.uid}`]: doc.data()[firebase.auth().currentUser.uid]+1
-                }).then(() => {
-                  this.getSearch();
-                }).catch(err => {
-                  console.log(err);
-                })
+    }
+    console.log("check = ", check);
+    if (check.length != 0) {
+      firebase.firestore().collection("searchdisease").where("search", "==", check[0]).get().then(snapshot => {
+        snapshot.forEach((doc) => {
+          firebase.firestore().collection("searchdisease").doc(doc.id).update({
+            [`${firebase.auth().currentUser.uid}`]: doc.data()[firebase.auth().currentUser.uid] + 1
+          }).then(() => {
+            this.getSearch();
+          }).catch(err => {
+            console.log(err);
           })
         })
-      }
+      })
+    }
 
     this.content.scrollToBottom(200);
     this.text = "";
@@ -161,52 +163,103 @@ export class ChatbotPage {
     window["ApiAIPlugin"].requestText({
       query: messages
     }, (response) => {
-
       this.ngZone.run(() => {
-        console.log(response);
-        if (response.result.fulfillment.speech != "") {
-          this.messages.push({
-            text: response.result.fulfillment.speech,
-            sender: "api"
-          });
-          this.content.scrollToBottom(200);
-        } else {
-          if (response.result.parameters.disease == "เบาหวานชนิดที่1" || response.result.parameters.disease == "เบาหวานชนิดที่2" || response.result.parameters.disease == "เบาหวานชนิดที่3") {
-            firebase.firestore().collection("disease").doc("เบาหวาน")
-              .collection(response.result.parameters.disease).doc(response.result.parameters.desease_detail).get().then((res) => {
-                this.messages.push({
-                  text: res.data().text,
-                  button: res.data().button,
-                  list: res.data().list,
-                  sender: "api"
-                });
-                this.content.scrollToBottom(200);
-              }).catch(err => {
-                this.messages.push({
-                  text: "ปู่ยังไม่มีข้อมูลเลย ปู่ไปหาข้อมูลก่อนนะ",
-                  sender: "api"
-                })
-                this.content.scrollToBottom(200);
-              })
-          } else {
-            firebase.firestore().collection("disease").doc(response.result.parameters.disease)
-              .collection("รายละเอียด").doc(response.result.parameters.desease_detail).get().then((res) => {
-                this.messages.push({
-                  text: res.data().text,
-                  button: res.data().button,
-                  list: res.data().list,
-                  sender: "api"
-                });
-                this.content.scrollToBottom(200);
-              }).catch(err => {
-                this.messages.push({
-                  text: "ปู่ยังไม่มีข้อมูลเลย ปู่ไปหาข้อมูลก่อนนะ",
-                  sender: "api"
-                })
-                this.content.scrollToBottom(200);
-              })
+
+
+        if(response.result.fulfillment.speech){
+          try {
+            console.log(response);
+            this.textres = JSON.parse(response.result.fulfillment.speech);
+            console.log(this.textres);
+            console.log(this.textres.text);
+            console.log(this.textres.img);
+            console.log(this.textres.button);
+            this.messages.push({
+              text: this.textres.text,
+              img: this.textres.img,
+              button: this.textres.button,
+              list: this.textres.list,
+              sender: "api"
+            })
+          } catch(e) {
+            this.messages.push({
+              text: response.result.fulfillment.speech,
+              sender: "api"
+            })
           }
+          this.content.scrollToBottom(200);
         }
+            
+
+
+        // } else {
+
+        //   this.messages.push({
+        //     text: response.result.fulfillment.speech,
+        //     sender: "api"
+        //   })
+        //   this.content.scrollToBottom(200);
+
+        // }
+
+        // if (response.result.fulfillment.speech != "") {
+        //   if(firebase.firestore().collection("disease").doc(response.result.parameters.disease)
+        //   .collection("รายละเอียด").doc(response.result.parameters.desease_detail).get().then(data => {
+        //     if(data.data().text){
+        //       this.messages.push({
+        //         text: response.result.fulfillment.speech,
+        //         sender: "api"
+        //       });
+        //     }
+        //     if(data.data().img){
+        //       this.messages.push({
+        //         img: response.result.fulfillment.speech,
+        //         sender: "api"
+        //       });
+        //     }
+        //   })
+        //   )
+
+        //   this.content.scrollToBottom(200);
+        // } else {
+        //   if (response.result.parameters.disease == "เบาหวานชนิดที่1" || response.result.parameters.disease == "เบาหวานชนิดที่2" || response.result.parameters.disease == "เบาหวานชนิดที่3") {
+        //     firebase.firestore().collection("disease").doc("เบาหวาน")
+        //       .collection(response.result.parameters.disease).doc(response.result.parameters.desease_detail).get().then((res) => {
+        //         this.messages.push({
+        //           text: res.data().text,
+        //           button: res.data().button,
+        //           list: res.data().list,
+        //           img: res.data().img,
+        //           sender: "api"
+        //         });
+        //         this.content.scrollToBottom(200);
+        //       }).catch(err => {
+        //         this.messages.push({
+        //           text: "ปู่ยังไม่มีข้อมูลเลย ปู่ไปหาข้อมูลก่อนนะ",
+        //           sender: "api"
+        //         })
+        //         this.content.scrollToBottom(200);
+        //       })
+        //   } else {
+        //     firebase.firestore().collection("disease").doc(response.result.parameters.disease)
+        //       .collection("รายละเอียด").doc(response.result.parameters.desease_detail).get().then((res) => {
+        //         this.messages.push({
+        //           text: res.data().text,
+        //           button: res.data().button,
+        //           list: res.data().list,
+        //           img: res.data().img,
+        //           sender: "api"
+        //         });
+        //         this.content.scrollToBottom(200);
+        //       }).catch(err => {
+        //         this.messages.push({
+        //           text: "ปู่ยังไม่มีข้อมูลเลย ปู่ไปหาข้อมูลก่อนนะ",
+        //           sender: "api"
+        //         })
+        //         this.content.scrollToBottom(200);
+        //       })
+        //   }
+        // }
 
       })
       // voice
