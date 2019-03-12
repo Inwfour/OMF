@@ -1,9 +1,10 @@
 import { Component, NgZone, ViewChild, ChangeDetectorRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, Content } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Content, LoadingController } from 'ionic-angular';
 import { TextToSpeech } from '@ionic-native/text-to-speech';
 import { SpeechRecognition } from '@ionic-native/speech-recognition';
 import firebase from 'firebase';
 import { UserProvider } from '../../providers/user/user';
+import { PhotoViewer } from '@ionic-native/photo-viewer';
 
 declare var window;
 
@@ -38,7 +39,9 @@ export class ChatbotPage {
     public ngZone: NgZone,
     public speechRecognition: SpeechRecognition,
     public cd: ChangeDetectorRef,
-    public _USER: UserProvider
+    public _USER: UserProvider,
+    public photoviewer: PhotoViewer,
+    public loadingCtrl: LoadingController
   ) {
     this.messages.push({
       text: "สวัสดี " + firebase.auth().currentUser.displayName + " มีอะไรให้ช่วยไหม ???",
@@ -61,6 +64,13 @@ export class ChatbotPage {
   }
 
   addCountStart() {
+    let loader = this.loadingCtrl.create({
+      spinner: 'hide',
+      content: `<img src="assets/imgs/loading.svg">`
+      
+    });
+    loader.present();
+
     firebase.firestore().collection("searchdisease").get().then(snapshot => {
       snapshot.forEach(doc => {
         firebase.firestore().collection("searchdisease").where("search", "==", doc.data().search).get().then(snapshot => {
@@ -69,14 +79,17 @@ export class ChatbotPage {
               firebase.firestore().collection("searchdisease").doc(doc.id).update({
                 [`${firebase.auth().currentUser.uid}`]: 0
               }).then(() => {
+                loader.dismiss();
                 this.getSearch();
-              }).catch(err => {
-                console.log(err);
               })
+            }else {
+              loader.dismiss();
+              this.getSearch();
             }
           })
         })
       })
+
     })
   }
 
@@ -165,7 +178,6 @@ export class ChatbotPage {
     }, (response) => {
       this.ngZone.run(() => {
 
-
         if(response.result.fulfillment.speech){
           try {
             console.log(response);
@@ -187,80 +199,8 @@ export class ChatbotPage {
               sender: "api"
             })
           }
-          this.content.scrollToBottom(200);
-        }
-            
-
-
-        // } else {
-
-        //   this.messages.push({
-        //     text: response.result.fulfillment.speech,
-        //     sender: "api"
-        //   })
-        //   this.content.scrollToBottom(200);
-
-        // }
-
-        // if (response.result.fulfillment.speech != "") {
-        //   if(firebase.firestore().collection("disease").doc(response.result.parameters.disease)
-        //   .collection("รายละเอียด").doc(response.result.parameters.desease_detail).get().then(data => {
-        //     if(data.data().text){
-        //       this.messages.push({
-        //         text: response.result.fulfillment.speech,
-        //         sender: "api"
-        //       });
-        //     }
-        //     if(data.data().img){
-        //       this.messages.push({
-        //         img: response.result.fulfillment.speech,
-        //         sender: "api"
-        //       });
-        //     }
-        //   })
-        //   )
-
-        //   this.content.scrollToBottom(200);
-        // } else {
-        //   if (response.result.parameters.disease == "เบาหวานชนิดที่1" || response.result.parameters.disease == "เบาหวานชนิดที่2" || response.result.parameters.disease == "เบาหวานชนิดที่3") {
-        //     firebase.firestore().collection("disease").doc("เบาหวาน")
-        //       .collection(response.result.parameters.disease).doc(response.result.parameters.desease_detail).get().then((res) => {
-        //         this.messages.push({
-        //           text: res.data().text,
-        //           button: res.data().button,
-        //           list: res.data().list,
-        //           img: res.data().img,
-        //           sender: "api"
-        //         });
-        //         this.content.scrollToBottom(200);
-        //       }).catch(err => {
-        //         this.messages.push({
-        //           text: "ปู่ยังไม่มีข้อมูลเลย ปู่ไปหาข้อมูลก่อนนะ",
-        //           sender: "api"
-        //         })
-        //         this.content.scrollToBottom(200);
-        //       })
-        //   } else {
-        //     firebase.firestore().collection("disease").doc(response.result.parameters.disease)
-        //       .collection("รายละเอียด").doc(response.result.parameters.desease_detail).get().then((res) => {
-        //         this.messages.push({
-        //           text: res.data().text,
-        //           button: res.data().button,
-        //           list: res.data().list,
-        //           img: res.data().img,
-        //           sender: "api"
-        //         });
-        //         this.content.scrollToBottom(200);
-        //       }).catch(err => {
-        //         this.messages.push({
-        //           text: "ปู่ยังไม่มีข้อมูลเลย ปู่ไปหาข้อมูลก่อนนะ",
-        //           sender: "api"
-        //         })
-        //         this.content.scrollToBottom(200);
-        //       })
-        //   }
-        // }
-
+          this.content.scrollToBottom();
+        }  
       })
       // voice
       this.tts.speak({
@@ -295,6 +235,10 @@ export class ChatbotPage {
     this.text = textAutofill
     this.sendText();
     this.text = "";
+  }
+
+  viewPhoto(img){
+    this.photoviewer.show(img , "" , {share: false})
   }
 
 }

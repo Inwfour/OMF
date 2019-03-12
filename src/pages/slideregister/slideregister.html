@@ -48,7 +48,7 @@
       <div [@bounce]='state' padding>
         <h2>เบอร์โทรไว้สำหรับติดต่อนะ</h2>
                <ion-item id="rounded">
-          <ion-input text-center [(ngModel)]="phone" placeholder="ระบุเบอร์โทรศัพท์" type="text"></ion-input>
+          <ion-input text-center [(ngModel)]="phone" placeholder="ระบุเบอร์โทรศัพท์" type="number"></ion-input>
         </ion-item>
       </div>
       <button ion-button round (click)="nextphone()">ถัดไป</button>
@@ -71,10 +71,9 @@
               <ion-select [(ngModel)]="health" multiple="true">
                 <ion-option>โรคความดันโลหิตสูง</ion-option>
                 <ion-option>โรคเบาหวาน</ion-option>
-                <ion-option>โรคหัวใจขาดเลือด</ion-option>
+                <ion-option>โรคอัลไซเมอร์</ion-option>
                 <ion-option>โรคข้อเสื่อม</ion-option>
                 <ion-option>โรคซึมเศร้า</ion-option>
-                <ion-option>โรคเกาต์</ion-option>
               </ion-select>
             </ion-item>
         </div>

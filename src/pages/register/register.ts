@@ -60,48 +60,47 @@ export class RegisterPage {
     alert.present();
   }
 
+  optionSave(url:string){
+    var newUser = firebase.auth().currentUser;
+    newUser.updateProfile({
+     displayName: "",
+     photoURL: url
+   }).then(() => {
+     console.log(url);
+     firebase.firestore().collection("informationUser").doc(firebase.auth().currentUser.uid).set({
+       photoURL: firebase.auth().currentUser.photoURL,
+       owner_name: "",
+       owner: firebase.auth().currentUser.uid,
+       email: firebase.auth().currentUser.email,
+       created: firebase.firestore.FieldValue.serverTimestamp(),
+       age: 0,
+       phone: 0,
+       likeplay: [],
+       disease: []
+     }).then(() => {
+       console.log("Success !!!");
+       this.navCtrl.setRoot(LoginPage);
+     }).catch((err) => {
+       console.log(err);
+       });
+   }).catch((err) => {
+     console.log(err);
+   })
+
+  }
 
   save(user) {
-    // this._LOADER.displayPreloader();
-    // let loader= this.loadingCtrl.create({
-    //   spinner: 'hide',
-    //   content: `<img src="assets/imgs/loading.svg">`
-
-    // }); loader.present();
-
     firebase.auth().createUserWithEmailAndPassword(user.email + "@omf.com", user.password)
       .then(async () => {
         if (this.image != "assets/imgs/user.png") {
           await this._USER.uploadImgUser(firebase.auth().currentUser.uid, this.image)
             .then((data) => {
               this.url = data;
+              this.optionSave(this.url);
             });
+        }else {
+          this.optionSave(this.url);
         }
-          var newUser = firebase.auth().currentUser;
-         newUser.updateProfile({
-          displayName: "",
-          photoURL: this.url
-        }).then(() => {
-          firebase.firestore().collection("informationUser").doc(firebase.auth().currentUser.uid).set({
-            photoURL: this.url,
-            owner_name: "",
-            owner: firebase.auth().currentUser.uid,
-            email: firebase.auth().currentUser.email,
-            created: firebase.firestore.FieldValue.serverTimestamp(),
-            age: 0,
-            phone: 0,
-            likeplay: [],
-            disease: []
-          }).then(() => {
-            console.log("Success !!!");
-            this.navCtrl.setRoot(LoginPage);
-          }).catch((err) => {
-            console.log(err);
-            });
-        }).catch((err) => {
-          console.log(err);
-        })
-
       })
     }
 }

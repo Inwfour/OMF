@@ -39,8 +39,11 @@
               <img src = "assets/imgs/user.png" class="avatar">
             </ion-avatar>
           <div *ngIf="message.sender == 'api'" class="bubble me">
+            
             <h2 *ngIf="message.text">{{message.text}}</h2>
-            <img *ngIf="message.img" src="{{message.img}}">
+
+            <img *ngIf="message.img" src="{{message.img}}" (click)="viewPhoto(message.img)">
+
               <ion-grid *ngIf="message.button">
                 <ion-row *ngFor="let b of message.button">
                       <button ion-button round color="primary" block (click)="sendButton(b)">{{b}}</button>

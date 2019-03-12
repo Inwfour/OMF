@@ -53,6 +53,7 @@ import { SlideregisterPage } from '../pages/slideregister/slideregister';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Geolocation } from '@ionic-native/geolocation';
 import { RegisterDetailPage } from '../pages/register-detail/register-detail';
+import { PhotoViewer } from '@ionic-native/photo-viewer';
 
 firebase.initializeApp(FIREBASE_CONFIG);
 firebase.firestore().settings({ timestampsInSnapshots: true })
@@ -152,8 +153,8 @@ firebase.firestore().settings({ timestampsInSnapshots: true })
     ChatProvider,
     EmojiProvider,
     GroupsProvider,
-    Geolocation
-    
+    Geolocation,
+    PhotoViewer
   ]
 })
 export class AppModule { }

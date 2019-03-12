@@ -113,15 +113,6 @@ export class SlideregisterPage {
       this.skipMsg = "Alright, I got it";
   }
 
-  //slideregister.html ion-slides : (ionSlideDrag)="slideMoved()"
-
-  // slideMoved() {
-  //   if (this.slides.getActiveIndex() >= this.slides.getPreviousIndex()) 
-  //     this.state = 'rightSwipe';
-  //   else 
-  //     this.state = 'leftSwipe';
-  // }
-
   animationDone() {
     this.state = 'x';
   }
