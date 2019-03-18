@@ -54,6 +54,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Geolocation } from '@ionic-native/geolocation';
 import { RegisterDetailPage } from '../pages/register-detail/register-detail';
 import { PhotoViewer } from '@ionic-native/photo-viewer';
+import { HelpPage } from '../pages/help/help';
+import { CallNumber } from '@ionic-native/call-number';
+import { SMS } from '@ionic-native/sms';
+import { AndroidPermissions } from '@ionic-native/android-permissions';
+import { HowtoPage } from '../pages/howto/howto';
+import { HelpfamilyPage } from '../pages/helpfamily/helpfamily';
+import { IonicImageViewerModule } from 'ionic-img-viewer';
+import { EdituserPage } from '../pages/edituser/edituser';
+import { PasswordresetPage } from '../pages/passwordreset/passwordreset';
 
 firebase.initializeApp(FIREBASE_CONFIG);
 firebase.firestore().settings({ timestampsInSnapshots: true })
@@ -89,7 +98,12 @@ firebase.firestore().settings({ timestampsInSnapshots: true })
     GroupbuddiesPage,
     GroupmembersPage,
     GroupinfoPage,
-    RegisterDetailPage
+    RegisterDetailPage,
+    HelpPage,
+    HowtoPage,
+    HelpfamilyPage,
+    EdituserPage,
+    PasswordresetPage
   ],
   imports: [
     BrowserModule,
@@ -100,7 +114,8 @@ firebase.firestore().settings({ timestampsInSnapshots: true })
       // autoFocusAssist: true 
       tabsHideOnSubPages: true,
     }),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    IonicImageViewerModule
 
   ],
   bootstrap: [IonicApp],
@@ -133,7 +148,13 @@ firebase.firestore().settings({ timestampsInSnapshots: true })
     GroupmembersPage,
     GroupinfoPage,
     SlideregisterPage,
-    RegisterDetailPage
+    RegisterDetailPage,
+    HelpPage,
+    HowtoPage,
+    HelpfamilyPage,
+    EdituserPage,
+    PasswordresetPage
+
   ],
   providers: [
     StatusBar,
@@ -154,7 +175,10 @@ firebase.firestore().settings({ timestampsInSnapshots: true })
     EmojiProvider,
     GroupsProvider,
     Geolocation,
-    PhotoViewer
+    PhotoViewer,
+    CallNumber,
+    SMS,
+    AndroidPermissions
   ]
 })
 export class AppModule { }

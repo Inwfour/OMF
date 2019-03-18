@@ -9,6 +9,8 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 import { PreloaderProvider } from '../../providers/preloader/preloader';
 import { ImageProvider } from '../../providers/image/image';
 import { UserProvider } from '../../providers/user/user';
+import { EdituserPage } from '../edituser/edituser';
+import { TabsPage } from '../tabs/tabs';
 /**
  * Generated class for the UserPage page.
  *
@@ -347,5 +349,12 @@ export class UserPage {
     alert.present();
   }
 
+  goEditProfile(){
+    this.navCtrl.push(EdituserPage);
+  }
+
+  friend() {
+    this.navCtrl.setRoot(TabsPage);
+  }
 
 }

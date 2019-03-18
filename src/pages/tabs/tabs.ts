@@ -6,6 +6,7 @@ import { UserPage } from '../user/user';
 import { TabsCameraPage } from '../tabs-camera/tabs-camera';
 import { FriendsPage } from '../friends/friends';
 import { TabsfriendsPage } from '../tabsfriends/tabsfriends';
+import { SettingsPage } from '../settings/settings';
 
 /**
  * Generated class for the TabsPage page.
@@ -23,15 +24,24 @@ export class TabsPage {
 
   homePage = HomePage;
   userPage = UserPage;
+  settingPage = SettingsPage
   cameraPage = TabsCameraPage
   tabsFriendPage = TabsfriendsPage  
   image:string = "";
+  // checked:number = 0;
 
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
     public events:Events,
     public modalCtrl:ModalController
     ) {
+      // this.checked = this.navParams.get("check");
+      // if(this.checked) {
+      //   this.checked = 0;
+      // }else{
+      //   this.checked = this.checked
+      // }
+
         events.subscribe('user:logout', () => {
           this.navCtrl.setRoot(LoginPage);
         })

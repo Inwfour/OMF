@@ -36,7 +36,7 @@
         <div (click)="remove(item)" class="bubbleme you" *ngIf="item.data().sentby != buddy.id">
             <p *ngIf="item.data().timestamp" style="color: white"> {{ item.data().timestamp.toDate() | date: "dd/MM/yyyy HH:mm" }} </p>
           <h2 style="color: white">{{item.data().message}}</h2>
-          <img *ngIf="item.data().img" [src]="item.data().img">
+          <img *ngIf="item.data().img" [src]="item.data().img" imageViewer>
         </div>
       </ion-item>
     </ion-list>

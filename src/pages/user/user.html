@@ -4,9 +4,9 @@
       <ion-title>ข้อมูลส่วนตัว</ion-title>
   
       <ion-buttons end>
-        <button ion-button icon-only>
+        <button ion-button icon-only (click)="friend()">
           <ion-icon name="person-add" class="badge-container">
-            <span class="custom-badge">3</span>
+            <span class="custom-badge">{{friendsLength || 0}}</span>
           </ion-icon>
         </button>
    
@@ -55,8 +55,8 @@
       <p no-margin no-padding><b>{{getUser.owner_name}}</b></p>
       <!-- <button ion-button block round color="primary" *ngIf="!getInfoUserData.detail" (click)="addDetail()">เพิ่มข้อมูล</button>
       <p *ngIf="getInfoUserData.detail" no-padding no-margin class="info">เป็นคนน่ารักสดใส และหล่อมาก ๆ</p> -->
-      <p no-padding no-margin class="info">เป็นคนน่ารักสดใส และหล่อมาก ๆ</p>
-      <p no-padding no-margin class="info"><a href="#">FB: นรากร วิเชียรไชย</a></p>
+      <!-- <p no-padding no-margin class="info">เป็นคนน่ารักสดใส และหล่อมาก ๆ</p>
+      <p no-padding no-margin class="info"><a href="#">FB: นรากร วิเชียรไชย</a></p> -->
     </div>
 
     <hr>
@@ -85,7 +85,7 @@
                 <ion-label style="white-space: pre-line">{{ post.data().text }}</ion-label>
               </ion-item>
               
-              <img [src]="post.data().image" *ngIf="post.data().image">
+              <img [src]="post.data().image" *ngIf="post.data().image" imageViewer>
       
           <ion-row class="bottom-bar">
             <ion-col>

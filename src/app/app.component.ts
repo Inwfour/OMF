@@ -5,8 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { LoginPage } from '../pages/login/login';
 import { timer } from 'rxjs/observable/timer';
 import { TabsPage } from '../pages/tabs/tabs';
-import firebase from 'firebase';
-import { SlideregisterPage } from '../pages/slideregister/slideregister';
+import firebase from 'firebase'
 
 declare var window;
 

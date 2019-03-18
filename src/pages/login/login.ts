@@ -7,6 +7,7 @@ import { TabsPage } from '../tabs/tabs';
 import { SlideregisterPage } from '../slideregister/slideregister';
 import { UserProvider } from '../../providers/user/user';
 import { HomePage } from '../home/home';
+import { PasswordresetPage } from '../passwordreset/passwordreset';
 
 
 @IonicPage()
@@ -66,6 +67,10 @@ export class LoginPage {
 
   nextRegister() {
     this.navCtrl.push(RegisterPage);
+  }
+
+  passwordreset() {
+    this.navCtrl.push(PasswordresetPage);
   }
 
 }

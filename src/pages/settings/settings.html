@@ -6,13 +6,53 @@
 -->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>settings</ion-title>
+  <ion-navbar color="headertop" text-center>
+    <ion-title>ตั้งค่า</ion-title>
   </ion-navbar>
 
 </ion-header>
 
-
 <ion-content padding>
+  <ion-list no-border>
+    <ion-list-header>
+      แจ้งเตือน
+    </ion-list-header>
+
+    <ion-item>
+      <ion-toggle></ion-toggle>
+      <ion-label>
+        โรคข้อเสื่อม
+      </ion-label>
+      <ion-icon name='alarm' item-start></ion-icon>
+    </ion-item>
+    <ion-item>
+      <ion-toggle></ion-toggle>
+      <ion-label>
+        โรคความดันโลหิตสูง
+      </ion-label>
+      <ion-icon name='alarm' item-start></ion-icon>
+    </ion-item>
+    <ion-item>
+      <ion-toggle></ion-toggle>
+      <ion-label>
+        โรคซึมเศร้า
+      </ion-label>
+      <ion-icon name='alarm' item-start></ion-icon>
+    </ion-item>
+    <ion-item>
+      <ion-toggle></ion-toggle>
+      <ion-label>
+        โรคอัลไซเมอร์
+      </ion-label>
+      <ion-icon name='alarm' item-start></ion-icon>
+    </ion-item>
+    <ion-item>
+      <ion-toggle checked="false"></ion-toggle>
+      <ion-label>
+        โรคเบาหวาน
+      </ion-label>
+      <ion-icon name='alarm' item-start></ion-icon>
+    </ion-item>
+  </ion-list>
 
 </ion-content>

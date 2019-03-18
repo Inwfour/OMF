@@ -6,7 +6,7 @@
 -->
 <ion-header>
 
-  <ion-navbar>
+  <ion-navbar text-center>
     <ion-title>โพสต์</ion-title>
     <ion-buttons end>
         <button ion-button icon-only clear (click)="close()">
@@ -19,5 +19,23 @@
 
 
 <ion-content padding>
+    <div id="container">
+    <ion-list>
+        <ion-label>ข้อความของคุณ</ion-label>
+      <ion-item id="rounded">
+        <ion-input type="text" value="" [(ngModel)]="text"></ion-input>
+      </ion-item>
+    </ion-list>
+    <button ion-button round block (click)="changePostPicture()" color="headertop">เพิ่มรูปภาพ</button>
 
+    <ion-row class="rowStyle" *ngIf="image">
+        <ion-card class="round-corners">
+          <img [src]="image" class="round-corners">
+        </ion-card>
+      </ion-row>
+  </div>
 </ion-content>
+
+<ion-footer text-center>
+    <button ion-button block color="headertop" (click)="post()">โพสต์</button>
+</ion-footer>

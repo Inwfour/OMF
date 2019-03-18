@@ -4,7 +4,6 @@ import { TextToSpeech } from '@ionic-native/text-to-speech';
 import { SpeechRecognition } from '@ionic-native/speech-recognition';
 import firebase from 'firebase';
 import { UserProvider } from '../../providers/user/user';
-import { PhotoViewer } from '@ionic-native/photo-viewer';
 
 declare var window;
 
@@ -40,7 +39,6 @@ export class ChatbotPage {
     public speechRecognition: SpeechRecognition,
     public cd: ChangeDetectorRef,
     public _USER: UserProvider,
-    public photoviewer: PhotoViewer,
     public loadingCtrl: LoadingController
   ) {
     this.messages.push({
@@ -235,10 +233,6 @@ export class ChatbotPage {
     this.text = textAutofill
     this.sendText();
     this.text = "";
-  }
-
-  viewPhoto(img){
-    this.photoviewer.show(img , "" , {share: false})
   }
 
 }

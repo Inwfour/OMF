@@ -17,8 +17,19 @@
     <ion-searchbar [(ngModel)]="searchstring" (input)="searchuser($event)"
                     placeholder="Search">
     </ion-searchbar>
-  <ion-list no-lines>
-    <ion-item-sliding *ngFor="let key of myfriends">
+    <ion-list no-lines>
+    <ion-item *ngFor="let key of myfriends">
+        <ion-thumbnail item-start *ngIf="key.data().photoURL">
+          <img src="{{key.data().photoURL}}">
+        </ion-thumbnail>
+        <ion-thumbnail item-start *ngIf="!key.data().photoURL">
+            <img src="assets/imgs/user.png">
+          </ion-thumbnail>
+        <h2>{{key.data().owner_name}}</h2>
+        <button ion-button clear item-end (click)="addbuddy(key)">เพิ่มสมาชิก</button>
+      </ion-item>
+
+    <!-- <ion-item-sliding *ngFor="let key of myfriends">
       <ion-item>
         <ion-avatar item-left *ngIf="key.data().photoURL">
           <img src="{{key.data().photoURL}}">
@@ -34,6 +45,6 @@
           เพิ่มสมาชิก
         </button>
       </ion-item-options>
-    </ion-item-sliding>
+    </ion-item-sliding> -->
   </ion-list>
   </ion-content>

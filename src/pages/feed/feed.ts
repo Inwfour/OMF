@@ -45,6 +45,8 @@ export class FeedPage {
   user: any[] = [];
   photoDisplay: string;
   all: any = {};
+  checklist:any;
+  check:boolean;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private loadingCtrl: LoadingController
     , private http: HttpClient, private actionSheetCtrl: ActionSheetController
@@ -57,7 +59,7 @@ export class FeedPage {
   ) {
     // this.getComment();
     this.getPosts();
-
+    console.log(this.check);
     this._uid = firebase.auth().currentUser.uid;
     this.photoDisplay = firebase.auth().currentUser.photoURL
     this.firebaseCordova.getToken().then((token) => {
@@ -127,7 +129,6 @@ export class FeedPage {
   }
 
   getPosts() {
-
     this.posts = [];
 
     let loader = this.loadingCtrl.create({
@@ -166,11 +167,11 @@ export class FeedPage {
       docs.forEach((doc) => {
         this.posts.push(doc);
 
-    
         console.log(doc.data().owner);
         firebase.firestore().collection("informationUser").doc(doc.data().owner).get().then((data) => {
+
           this.getUser = data.data();
-          console.log("user : " + this.getUser);
+          console.log("user : " , this.getUser);
         })
         
       })
@@ -213,54 +214,33 @@ export class FeedPage {
         title: 'ประเภทโพสท์',
         inputs: [
           {
-            name: 'type1',
+            name: 'กีฬา',
             type: 'checkbox',
             label: 'กีฬา',
-            value: 'type1',
+            value: 'กีฬา',
             // checked: true
           },
   
           {
-            name: 'type2',
+            name: 'ดนตรี',
             type: 'checkbox',
             label: 'ดนตรี',
-            value: 'type2'
+            value: 'ดนตรี'
           },
   
           {
-            name: 'type3',
+            name: 'ศาสนา',
             type: 'checkbox',
             label: 'ศาสนา',
-            value: 'type3'
+            value: 'ศาสนา'
           },
-  
-          {
-            name: 'type4',
-            type: 'checkbox',
-            label: 'การเมือง',
-            value: 'type4'
-          },
-  
-          {
-            name: 'type5',
-            type: 'checkbox',
-            label: 'ยานพาหนะ',
-            value: 'type5'
-          },
-  
-          {
-            name: 'type6',
-            type: 'checkbox',
-            label: 'ธรรมะ',
-            value: 'type6'
-          }
         ],
         buttons: [
           {
             text: 'ยกเลิก',
             role: 'cancel',
             cssClass: 'secondary',
-            handler: () => {
+            handler: (data) => {
               console.log('Confirm Cancel');
             }
           }, {

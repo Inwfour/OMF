@@ -5,6 +5,8 @@ import { ChatbotPage } from '../chatbot/chatbot';
 import { FeedPage } from '../feed/feed';
 import firebase from 'firebase';
 import { GooglemapPage } from '../googlemap/googlemap';
+import { HelpPage } from '../help/help';
+import { HowtoPage } from '../howto/howto';
 
 
 /**
@@ -98,6 +100,14 @@ export class HomePage {
     alert.present();
   
 
+  }
+
+  help() {
+    this.navCtrl.push(HelpPage);
+  }
+  
+  howto() {
+    this.navCtrl.push(HowtoPage);
   }
 
 }

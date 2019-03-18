@@ -65,24 +65,6 @@ export class RegisterPage {
     newUser.updateProfile({
      displayName: "",
      photoURL: url
-   }).then(() => {
-     console.log(url);
-     firebase.firestore().collection("informationUser").doc(firebase.auth().currentUser.uid).set({
-       photoURL: firebase.auth().currentUser.photoURL,
-       owner_name: "",
-       owner: firebase.auth().currentUser.uid,
-       email: firebase.auth().currentUser.email,
-       created: firebase.firestore.FieldValue.serverTimestamp(),
-       age: 0,
-       phone: 0,
-       likeplay: [],
-       disease: []
-     }).then(() => {
-       console.log("Success !!!");
-       this.navCtrl.setRoot(LoginPage);
-     }).catch((err) => {
-       console.log(err);
-       });
    }).catch((err) => {
      console.log(err);
    })
@@ -97,9 +79,41 @@ export class RegisterPage {
             .then((data) => {
               this.url = data;
               this.optionSave(this.url);
+              firebase.firestore().collection("informationUser").doc(firebase.auth().currentUser.uid).set({
+                photoURL: this.url,
+                owner_name: "",
+                owner: firebase.auth().currentUser.uid,
+                email: firebase.auth().currentUser.email,
+                created: firebase.firestore.FieldValue.serverTimestamp(),
+                age: 0,
+                phone: 0,
+                likeplay: [],
+                disease: []
+              }).then(() => {
+                console.log("Success !!!");
+                this.navCtrl.setRoot(LoginPage);
+              }).catch((err) => {
+                console.log(err);
+                });
             });
         }else {
           this.optionSave(this.url);
+          firebase.firestore().collection("informationUser").doc(firebase.auth().currentUser.uid).set({
+            photoURL: this.url,
+            owner_name: "",
+            owner: firebase.auth().currentUser.uid,
+            email: firebase.auth().currentUser.email,
+            created: firebase.firestore.FieldValue.serverTimestamp(),
+            age: 0,
+            phone: 0,
+            likeplay: [],
+            disease: []
+          }).then(() => {
+            console.log("Success !!!");
+            this.navCtrl.setRoot(LoginPage);
+          }).catch((err) => {
+            console.log(err);
+            });
         }
       })
     }

@@ -28,6 +28,27 @@
       </button>
   </ion-row>
 
+  <ion-row>
+    <ion-col col-4>
+      <ion-item>
+        <ion-label>กีฬา</ion-label>
+        <ion-checkbox [(ngModel)]="check" ></ion-checkbox>
+      </ion-item>
+    </ion-col>
+    <ion-col col-4>
+        <ion-item>
+          <ion-label>ดนตรี</ion-label>
+          <ion-checkbox [(ngModel)]="check" ></ion-checkbox>
+        </ion-item>
+      </ion-col>
+      <ion-col col-4>
+          <ion-item>
+            <ion-label>ศาสนา</ion-label>
+            <ion-checkbox [(ngModel)]="check" ></ion-checkbox>
+          </ion-item>
+        </ion-col>
+  </ion-row>
+
   <ion-row class="rowStyle" *ngIf="image">
     <ion-card class="round-corners">
       <img [src]="image" class="round-corners">
@@ -58,19 +79,19 @@
       <ion-label style="white-space: pre-line">{{ post.data().text }}</ion-label>
     </ion-item>
 
-        <img [src]="post.data().image" *ngIf="post.data().image">
+        <img [src]="post.data().image" *ngIf="post.data().image" imageViewer>
         
     <ion-row class="bottom-bar">
       <ion-col>
         <button  ion-button block icon-left clear small [color]="post.data().likes[_uid] ? 'primary':'headertop'" class="border-right" (click)="like(post)">
           <ion-icon name="thumbs-up"></ion-icon>
-          <small>{{ post.data().likesCount || 0 }} Likes</small>
+          <small>{{ post.data().likesCount || 0 }} ถูกใจ</small>
         </button>
       </ion-col>
       <ion-col>
           <button ion-button block icon-left clear small color="headertop"  class="border-right" (click)="comment(post)">
             <ion-icon name="text"></ion-icon>
-            <small> {{ post.data().commentsCount || 0 }} Comments</small>
+            <small> {{ post.data().commentsCount || 0 }} ความคิดเห็น</small>
           </button>
         </ion-col>
         <ion-col>

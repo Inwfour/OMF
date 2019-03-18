@@ -160,6 +160,8 @@ export class GroupsProvider {
               groupimage: this.grouppic,
               owner: firebase.auth().currentUser.uid,
               msgboard: ''
+            }).then(() => {
+              alert("เพิ่มสำเร็จแล้ว");
             }).catch((err) => {
               console.log(err);
             })

@@ -23,7 +23,7 @@ export class TabsfriendsPage {
   }
 
   ngOnInit(){
-    this.friends = "Chats";
+    this.friends = "Groups";
   }
 
   addbuddy() {

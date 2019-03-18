@@ -18,7 +18,21 @@
   <br>
   <ion-list no-lines>
     <ion-list>
-      <ion-item-sliding *ngFor="let user of filteruser">
+
+        <ion-item *ngFor="let user of filteruser">
+            <ion-thumbnail item-start *ngIf="user.data().photoURL">
+              <img src="{{user.data().photoURL}}">
+            </ion-thumbnail>
+            <ion-thumbnail item-start *ngIf="!user.data().photoURL">
+                <img src="assets/imgs/user.png">
+              </ion-thumbnail>
+            <h2>{{user.data().owner_name}}</h2>
+            <!-- <p>เลื่อนไปทางซ้าย</p> -->
+            <button ion-button clear item-end (click)="sendreq(user)">เพิ่มเพื่อน</button>
+          </ion-item>
+
+
+      <!-- <ion-item-sliding *ngFor="let user of filteruser">
         <ion-item (click)="test(user)">
           <ion-avatar item-left *ngIf="user.data().photoURL">
             <img src="{{user.data().photoURL}}">
@@ -37,7 +51,7 @@
             Add
           </button>
         </ion-item-options>
-      </ion-item-sliding>
+      </ion-item-sliding> -->
     </ion-list>
   </ion-list>
 
