@@ -6,13 +6,32 @@
 -->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>family</ion-title>
+  <ion-navbar text-center>
+    <ion-title>ครอบครัว</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-
+<button ion-button block round color="headertop" (click)="familybuddys()">เพิ่มสมาชิกครอบครัว</button>
+<br>
+<ion-list no-lines>
+  <ion-card style="border-radius: 10px">
+  <ion-item *ngFor="let key of myfamilys" >
+    
+    <ion-thumbnail item-start *ngIf="key.data().photoURL">
+      <img src="{{key.data().photoURL}}">
+    </ion-thumbnail>
+    <ion-thumbnail item-start *ngIf="!key.data().photoURL">
+      <img src="assets/imgs/user.png">
+    </ion-thumbnail>
+    <h2>{{key.data().owner_name}}</h2>
+    <!-- <div item-end>
+      <h2></h2>
+    </div> -->
+    <!-- <button ion-button clear item-end>เพิ่มสมาชิก</button> -->
+  </ion-item>
+</ion-card>
+</ion-list>
 </ion-content>

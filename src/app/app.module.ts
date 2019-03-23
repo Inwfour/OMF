@@ -63,6 +63,9 @@ import { HelpfamilyPage } from '../pages/helpfamily/helpfamily';
 import { IonicImageViewerModule } from 'ionic-img-viewer';
 import { EdituserPage } from '../pages/edituser/edituser';
 import { PasswordresetPage } from '../pages/passwordreset/passwordreset';
+import { FamilyPage } from '../pages/family/family';
+import { FamilybuddysPage } from '../pages/familybuddys/familybuddys';
+import { FamilyProvider } from '../providers/family/family';
 
 firebase.initializeApp(FIREBASE_CONFIG);
 firebase.firestore().settings({ timestampsInSnapshots: true })
@@ -103,7 +106,9 @@ firebase.firestore().settings({ timestampsInSnapshots: true })
     HowtoPage,
     HelpfamilyPage,
     EdituserPage,
-    PasswordresetPage
+    PasswordresetPage,
+    FamilyPage,
+    FamilybuddysPage
   ],
   imports: [
     BrowserModule,
@@ -153,7 +158,9 @@ firebase.firestore().settings({ timestampsInSnapshots: true })
     HowtoPage,
     HelpfamilyPage,
     EdituserPage,
-    PasswordresetPage
+    PasswordresetPage,
+    FamilyPage,
+    FamilybuddysPage,
 
   ],
   providers: [
@@ -178,7 +185,8 @@ firebase.firestore().settings({ timestampsInSnapshots: true })
     PhotoViewer,
     CallNumber,
     SMS,
-    AndroidPermissions
+    AndroidPermissions,
+    FamilyProvider
   ]
 })
 export class AppModule { }

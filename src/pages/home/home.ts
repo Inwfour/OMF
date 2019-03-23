@@ -7,6 +7,7 @@ import firebase from 'firebase';
 import { GooglemapPage } from '../googlemap/googlemap';
 import { HelpPage } from '../help/help';
 import { HowtoPage } from '../howto/howto';
+import { FamilyPage } from '../family/family';
 
 
 /**
@@ -108,6 +109,10 @@ export class HomePage {
   
   howto() {
     this.navCtrl.push(HowtoPage);
+  }
+
+  family() {
+    this.navCtrl.push(FamilyPage);
   }
 
 }

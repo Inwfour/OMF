@@ -1,12 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Events, AlertController } from 'ionic-angular';
+import { FamilybuddysPage } from '../familybuddys/familybuddys';
+import { FamilyProvider } from '../../providers/family/family';
 
-/**
- * Generated class for the FamilyPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
@@ -14,12 +10,30 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'family.html',
 })
 export class FamilyPage {
-
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  myfamilys: any = [];
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+    public events : Events,
+    public alertCtrl: AlertController,
+    public familyservice : FamilyProvider
+    ) {
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad FamilyPage');
+  familybuddys() {
+    this.navCtrl.push(FamilybuddysPage);
+  }
+
+  getfamilys(){
+    this.familyservice.getmyfamilys();
+    this.events.subscribe('familys', () => {
+      this.myfamilys = this.familyservice.myfamilys;
+    })
+  }
+
+  ngOnInit() {
+    this.getfamilys();
+  }
+  ngOnDestroy() {
+    this.events.unsubscribe('familys');
   }
 
 }

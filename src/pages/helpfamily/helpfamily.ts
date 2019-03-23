@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, Events } from 'ionic-angular';
 import { CallNumber } from '@ionic-native/call-number';
 import { AndroidPermissions } from '@ionic-native/android-permissions';
 import { SMS } from '@ionic-native/sms';
+import { FamilyProvider } from '../../providers/family/family';
 
 /**
  * Generated class for the HelpfamilyPage page.
@@ -17,14 +18,28 @@ import { SMS } from '@ionic-native/sms';
   templateUrl: 'helpfamily.html',
 })
 export class HelpfamilyPage {
-
+  myfamilys:any = [];
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
     private viewCtrl: ViewController,
     private callNumber: CallNumber,
     private androidPermissions: AndroidPermissions,
     private sms: SMS,
+    private events: Events,
+    private familyservice: FamilyProvider
     ) {
+    this.getfamilys();
+  }
+  ngOnDestroy() {
+    this.events.unsubscribe('familys');
+    console.log("Success unsub");
+  }
+
+  getfamilys(){
+    this.familyservice.getmyfamilys();
+    this.events.subscribe('familys', () => {
+      this.myfamilys = this.familyservice.myfamilys;
+    })
   }
 
   close() {

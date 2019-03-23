@@ -55,7 +55,8 @@ export class FeedPage {
     , public _POST: PostProvider
     , public _IMG: ImageProvider
     , public _USER: UserProvider
-    , public alertCtrl: AlertController
+    , public alertCtrl: AlertController,
+    public toastCtrl: ToastController
   ) {
     // this.getComment();
     this.getPosts();
@@ -294,6 +295,11 @@ export class FeedPage {
     }
     this.getPosts();
     event.complete();
+    let toast = this.toastCtrl.create({
+      message: 'แสดงรายการอัพเดทล่าสุดเรียบร้อยแล้ว.',
+      duration: 3000
+    });
+    toast.present();      
   }
 
   ago(time) {

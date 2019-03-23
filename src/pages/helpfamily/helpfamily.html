@@ -17,5 +17,18 @@
 </ion-header>
 
 <ion-content padding>
-  
+    <ion-list no-lines>
+        <ion-item *ngFor="let key of myfamilys" >
+          <ion-thumbnail item-start *ngIf="key.data().photoURL">
+            <img src="{{key.data().photoURL}}">
+          </ion-thumbnail>
+          <ion-thumbnail item-start *ngIf="!key.data().photoURL">
+            <img src="assets/imgs/user.png">
+          </ion-thumbnail>
+          <h2>{{key.data().owner_name}}</h2>
+          <ion-icon name="ios-call" item-right (click)="call()"></ion-icon>
+          <ion-icon name="star" item-right (click)="sendSMS"></ion-icon>
+          
+        </ion-item>
+      </ion-list>
 </ion-content>

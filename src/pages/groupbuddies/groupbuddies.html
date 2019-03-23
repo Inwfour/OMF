@@ -28,23 +28,5 @@
         <h2>{{key.data().owner_name}}</h2>
         <button ion-button clear item-end (click)="addbuddy(key)">เพิ่มสมาชิก</button>
       </ion-item>
-
-    <!-- <ion-item-sliding *ngFor="let key of myfriends">
-      <ion-item>
-        <ion-avatar item-left *ngIf="key.data().photoURL">
-          <img src="{{key.data().photoURL}}">
-        </ion-avatar>
-        <ion-avatar item-left  *ngIf="!key.data().photoURL">
-            <img src="assets/imgs/user.png">
-          </ion-avatar>
-        <h2>{{key.data().owner_name}}</h2>
-      </ion-item>
-      <ion-item-options slide="left">
-        <button ion-button color="primary" (click)="addbuddy(key)">
-          <ion-icon name="person-add"></ion-icon>
-          เพิ่มสมาชิก
-        </button>
-      </ion-item-options>
-    </ion-item-sliding> -->
   </ion-list>
   </ion-content>
