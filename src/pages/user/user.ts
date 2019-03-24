@@ -5,8 +5,6 @@ import moment from 'moment';
 import { CommentsPage } from '../comments/comments';
 import { HttpClient } from '@angular/common/http';
 import { EditPostPage } from '../edit-post/edit-post';
-import { Camera, CameraOptions } from '@ionic-native/camera';
-import { PreloaderProvider } from '../../providers/preloader/preloader';
 import { ImageProvider } from '../../providers/image/image';
 import { UserProvider } from '../../providers/user/user';
 import { EdituserPage } from '../edituser/edituser';

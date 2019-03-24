@@ -1,0 +1,54 @@
+<ion-header>
+    <ion-grid no-padding>
+      <ion-row no-padding style="height: 20px">
+        <ion-col col-4 style="background-color: violet">
+  
+        </ion-col>
+        <ion-col col-4 style="background-color: darkcyan">
+  
+          </ion-col>
+          <ion-col col-4 style="background-color: darkblue">
+  
+          </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-header>
+  <ion-content padding>
+      <div class="profile-image">
+          <img src="assets/imgs/disease.png">
+        </div>
+        <br>
+        <div>
+          <h2>คุณมีโรคประจำตัวไหม ?</h2>
+        </div>
+        <br>
+        <div>
+            <ion-item>
+                <ion-label>โรคประจำตัว</ion-label>
+                <ion-select [(ngModel)]="health" multiple="true">
+                  <ion-option>โรคความดันโลหิตสูง</ion-option>
+                  <ion-option>โรคเบาหวาน</ion-option>
+                  
+                  <ion-option>โรคอัลไซเมอร์</ion-option>
+                  <ion-option>โรคข้อเสื่อม</ion-option>
+                  <ion-option>โรคซึมเศร้า</ion-option>
+                </ion-select>
+              </ion-item>
+        </div>
+        <div class="spacer" tyle="height: 10px;"></div>
+  
+  </ion-content>
+  
+  <ion-footer>
+    <ion-grid>
+      <ion-row>
+        <ion-col col-6>
+   <button ion-button round block color="danger" (click)="back()">กลับ</button>
+        </ion-col>
+        <ion-col col-6>
+           <button ion-button block round  color="headertop" (click)="next()">เสร็จสิ้น</button>
+          </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-footer>
+  

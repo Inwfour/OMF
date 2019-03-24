@@ -13,17 +13,17 @@ declare var window;
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage: any;
+  rootPage:any = LoginPage;
   showSplash = true;
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
-      firebase.auth().onAuthStateChanged((user) => {
-        console.log(user);
-        if (user) {
-          this.rootPage = TabsPage;
-          }  else {
-          this.rootPage = LoginPage;
-        }
-    });
+    //   firebase.auth().onAuthStateChanged((user) => {
+    //     console.log(user);
+    //     if (user) {
+    //       this.rootPage = TabsPage;
+    //       }  else {
+    //       this.rootPage = LoginPage;
+    //     }
+    // });
 
 
     platform.ready().then(() => {

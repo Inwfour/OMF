@@ -61,60 +61,62 @@ export class RegisterPage {
   }
 
   optionSave(url:string){
-    var newUser = firebase.auth().currentUser;
-    newUser.updateProfile({
-     displayName: "",
-     photoURL: url
-   }).catch((err) => {
-     console.log(err);
-   })
+  //   var newUser = firebase.auth().currentUser;
+  //   newUser.updateProfile({
+  //    displayName: "",
+  //    photoURL: url
+  //  }).catch((err) => {
+  //    console.log(err);
+  //  })
 
   }
 
   save(user) {
-    firebase.auth().createUserWithEmailAndPassword(user.email + "@omf.com", user.password)
-      .then(async () => {
-        if (this.image != "assets/imgs/user.png") {
-          await this._USER.uploadImgUser(firebase.auth().currentUser.uid, this.image)
-            .then((data) => {
-              this.url = data;
-              this.optionSave(this.url);
-              firebase.firestore().collection("informationUser").doc(firebase.auth().currentUser.uid).set({
-                photoURL: this.url,
-                owner_name: "",
-                owner: firebase.auth().currentUser.uid,
-                email: firebase.auth().currentUser.email,
-                created: firebase.firestore.FieldValue.serverTimestamp(),
-                age: 0,
-                phone: 0,
-                likeplay: [],
-                disease: []
-              }).then(() => {
-                console.log("Success !!!");
-                this.navCtrl.setRoot(LoginPage);
-              }).catch((err) => {
-                console.log(err);
-                });
-            });
-        }else {
-          this.optionSave(this.url);
-          firebase.firestore().collection("informationUser").doc(firebase.auth().currentUser.uid).set({
-            photoURL: this.url,
-            owner_name: "",
-            owner: firebase.auth().currentUser.uid,
-            email: firebase.auth().currentUser.email,
-            created: firebase.firestore.FieldValue.serverTimestamp(),
-            age: 0,
-            phone: 0,
-            likeplay: [],
-            disease: []
-          }).then(() => {
-            console.log("Success !!!");
-            this.navCtrl.setRoot(LoginPage);
-          }).catch((err) => {
-            console.log(err);
-            });
-        }
-      })
+console.log(user);
+
+    // firebase.auth().createUserWithEmailAndPassword(user.email + "@omf.com", user.password)
+    //   .then(async () => {
+    //     if (this.image != "assets/imgs/user.png") {
+    //       await this._USER.uploadImgUser(firebase.auth().currentUser.uid, this.image)
+    //         .then((data) => {
+    //           this.url = data;
+    //           this.optionSave(this.url);
+    //           firebase.firestore().collection("informationUser").doc(firebase.auth().currentUser.uid).set({
+    //             photoURL: this.url,
+    //             owner_name: "",
+    //             owner: firebase.auth().currentUser.uid,
+    //             email: firebase.auth().currentUser.email,
+    //             created: firebase.firestore.FieldValue.serverTimestamp(),
+    //             age: 0,
+    //             phone: 0,
+    //             likeplay: [],
+    //             disease: []
+    //           }).then(() => {
+    //             console.log("Success !!!");
+    //             this.navCtrl.setRoot(LoginPage);
+    //           }).catch((err) => {
+    //             console.log(err);
+    //             });
+    //         });
+    //     }else {
+    //       this.optionSave(this.url);
+    //       firebase.firestore().collection("informationUser").doc(firebase.auth().currentUser.uid).set({
+    //         photoURL: this.url,
+    //         owner_name: "",
+    //         owner: firebase.auth().currentUser.uid,
+    //         email: firebase.auth().currentUser.email,
+    //         created: firebase.firestore.FieldValue.serverTimestamp(),
+    //         age: 0,
+    //         phone: 0,
+    //         likeplay: [],
+    //         disease: []
+    //       }).then(() => {
+    //         console.log("Success !!!");
+    //         this.navCtrl.setRoot(LoginPage);
+    //       }).catch((err) => {
+    //         console.log(err);
+    //         });
+    //     }
+    //   })
     }
 }

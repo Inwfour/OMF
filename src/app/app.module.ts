@@ -52,7 +52,7 @@ import { GroupinfoPage } from '../pages/groupinfo/groupinfo';
 import { SlideregisterPage } from '../pages/slideregister/slideregister';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Geolocation } from '@ionic-native/geolocation';
-import { RegisterDetailPage } from '../pages/register-detail/register-detail';
+
 import { PhotoViewer } from '@ionic-native/photo-viewer';
 import { HelpPage } from '../pages/help/help';
 import { CallNumber } from '@ionic-native/call-number';
@@ -66,6 +66,9 @@ import { PasswordresetPage } from '../pages/passwordreset/passwordreset';
 import { FamilyPage } from '../pages/family/family';
 import { FamilybuddysPage } from '../pages/familybuddys/familybuddys';
 import { FamilyProvider } from '../providers/family/family';
+import { RegisterNamePage } from '../pages/register-name/register-name';
+import { RegisterAgePage } from '../pages/register-age/register-age';
+import { RegisterDiseasePage } from '../pages/register-disease/register-disease';
 
 firebase.initializeApp(FIREBASE_CONFIG);
 firebase.firestore().settings({ timestampsInSnapshots: true })
@@ -101,14 +104,17 @@ firebase.firestore().settings({ timestampsInSnapshots: true })
     GroupbuddiesPage,
     GroupmembersPage,
     GroupinfoPage,
-    RegisterDetailPage,
     HelpPage,
     HowtoPage,
     HelpfamilyPage,
     EdituserPage,
     PasswordresetPage,
     FamilyPage,
-    FamilybuddysPage
+    FamilybuddysPage,
+    //REGISTER DETAILS
+    RegisterNamePage,
+    RegisterAgePage,
+    RegisterDiseasePage,
   ],
   imports: [
     BrowserModule,
@@ -148,12 +154,15 @@ firebase.firestore().settings({ timestampsInSnapshots: true })
     GroupsPage,
     NewgroupPage,
     GroupchatPage,
+    //REGISTER DETAILS
+    RegisterNamePage,
+    RegisterAgePage,
+    RegisterDiseasePage,
     // detail groupchat
     GroupbuddiesPage,
     GroupmembersPage,
     GroupinfoPage,
     SlideregisterPage,
-    RegisterDetailPage,
     HelpPage,
     HowtoPage,
     HelpfamilyPage,
@@ -186,7 +195,7 @@ firebase.firestore().settings({ timestampsInSnapshots: true })
     CallNumber,
     SMS,
     AndroidPermissions,
-    FamilyProvider
+    FamilyProvider,
   ]
 })
 export class AppModule { }

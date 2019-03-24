@@ -26,11 +26,11 @@
     <ion-thumbnail item-start *ngIf="!key.data().photoURL">
       <img src="assets/imgs/user.png">
     </ion-thumbnail>
-    <h2>{{key.data().owner_name}}</h2>
-    <!-- <div item-end>
-      <h2></h2>
-    </div> -->
-    <!-- <button ion-button clear item-end>เพิ่มสมาชิก</button> -->
+    <ion-label item-start>{{key.data().owner_name}}</ion-label>
+
+      <ion-label item-center>{{key.data().type}}</ion-label>
+
+    <ion-icon name="settings" item-right (click)="settings(key)"></ion-icon>
   </ion-item>
 </ion-card>
 </ion-list>

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController, Events } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, Events, ToastController } from 'ionic-angular';
 import { CallNumber } from '@ionic-native/call-number';
 import { AndroidPermissions } from '@ionic-native/android-permissions';
 import { SMS } from '@ionic-native/sms';
@@ -26,19 +26,15 @@ export class HelpfamilyPage {
     private androidPermissions: AndroidPermissions,
     private sms: SMS,
     private events: Events,
-    private familyservice: FamilyProvider
+    private familyservice: FamilyProvider,
+    private toast: ToastController
     ) {
     this.getfamilys();
   }
-  ngOnDestroy() {
-    this.events.unsubscribe('familys');
-    console.log("Success unsub");
-  }
 
   getfamilys(){
-    this.familyservice.getmyfamilys();
-    this.events.subscribe('familys', () => {
-      this.myfamilys = this.familyservice.myfamilys;
+    this.familyservice.getmyfamilys().then((data) => {
+      this.myfamilys = data;
     })
   }
 
@@ -46,12 +42,19 @@ export class HelpfamilyPage {
     this.viewCtrl.dismiss();
   }
 
-  call(){
-    this.callNumber.callNumber('0887665841', true).then(() => {
+  call(key){
+    if(key.data().phone != undefined){
+    this.callNumber.callNumber(key.data().phone, true).then(() => {
       console.log("Worked");
     }).catch((err) => {
       alert(JSON.stringify(err));
     })
+  }else {
+    this.toast.create({
+      message: "ไม่สามารถโทรได้สมาชิกไม่ได้ระบุเบอร์ไว้",
+      duration: 2000
+    }).present();
+  }
   }
 
 

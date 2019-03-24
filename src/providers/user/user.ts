@@ -10,6 +10,7 @@ import { Events } from 'ionic-angular';
 export class UserProvider {
   firereq = firebase.firestore().collection('requests');
   firefriends = firebase.firestore().collection('friends');
+  fireuser = firebase.firestore().collection('informationUser');
   temparr: Array<any> = [];
   constructor(public http: HttpClient,
     public _LOADER: PreloaderProvider,
@@ -207,6 +208,29 @@ export class UserProvider {
           disease.push(docs);
         })
         resolve(disease);
+      }).catch(err => {
+        reject(err);
+      })
+    })
+  }
+
+  editUser(user) {
+    return new Promise((resolve, reject) => {
+      this.fireuser.doc(firebase.auth().currentUser.uid).update({
+        owner_name: user.owner_name,
+        age: user.age,
+        phone: user.phone,
+        disease: user.disease
+      }).then(() => {
+        var newUser = firebase.auth().currentUser;
+        newUser.updateProfile({
+         displayName: user.owner_name,
+         photoURL: user.photoURL
+       }).then(() => {
+        resolve(true)
+       }).catch((err) => {
+         reject(err);
+       })
       }).catch(err => {
         reject(err);
       })

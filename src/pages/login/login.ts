@@ -8,6 +8,7 @@ import { SlideregisterPage } from '../slideregister/slideregister';
 import { UserProvider } from '../../providers/user/user';
 import { HomePage } from '../home/home';
 import { PasswordresetPage } from '../passwordreset/passwordreset';
+import { RegisterNamePage } from '../register-name/register-name';
 
 
 @IonicPage()
@@ -28,41 +29,43 @@ export class LoginPage {
   }
 
   //Set Emtry String
-  ionViewWillEnter() {
+  ionViewDidLoad() {
     this.user.email = "";
     this.user.password = "";
   }
 
   //Login Service
-  login() {
+  login(user) {
+    this.navCtrl.push(RegisterNamePage);
 
-    let loader = this.loadingCtrl.create({
-      spinner: 'hide',
-      content: `<img src="assets/imgs/loading.svg">`
+    // let loader = this.loadingCtrl.create({
+    //   spinner: 'hide',
+    //   content: `<img src="assets/imgs/loading.svg">`
       
-    });
+    // });
   
-    loader.present();
+    // loader.present();
 
-    firebase.auth().signInWithEmailAndPassword(this.user.email + "@omf.com",this.user.password).then((data) => {
-      console.log(data);
-      firebase.firestore().enableNetwork();
-      firebase.firestore().collection("informationUser").doc(firebase.auth().currentUser.uid).get().then((res) => {
-        let me = res;
-        loader.dismiss();
-        if(me.data().owner_name == "" || me.data().age == 0 || me.data().phone == 0){
-          this.navCtrl.setRoot(SlideregisterPage);
-        }else {
-          this.navCtrl.setRoot(TabsPage);
-        }
-      })
-    }).catch(() => {
-      loader.dismiss();
-      this.toastCtrl.create({
-        message: "กรุณากรอกชื่อผู้ใช้หรือรหัสผ่านให้ถูกต้อง",
-        duration: 3000
-      }).present();
-    })
+    // firebase.auth().signInWithEmailAndPassword(this.user.email + "@omf.com",this.user.password).then((data) => {
+    //   console.log(data);
+    //   firebase.firestore().enableNetwork();
+    //   firebase.firestore().collection("informationUser").doc(firebase.auth().currentUser.uid).get().then((res) => {
+    //     let me = res;
+    //     loader.dismiss();
+    //     this.navCtrl.setRoot(TabsPage);
+    //     // if(me.data().owner_name == "" || me.data().age == 0 || me.data().phone == 0){
+    //     //   this.navCtrl.setRoot(SlideregisterPage);
+    //     // }else {
+    //     //   this.navCtrl.setRoot(TabsPage);
+    //     // }
+    //   })
+    // }).catch(() => {
+    //   loader.dismiss();
+    //   this.toastCtrl.create({
+    //     message: "กรุณากรอกชื่อผู้ใช้หรือรหัสผ่านให้ถูกต้อง",
+    //     duration: 3000
+    //   }).present();
+    // })
   }
 
   nextRegister() {

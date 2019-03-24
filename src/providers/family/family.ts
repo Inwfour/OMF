@@ -9,85 +9,97 @@ export class FamilyProvider {
   fireuser = firebase.firestore().collection('informationUser');
   myfamilys: any;
   typefamilys: any = [];
+  familysuid:any;
 
   constructor(public userservice: UserProvider,
     public events: Events,
   ) {
   }
 
-  // getfamilysID() {
-  //   return new Promise((resolve,reject) => {
-  //     this.firefamilys.doc(firebase.auth().currentUser.uid).collection('family').get().then((snapshot) => {
-  //       snapshot.forEach((doc) => {
-  //         resolve(doc.id);
-  //       })
-  //     }).catch(err => {
-  //       reject(err);
-  //     })
-  //   })
-  // }
-
   addfamilys(buddy, type) {
     return new Promise((resolve, reject) => {
+
       this.firefamilys.doc(firebase.auth().currentUser.uid).collection('family').add({
         uid: buddy.id,
+        phone: buddy.data().phone,
+        photoURL: buddy.data().photoURL,
+        owner_name: buddy.data().owner_name,
         type: type
       }).then(() => {
-
-        let updateFamily = {};
-        updateFamily[`familys.${buddy.id}`] = type;
-        this.fireuser.doc(firebase.auth().currentUser.uid).update(updateFamily).then(() => {
+        this.fireuser.doc(firebase.auth().currentUser.uid).get().then((data) => {
           this.firefamilys.doc(buddy.id).collection('family').add({
-            uid: firebase.auth().currentUser.uid,
+            uid: data.data().owner,
+            phone: data.data().phone,
+            photoURL: data.data().photoURL,
+            owner_name: data.data().owner_name,
             type: type
           }).then(() => {
-            let updateBuddy = {};
-            updateBuddy[`familys.${firebase.auth().currentUser.uid}`] = type;
-            this.fireuser.doc(buddy.id).update(updateBuddy).then(() => {
-              resolve(true);
-            })
-          }).catch(err => {
+            resolve(true);
+          })
+          .catch(err => {
             reject(err);
           })
+        }).catch(err => {
+          reject(err);
+        }) 
         })
+    })
+  }
 
+  getmyfamilys() {
+    return new Promise((resolve, reject) => {
+      this.firefamilys.doc(firebase.auth().currentUser.uid).collection('family')
+      .get().then((snapshot) => {
+        this.familysuid = [];
+        snapshot.forEach((doc) => {
+          this.familysuid.push(doc);
+        })
+        resolve(this.familysuid);
       }).catch(err => {
         reject(err);
       })
     })
   }
 
-  getmyfamilys() {
-    let allfamilys;
-    var familysuid = [];
-    this.typefamilys = [];
-    this.firefamilys.doc(firebase.auth().currentUser.uid).collection('family')
-      .get().then((snapshot) => {
-        allfamilys = snapshot.docs;
-        familysuid = [];
-        for (var i in allfamilys) {
-          familysuid.push(allfamilys[i].data().uid);
-        }
-
+  edittype(buddy, type){
+    return new Promise((resolve, reject) => {
+      this.firefamilys.doc(firebase.auth().currentUser.uid).collection('family').doc(buddy.id).update({
+        type: type
       }).then(() => {
-        this.userservice.getalluser().then((res: any) => {
-          var allusers = [];
-          allusers = res;
-
-          this.myfamilys = [];
-          for (var j in familysuid) {
-
-            for (var key in allusers) {
-              if (familysuid[j] === allusers[key].id) {
-                this.myfamilys.push(allusers[key]);
-
-              }
-            }
-            // console.log(this.myfamilys);
-          }
-          this.events.publish('familys')
+        this.firefamilys.doc(buddy.data().uid).collection("family").where("uid", "==", firebase.auth().currentUser.uid).get().then((res) => {
+          res.forEach((doc) => {
+            this.firefamilys.doc(buddy.data().uid).collection('family').doc(doc.id).update({
+              type: type
+            }).then(() => {
+              resolve(true);
+            })
+            .catch(err => {
+              reject(err);
+            })
+          })
+        }).catch(err => {
+          reject(err);
+        }) 
         })
-      })
+    })
   }
 
+  deletefamily(buddy) {
+    return new Promise((resolve, reject) => {
+       this.firefamilys.doc(firebase.auth().currentUser.uid).collection('family').doc(buddy.id).delete().then(() => {
+        this.firefamilys.doc(buddy.data().uid).collection("family").where("uid", "==", firebase.auth().currentUser.uid).get().then((res) => {
+          res.forEach((doc) => {
+            this.firefamilys.doc(buddy.data().uid).collection('family').doc(doc.id).delete().then(() => {
+              resolve(true);
+            })
+            .catch(err => {
+              reject(err);
+            })
+          })
+        }).catch(err => {
+          reject(err);
+        }) 
+        })
+    })
+  }
 }

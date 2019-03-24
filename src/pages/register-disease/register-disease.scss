@@ -1,0 +1,26 @@
+page-register-disease {
+    .profile-image{
+        img{
+            margin-bottom: 20px;
+            height: 200px;
+            width: 200px;
+        }
+    }
+    .scroll-content {
+        align-content: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+    }
+
+    input {
+        width: calc(100% - 8px - 8px);
+        background: #fff;
+        box-shadow: 0 6px 10px 0 rgba(0,0,0,0.1);
+        border: 0;
+        outline: 0;
+        padding: 14px 18px;
+        margin: 13px 8px;
+    }
+}

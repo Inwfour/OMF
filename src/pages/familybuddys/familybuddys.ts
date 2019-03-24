@@ -154,6 +154,14 @@ export class FamilybuddysPage {
         }, {
           text: 'เพิ่มสมาชิก',
           handler: (data) => {  
+            if(data === undefined) {
+              let alert = this.alertCtrl.create({
+                title: 'ไม่สำเร็จ',
+                subTitle: 'กรุณาเลือกตำแหน่งของสมาชิก',
+                buttons: ['ตกลง']
+              });
+              alert.present();
+            }else {
             let checkfamily;
             this.firefamily.doc(firebase.auth().currentUser.uid).collection("family").where("uid", "==", item.id) .get().then((snapshot) => {
               snapshot.forEach((docs) => {
@@ -169,7 +177,7 @@ export class FamilybuddysPage {
             })
              }else {
               let alert = this.alertCtrl.create({
-                title: 'ได้เป็นสมาชิกในครอบครัวแล้ว',
+                title: 'เป็นสมาชิกในครอบครัวอยู่แล้ว',
                 buttons: ['ตกลง']
               });
               alert.present();
@@ -177,10 +185,12 @@ export class FamilybuddysPage {
               
             })
           }
+          }
         }
       ]
     })
     alert.present();
+    
   }
 
 }

@@ -29,23 +29,5 @@
           <!-- <p>เลื่อนไปทางซ้าย</p> -->
           <button ion-button clear item-end (click)="removemember(key)">ลบสมาชิก</button>
         </ion-item>
-        
-    <!-- <ion-item-sliding *ngFor="let key of groupmembers">
-      <ion-item>
-        <ion-avatar item-left *ngIf="key.data().photoURL">
-          <img src="{{key.data().photoURL}}">
-        </ion-avatar>
-        <ion-avatar item-left  *ngIf="!key.data().photoURL">
-            <img src="assets/imgs/user.png">
-          </ion-avatar>
-        <h2>{{key.data().owner_name}}</h2>
-      </ion-item>
-      <ion-item-options slide="left">
-        <button ion-button color="danger" (click)="removemember(key)">
-          <ion-icon name="trash"></ion-icon>
-          ลบสมาชิก
-        </button>
-      </ion-item-options>
-    </ion-item-sliding> -->
   </ion-list>
 </ion-content>
