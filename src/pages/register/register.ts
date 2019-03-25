@@ -26,28 +26,33 @@ export class RegisterPage {
   }
 
   save(user) {
-    this.registerService.SaveUser(user).then(async (data) => {
+    this.registerService.SaveUser(user).then((data) => {
       user.email = "";
       user.password = "";
-      await this.fireinfo.doc(firebase.auth().currentUser.uid).set({
-        owner: firebase.auth().currentUser.uid,
-        email: firebase.auth().currentUser.email,
-        created: firebase.firestore.FieldValue.serverTimestamp(),
-      }).then(() => {
-        console.log(data);
-        this.toastCtrl.create({
-          message: "บันทึกสำเร็จแล้ว",
-          duration: 3000,
-          position: 'top'
-        }).present();
-      })
-      .catch((err) => {
-        this.toastCtrl.create({
-          message: "บันทึกข้อมูลไม่สำเร็จ",
-          duration: 3000,
-          position: 'top'
-        }).present();
-      });
+      this.toastCtrl.create({
+        message: "บันทึกสำเร็จแล้ว",
+        duration: 3000,
+        position: 'top'
+      }).present();
+      //  this.fireinfo.doc(firebase.auth().currentUser.uid).set({
+      //   owner: firebase.auth().currentUser.uid,
+      //   email: firebase.auth().currentUser.email,
+      //   created: firebase.firestore.FieldValue.serverTimestamp(),
+      // }).then(() => {
+      //   console.log(data);
+      //   this.toastCtrl.create({
+      //     message: "บันทึกสำเร็จแล้ว",
+      //     duration: 3000,
+      //     position: 'top'
+      //   }).present();
+      // })
+      // .catch((err) => {
+      //   this.toastCtrl.create({
+      //     message: "บันทึกข้อมูลไม่สำเร็จ",
+      //     duration: 3000,
+      //     position: 'top'
+      //   }).present();
+      // });
     }).catch(() => {
       this.toastCtrl.create({
         message: "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง",

@@ -15,7 +15,7 @@ export class RegisterDiseasePage {
     private toastCtrl : ToastController
     ) {
       this.fireinfo.doc(firebase.auth().currentUser.uid).get().then((res) => {
-        if(res.data().owner_name === undefined) {
+        if(res.data().disease === undefined) {
           this.disease = [];
         }else {
           this.disease = res.data().disease;
