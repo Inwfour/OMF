@@ -105,6 +105,7 @@
     <plugin name="cordova-sms-plugin" spec="1.0.0" />
     <plugin name="mx.ferreyra.callnumber" spec="~0.0.2" />
     <plugin name="cordova-plugin-android-permissions" spec="1.0.0" />
+    <plugin name="cordova-sqlite-storage" spec="3.2.0" />
     <engine name="ios" spec="4.5.5" />
     <engine name="android" spec="^7.1.4" />
 </widget>

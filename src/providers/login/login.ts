@@ -3,7 +3,6 @@ import firebase from 'firebase';
 
 @Injectable()
 export class LoginProvider {
-
   constructor() {
     
   }
@@ -11,10 +10,10 @@ export class LoginProvider {
   loginUser(user) {
     return new Promise((resolve, reject) => {
     firebase.auth().signInWithEmailAndPassword(user.email + "@omf.com",user.password).then((data) => {
-      firebase.firestore().enableNetwork();
+      // firebase.firestore().enableNetwork();
       resolve(data);
     }).catch(err => {
-      reject(false);
+      reject(err);
     })
     })
 

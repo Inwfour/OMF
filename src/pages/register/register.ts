@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, LoadingController, AlertController
 import { User } from '../../models/user';
 import firebase from 'firebase';
 import { RegisterProvider } from '../../providers/register/register';
+import { LoginPage } from '../login/login';
 
 
 @IonicPage()
@@ -26,33 +27,14 @@ export class RegisterPage {
   }
 
   save(user) {
-    this.registerService.SaveUser(user).then((data) => {
-      user.email = "";
-      user.password = "";
-      this.toastCtrl.create({
-        message: "บันทึกสำเร็จแล้ว",
-        duration: 3000,
-        position: 'top'
-      }).present();
-      //  this.fireinfo.doc(firebase.auth().currentUser.uid).set({
-      //   owner: firebase.auth().currentUser.uid,
-      //   email: firebase.auth().currentUser.email,
-      //   created: firebase.firestore.FieldValue.serverTimestamp(),
-      // }).then(() => {
-      //   console.log(data);
-      //   this.toastCtrl.create({
-      //     message: "บันทึกสำเร็จแล้ว",
-      //     duration: 3000,
-      //     position: 'top'
-      //   }).present();
-      // })
-      // .catch((err) => {
-      //   this.toastCtrl.create({
-      //     message: "บันทึกข้อมูลไม่สำเร็จ",
-      //     duration: 3000,
-      //     position: 'top'
-      //   }).present();
-      // });
+    this.registerService.SaveUser(user).then(() => {
+      this.user.email = "";
+      this.user.password = "";
+        this.toastCtrl.create({
+          message: "บันทึกสำเร็จแล้ว",
+          duration: 3000,
+          position: 'top'
+        }).present();
     }).catch(() => {
       this.toastCtrl.create({
         message: "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง",

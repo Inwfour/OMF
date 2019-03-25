@@ -73,6 +73,7 @@ import { RegisterPhotoPage } from '../pages/register-photo/register-photo';
 import { RegisterPhonePage } from '../pages/register-phone/register-phone';
 import { RegisterProvider } from '../providers/register/register';
 import { LoginProvider } from '../providers/login/login';
+import { IonicStorageModule } from '@ionic/storage';
 
 firebase.initializeApp(FIREBASE_CONFIG);
 firebase.firestore().settings({ timestampsInSnapshots: true })
@@ -132,7 +133,8 @@ firebase.firestore().settings({ timestampsInSnapshots: true })
       tabsHideOnSubPages: true,
     }),
     BrowserAnimationsModule,
-    IonicImageViewerModule
+    IonicImageViewerModule,
+    IonicStorageModule.forRoot()
 
   ],
   bootstrap: [IonicApp],

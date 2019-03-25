@@ -7,7 +7,7 @@ import { TabsCameraPage } from '../tabs-camera/tabs-camera';
 import { FriendsPage } from '../friends/friends';
 import { TabsfriendsPage } from '../tabsfriends/tabsfriends';
 import { SettingsPage } from '../settings/settings';
-
+import { Storage } from '@ionic/storage';
 /**
  * Generated class for the TabsPage page.
  *
@@ -33,7 +33,8 @@ export class TabsPage {
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
     public events:Events,
-    public modalCtrl:ModalController
+    public modalCtrl:ModalController,
+    private storage : Storage,
     ) {
       // this.checked = this.navParams.get("check");
       // if(this.checked) {
@@ -44,6 +45,7 @@ export class TabsPage {
 
         events.subscribe('user:logout', () => {
           this.navCtrl.setRoot(LoginPage);
+          this.storage.set('email', null);
         })
   }
 

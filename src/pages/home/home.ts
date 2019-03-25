@@ -91,7 +91,7 @@ export class HomePage {
             firebase.auth().signOut().then((data) => {
               console.log(data);
               this.events.publish('user:logout');
-              firebase.firestore().disableNetwork();
+              // firebase.firestore().disableNetwork();
             })
           }
         }

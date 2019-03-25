@@ -43,27 +43,36 @@ export class LoginPage {
     })
     loader.present();
 
-    this.loginservice.loginUser(user).then(async (data) => {
+    this.loginservice.loginUser(user).then(async(data) => {
+      console.log(data);
+
       await this.fireinfo.doc(firebase.auth().currentUser.uid).get().then((res) => {
         // Checked Status Auth
-        if(res.data().photoURL != undefined && res.data().owner_name != undefined && res.data().age != undefined && res.data().phone != undefined && res.data().disease != undefined) {
-          loader.dismiss();
-          this.navCtrl.setRoot(TabsPage);
-        } else {
 
         // Checked Undefined InfomationUser
         if (res.data() === undefined) {
-          this.fireinfo.doc(firebase.auth().currentUser.uid).set({
+           this.fireinfo.doc(firebase.auth().currentUser.uid).set({
             owner: firebase.auth().currentUser.uid,
             email: firebase.auth().currentUser.email,
             created: firebase.firestore.FieldValue.serverTimestamp(),
           }).then(() => {
-            console.log(data);
-            this.toastCtrl.create({
-              message: "บันทึกสำเร็จแล้ว",
-              duration: 3000,
-              position: 'top'
-            }).present();
+            loader.dismiss();
+             this.toastCtrl.create({
+                message: "เข้าสู่ระบบสำเร็จ",
+                duration: 3000,
+                position: 'top',
+              }).present();
+              this.navCtrl.push(RegisterPhotoPage);
+          })
+            .catch((err) => {
+              loader.dismiss();
+              this.toastCtrl.create({
+                message: "บันทึกข้อมูลไม่สำเร็จ",
+                duration: 3000,
+                position: 'top'
+              }).present();
+            });
+        } else {
             console.log(data);
             loader.dismiss();
             this.toastCtrl.create({
@@ -72,26 +81,8 @@ export class LoginPage {
               position: 'top',
             }).present();
             this.navCtrl.push(RegisterPhotoPage);
-          })
-            .catch((err) => {
-              this.toastCtrl.create({
-                message: "บันทึกข้อมูลไม่สำเร็จ",
-                duration: 3000,
-                position: 'top'
-              }).present();
-            });
-        } else {
-          console.log(data);
-          loader.dismiss();
-          this.toastCtrl.create({
-            message: "เข้าสู่ระบบสำเร็จ",
-            duration: 3000,
-            position: 'top',
-          }).present();
-          this.navCtrl.push(RegisterPhotoPage);
-        }
-      }
-    })
+          }
+      })
 
     }).catch((err) => {
       console.log(err);

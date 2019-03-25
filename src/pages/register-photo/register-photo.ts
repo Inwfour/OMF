@@ -5,6 +5,7 @@ import { ImageProvider } from '../../providers/image/image';
 import { UserProvider } from '../../providers/user/user';
 import firebase from 'firebase';
 import { LoginPage } from '../login/login';
+import { Storage } from '@ionic/storage';
 
 @IonicPage()
 @Component({
@@ -21,6 +22,7 @@ export class RegisterPhotoPage {
     public _IMG: ImageProvider,
     private userservice: UserProvider,
     private toastCtrl : ToastController,
+    private storage : Storage,
     ) {
       this.uid = firebase.auth().currentUser.uid;
       // this.fireinfo.doc(firebase.auth().currentUser.uid).get().then((res) => {
@@ -70,7 +72,7 @@ export class RegisterPhotoPage {
   back() {
     firebase.auth().signOut().then((data) => {
       this.navCtrl.pop();
-      firebase.firestore().disableNetwork();
+      // firebase.firestore().disableNetwork();
     })
   }
 
