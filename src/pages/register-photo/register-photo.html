@@ -4,7 +4,7 @@
       <ion-col col-3 style="background-color: violet">
 
       </ion-col>
-      <ion-col col-2 style="background-color: dodgerblue">
+      <ion-col col-2 style="background-color: white">
 
         </ion-col>
         <ion-col col-2 style="background-color: white">
@@ -21,15 +21,12 @@
 </ion-header>
 <ion-content padding>
     <div class="profile-image">
-        <img src="assets/imgs/displayname.png">
+        <img [src]="image" imageViewer>
       </div>
+      <br>
       <br>
       <div>
-        <h2>ชื่อเล่นของคุณคืออะไร ?</h2>
-      </div>
-      <br>
-      <div text-center>
-        <input maxlength="20" text-center type="text" [(ngModel)]="displayname" placeholder="ระบุชื่อเล่นของคุณ">
+        <button ion-button round block outline color="headertop" (click)="changeProfilePicture()">เปลี่ยนรูปประจำตัว</button>
       </div>
       <div class="spacer" tyle="height: 10px;"></div>
 

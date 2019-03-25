@@ -9,12 +9,6 @@ import { ImageProvider } from '../../providers/image/image';
 import { UserProvider } from '../../providers/user/user';
 import { EdituserPage } from '../edituser/edituser';
 import { TabsPage } from '../tabs/tabs';
-/**
- * Generated class for the UserPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
@@ -37,6 +31,7 @@ export class UserPage {
   photoURLDisplay: string = "";
   postLength: any;
   friendsLength: any;
+  familysLength: any;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -65,6 +60,7 @@ export class UserPage {
     })
   }
 
+
   getPosts() {
 
     this.posts = [];
@@ -89,6 +85,14 @@ export class UserPage {
     .get()
     .then((snapshot) => {
       this.friendsLength = snapshot.docs.length;
+    })
+
+    //Family length
+    firebase.firestore().collection("familys").doc(firebase.auth().currentUser.uid)
+    .collection("family")
+    .get()
+    .then((snapshot) => {
+      this.familysLength = snapshot.docs.length;
     })
 
     let query = firebase.firestore().collection("posts")
@@ -117,24 +121,44 @@ export class UserPage {
           firebase.firestore().collection("posts").where("owner", "==", this._uid)
           .get()
           .then(data => {
+            if(data != undefined){
               data.forEach((docs) => {
                   console.log("update post",docs.id);
                   firebase.firestore().collection("posts").doc(docs.id).update({
                       photoUser: change.doc.data().photoURL
                   })
               })
+            }
           })
+          
 
           // Edit comments
           firebase.firestore().collection("comments").where("owner", "==", this._uid)
           .get()
           .then(data => {
+            if(data != undefined){
             data.forEach((docs) => {
               console.log("update comments",docs.id);
               firebase.firestore().collection("comments").doc(docs.id).update({
                   photoUser: change.doc.data().photoURL
               })
           })
+        }
+          })
+
+          //Edit Family Img
+          firebase.firestore().collection("familys").doc(firebase.auth().currentUser.uid).collection("family").get().then((data) => {
+            if(data != undefined) {
+              data.forEach((docs) => {
+                firebase.firestore().collection("familys").doc(docs.data().uid).collection("family").get().then((snapshot) => {
+                  snapshot.forEach((doc) => {
+                    firebase.firestore().collection("familys").doc(docs.data().uid).collection("family").doc(doc.id).update({
+                      photoURL: change.doc.data().photoURL
+                    })
+                  })
+                })
+              })
+            }
           })
           
         }
@@ -349,10 +373,6 @@ export class UserPage {
 
   goEditProfile(){
     this.navCtrl.push(EdituserPage);
-  }
-
-  friend() {
-    this.navCtrl.setRoot(TabsPage);
   }
 
 }

@@ -77,7 +77,6 @@ export class UserProvider {
   // เพิ่มรูปภาพเข้า Cloud Storage profileImages
   uploadImgUser(_uid: any, img: any) {
     return new Promise((resolve, reject) => {
-
       let ref = firebase.storage().ref("profileImages/" + _uid);
       let uploadTask = ref.putString(img.split(',')[1], "base64");
 
@@ -88,7 +87,7 @@ export class UserProvider {
       }, (error) => {
         console.log(error)
       }, () => {
-        console.log("The upload is complete!!!");
+        console.log("เพิ่มรูปภาพสำเร็จ");
 
         uploadTask.snapshot.ref.getDownloadURL().then((url) => {
           resolve(url)
@@ -162,13 +161,11 @@ export class UserProvider {
       }).then(() => {
         newInformationUser.update({
           photoURL: url,
-          created: firebase.firestore.FieldValue.serverTimestamp()
         }).then(() => {
           resolve(true);
         }).catch((err) => {
           reject(err);
         })
-        resolve(true)
       }).catch((err) => {
         reject(err);
       })
@@ -234,6 +231,18 @@ export class UserProvider {
       }).catch(err => {
         reject(err);
       })
+    })
+  }
+
+  editImagePostandCommentsandFamily() {
+    return new Promise((resolve, reject) => {
+
+    })
+  }
+
+  editDetailPostandCommentsandFamily() {
+    return new Promise((resolve, reject) => {
+      
     })
   }
 

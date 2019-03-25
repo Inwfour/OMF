@@ -1,13 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 import { RegisterAgePage } from '../register-age/register-age';
-
-/**
- * Generated class for the RegisterNamePage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import firebase from 'firebase';
 
 @IonicPage()
 @Component({
@@ -15,8 +9,19 @@ import { RegisterAgePage } from '../register-age/register-age';
   templateUrl: 'register-name.html',
 })
 export class RegisterNamePage {
+  fireinfo = firebase.firestore().collection('informationUser');
+  displayname:any;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+    private toastCtrl : ToastController,
+    ) {
+      this.fireinfo.doc(firebase.auth().currentUser.uid).get().then((res) => {
+        if(res.data().owner_name === undefined) {
+          this.displayname = "";
+        }else {
+          this.displayname = res.data().owner_name;
+        }
+      })
   }
 
   ionViewDidLoad() {
@@ -28,7 +33,43 @@ export class RegisterNamePage {
   }
 
   next(){
-    this.navCtrl.push(RegisterAgePage);
+    if(this.displayname === "" || this.displayname === null || this.displayname === undefined){
+      this.toastCtrl.create({
+        message: "กรุณาระบุชื่อเล่นที่ถูกต้อง",
+        duration: 3000,
+        position: 'top'
+      }).present();
+  } else {
+    firebase.auth().currentUser.updateProfile({
+      photoURL: firebase.auth().currentUser.photoURL,
+      displayName: this.displayname
+    }).then(() => {
+      this.fireinfo.doc(firebase.auth().currentUser.uid).update({
+        owner_name: this.displayname
+      }).then(() => {
+        this.toastCtrl.create({
+          message: "บันทึกชื่อเล่นสำเร็จ",
+          duration: 3000,
+          position: 'top'
+        }).present();
+        this.navCtrl.push(RegisterAgePage);
+      }).catch((err) => {
+        console.log(err);
+        this.toastCtrl.create({
+          message: "บันทึกชื่อเล่นไม่สำเร็จ",
+          duration: 3000,
+          position: 'top'
+        }).present();
+      })
+    }).catch((err) => {
+      console.log(err);
+      this.toastCtrl.create({
+        message: "บันทึกชื่อเล่นไม่สำเร็จ",
+        duration: 3000,
+        position: 'top'
+      }).present();
+    })
   }
+}
 
 }

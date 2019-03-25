@@ -1,14 +1,11 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, AlertController,ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, AlertController, ToastController } from 'ionic-angular';
 import { User } from '../../models/user';
 import { RegisterPage } from '../register/register';
-import firebase from 'firebase';
-import { TabsPage } from '../tabs/tabs';
-import { SlideregisterPage } from '../slideregister/slideregister';
 import { UserProvider } from '../../providers/user/user';
-import { HomePage } from '../home/home';
 import { PasswordresetPage } from '../passwordreset/passwordreset';
-import { RegisterNamePage } from '../register-name/register-name';
+import { RegisterPhotoPage } from '../register-photo/register-photo';
+import { LoginProvider } from '../../providers/login/login';
 
 
 @IonicPage()
@@ -22,50 +19,46 @@ export class LoginPage {
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public loadingCtrl: LoadingController,
-    public alertCtrl:AlertController,
-    public toastCtrl:ToastController,
-    public _USER : UserProvider
+    public alertCtrl: AlertController,
+    public toastCtrl: ToastController,
+    public _USER: UserProvider,
+    private loginservice: LoginProvider,
   ) {
   }
 
   //Set Emtry String
-  ionViewDidLoad() {
+  ionViewWillEnter() {
     this.user.email = "";
     this.user.password = "";
   }
 
   //Login Service
   login(user) {
-    this.navCtrl.push(RegisterNamePage);
+    let loader = this.loadingCtrl.create({
+      spinner: 'hide',
+      content: `<img src="assets/imgs/loading.svg">`
+    })
+    loader.present();
 
-    // let loader = this.loadingCtrl.create({
-    //   spinner: 'hide',
-    //   content: `<img src="assets/imgs/loading.svg">`
-      
-    // });
-  
-    // loader.present();
+    this.loginservice.loginUser(user).then((data) => {
+      console.log(data);
+      loader.dismiss();
+      this.toastCtrl.create({
+        message: "เข้าสู่ระบบสำเร็จ",
+        duration: 3000,
+        position: 'top',
+      }).present();
+      this.navCtrl.push(RegisterPhotoPage);
+    }).catch((err) => {
+      console.log(err);
+      loader.dismiss();
+      this.toastCtrl.create({
+        message: "กรุณากรอกชื่อผู้ใช้หรือรหัสผ่านให้ถูกต้อง",
+        duration: 3000,
+        position: 'top',
+      }).present();
+    })
 
-    // firebase.auth().signInWithEmailAndPassword(this.user.email + "@omf.com",this.user.password).then((data) => {
-    //   console.log(data);
-    //   firebase.firestore().enableNetwork();
-    //   firebase.firestore().collection("informationUser").doc(firebase.auth().currentUser.uid).get().then((res) => {
-    //     let me = res;
-    //     loader.dismiss();
-    //     this.navCtrl.setRoot(TabsPage);
-    //     // if(me.data().owner_name == "" || me.data().age == 0 || me.data().phone == 0){
-    //     //   this.navCtrl.setRoot(SlideregisterPage);
-    //     // }else {
-    //     //   this.navCtrl.setRoot(TabsPage);
-    //     // }
-    //   })
-    // }).catch(() => {
-    //   loader.dismiss();
-    //   this.toastCtrl.create({
-    //     message: "กรุณากรอกชื่อผู้ใช้หรือรหัสผ่านให้ถูกต้อง",
-    //     duration: 3000
-    //   }).present();
-    // })
   }
 
   nextRegister() {

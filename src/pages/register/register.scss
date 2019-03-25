@@ -1,89 +1,66 @@
 page-register {
-    .bg {
-
-        background: linear-gradient(160deg, #33B545 30%, #69D07D 70%);
-    }
-
-    .inputs {
-        position: absolute;
-        display: block;
-        top: 55%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 80%;
+  .background {
+    background-image: linear-gradient(160deg, #33B545 30%, #69D07D 70%);
+}
+.scroll-content {
+    align-content: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+ion-card.card {
+    box-shadow: none;
+    background: #127C5B;
+    border-radius: 5px;
+}
+a, p,
+ion-card-header.card-header {
+    color: #fff!important;
+}
+ 
+.list > .item-block:first-child {
+    border: medium none;
+}
+ 
+.item {
+    margin-bottom: 10px;
+    background: rgba(255, 255, 255, 0.212);
+    border: medium none;
+ 
+    .text-input, {
         color: #fff;
-        opacity: 0.6;
     }
-
-    ion-item:first-child {
-        border-top-left-radius: 5px;
-        border-top-right-radius: 5px;
-      }
-      ion-item:last-child {
-        border-bottom-left-radius: 5px;
-        border-bottom-right-radius: 5px;
-      }
-      ion-item.item {
-        background-color: rgba(255, 255, 255, 0.4);
-        margin-bottom: 1px;
-        .label {
-          width: 10%;
-          color: rgba(0, 0, 0, 0.6);
-          font-size: 1.2em;
-        }
-      }
-    // button {
-    //     position: absolute;
-    //     display: block;
-    //     top: 50%;
-    //     background: #fff!important;
-    //     border: 1px solid #fff;
-    //     box-shadow: 0px;
-    //     color: black !important;
-    // }
-
-    button {
-        color: white;
+ 
     
-        &.button-rounded {
-            display: block;
-            width: 30px;
-            height: 30px;
-            line-height: 30px;
-            border: 2px solid white;
-            border-radius: 50%;
-            color: white;
-            text-align: center;
-            text-decoration: none;
-            font-size: 10px;
-            font-weight: bold;
-        }
+    input::-moz-placeholder{
+        color: #fff!important;
     }
-
-    .avatar {
-        border-radius: 100%;
-
-      }
-
-      .center {
-        align-items: center;
-      }
-
-    .margin-top {
-        height: 100%;
-  display: block;
-  vertical-align: middle;
+    input:-moz-placeholder {
+        color: #fff!important;
     }
-
-    .edit-button {
-        color: white;
-        font-size: 13px; 
-        border-radius: 10px;
-        padding: 5px;
-        font-weight: bold;
-
-      }
-
-
+    *:-moz-placeholder{
+        color: #fff!important;
+    }
+    *:-ms-input-placeholder{
+        color: #fff!important;
+    }
+    *::-webkit-input-placeholder{
+        color: #fff!important;
+    }
+ 
+}
+ 
+.icon {
+    padding-right: 10px;
+}
+ 
+.bottom {
+    bottom: 0;
+}
+ 
+.input-cover {
+position: static;
+}
     
 }

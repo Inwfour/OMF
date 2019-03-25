@@ -69,6 +69,10 @@ import { FamilyProvider } from '../providers/family/family';
 import { RegisterNamePage } from '../pages/register-name/register-name';
 import { RegisterAgePage } from '../pages/register-age/register-age';
 import { RegisterDiseasePage } from '../pages/register-disease/register-disease';
+import { RegisterPhotoPage } from '../pages/register-photo/register-photo';
+import { RegisterPhonePage } from '../pages/register-phone/register-phone';
+import { RegisterProvider } from '../providers/register/register';
+import { LoginProvider } from '../providers/login/login';
 
 firebase.initializeApp(FIREBASE_CONFIG);
 firebase.firestore().settings({ timestampsInSnapshots: true })
@@ -115,6 +119,8 @@ firebase.firestore().settings({ timestampsInSnapshots: true })
     RegisterNamePage,
     RegisterAgePage,
     RegisterDiseasePage,
+    RegisterPhonePage,
+    RegisterPhotoPage
   ],
   imports: [
     BrowserModule,
@@ -158,6 +164,8 @@ firebase.firestore().settings({ timestampsInSnapshots: true })
     RegisterNamePage,
     RegisterAgePage,
     RegisterDiseasePage,
+    RegisterPhotoPage,
+    RegisterPhonePage,
     // detail groupchat
     GroupbuddiesPage,
     GroupmembersPage,
@@ -196,6 +204,8 @@ firebase.firestore().settings({ timestampsInSnapshots: true })
     SMS,
     AndroidPermissions,
     FamilyProvider,
+    RegisterProvider,
+    LoginProvider,
   ]
 })
 export class AppModule { }

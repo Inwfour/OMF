@@ -1,16 +1,16 @@
 <ion-header #head>
 
-    <ion-navbar style="padding-right: 10px" color="white">
+    <ion-navbar text-center style="padding-right: 10px" color="headertp[">
       <ion-title>ข้อมูลส่วนตัว</ion-title>
   
-      <ion-buttons end>
+      <!-- <ion-buttons end>
         <button ion-button icon-only (click)="friend()">
           <ion-icon name="person-add" class="badge-container">
             <span class="custom-badge">{{friendsLength || 0}}</span>
           </ion-icon>
         </button>
    
-      </ion-buttons>
+      </ion-buttons> -->
     </ion-navbar>
   
   </ion-header>
@@ -36,7 +36,7 @@
           <p no-padding no-margin>เพื่อน</p>
         </ion-col>
         <ion-col col-3 text-center class="margin-top">
-          <h3 id="profile-name">119</h3>
+          <h3 id="profile-name">{{familysLength || 0}}</h3>
           <p no-padding no-margin>ครอบครัว</p>
         </ion-col>
       </ion-row>

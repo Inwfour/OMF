@@ -14,8 +14,8 @@
 <ion-content no-padding style=" background-color: #ECEBED">
   <section text-center class="section">
     <br>
-    <img *ngIf="photoURL" class="avatar" src="{{photoURL}}">
-    <img *ngIf="!photoURL" class="avatar" src="assets/imgs/user.png">
+    <img *ngIf="photoURL" class="avatar" src="{{photoURL}}" imageViewer>
+    <img *ngIf="!photoURL" class="avatar" src="assets/imgs/user.png" imageViewer>
     <br>
     <h1 style="font-size:1.4em;color: white" no-margin>ยินดีต้อนรับคุณ {{displayName}}</h1>
     <br>

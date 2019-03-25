@@ -1,43 +1,22 @@
-<ion-header >
-  <ion-navbar text-center>
-    <ion-title>สมัครสมาชิก</ion-title>
-  </ion-navbar>
-</ion-header>
-
-<ion-content padding text-center class="bg">
-    <ion-grid>
-      
-      <ion-row padding class="center margin-top">
-        <ion-col col-3></ion-col>
-        <ion-col col-3>
-            <img width="40%" [src]="image" class="avatar" alt="">
-        </ion-col>
-        <ion-col col-3></ion-col>
-      </ion-row>
-
-      <ion-row text-center>
-          <ion-col col-2></ion-col>
-            <ion-col col-8>
-                <button ion-button block round color="primary" class="edit-button" (click)="changeProfilePicture()">เปลี่ยนรูปประจำตัว</button>
-           
-          </ion-col>
-          <ion-col col-2></ion-col>
-        </ion-row>
-    </ion-grid>
-      <ion-list>
-        <ion-item>
-          <ion-icon name="ios-contact" item-left></ion-icon>
-          <ion-input [(ngModel)]="user.email" type="text"></ion-input>
-        </ion-item>
-
-          <br>
-            <ion-item class="pass">
-              <ion-icon name="ios-lock" item-left></ion-icon>
-              <ion-input [(ngModel)]="user.password" type="password"></ion-input>
+<ion-content class="background">
+  <ion-card>
+    <ion-card-header>
+      สมัครสมาชิก
+    </ion-card-header>
+    <ion-card-content>
+        <ion-list>
+            <ion-item>
+              <ion-icon name="ios-contact" item-left></ion-icon>
+              <ion-input [(ngModel)]="user.email" type="text"></ion-input>
             </ion-item>
-            <br><br>
-            <button ion-button round block (click)="save(user)">Save</button>
-          
-
-      </ion-list>
+                <ion-item class="pass">
+                  <ion-icon name="ios-lock" item-left></ion-icon>
+                  <ion-input [(ngModel)]="user.password" type="password"></ion-input>
+                </ion-item>
+                <br>
+                <button ion-button round block outline color="white" (click)="save(user)">บันทึกข้อมูล</button>
+                <button ion-button round block outline color="white" (click)="back()">กลับ</button>
+          </ion-list>
+    </ion-card-content>
+  </ion-card>
   </ion-content>

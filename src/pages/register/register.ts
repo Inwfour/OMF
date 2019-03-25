@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, AlertController, ActionSheetController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, AlertController, ActionSheetController, ToastController } from 'ionic-angular';
 import { User } from '../../models/user';
 import firebase from 'firebase';
-import { LoginPage } from '../login/login';
-import { ImageProvider } from '../../providers/image/image';
-import { PreloaderProvider } from '../../providers/preloader/preloader';
-import { UserProvider } from '../../providers/user/user';
+import { RegisterProvider } from '../../providers/register/register';
+
 
 @IonicPage()
 @Component({
@@ -13,110 +11,53 @@ import { UserProvider } from '../../providers/user/user';
   templateUrl: 'register.html',
 })
 export class RegisterPage {
+  fireinfo = firebase.firestore().collection('informationUser');
   user: User = new User;
-  image: string = "assets/imgs/user.png";
   _uid: any;
-  url: any="";
+  url: any = "";
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public loadingCtrl: LoadingController,
-    public alertCtrl: AlertController,
-    public _IMG: ImageProvider,
-    public _LOADER: PreloaderProvider,
-    public _USER: UserProvider,
-    public actionSheetCtrl: ActionSheetController
+    private toastCtrl: ToastController,
+    public actionSheetCtrl: ActionSheetController,
+    private registerService: RegisterProvider,
   ) {
   }
 
-  changeProfilePicture() {
-    let alert = this.actionSheetCtrl.create({
-      title: "คุณต้องการรูปในลักษณะใด ?",
-      buttons: [
-        {
-          text: "กล้องถ่ายรูป",
-          handler: () => {
-            this._IMG.camera().then(data => {
-              this.image = data;
-            })
-          }
-        },
-        {
-          text: "เลือกจากอัลบั้มรูปภาพ",
-          handler: () => {
-            this._IMG.selectImage().then(data => {
-              this.image = data;
-            })
-          }
-        },
-        {
-          text: "กลับ",
-          handler: () => {
-            console.log("ไม่ได้ลบข้อมูล");
-          }
-        }
-      ]
-    });
-    alert.present();
-  }
-
-  optionSave(url:string){
-  //   var newUser = firebase.auth().currentUser;
-  //   newUser.updateProfile({
-  //    displayName: "",
-  //    photoURL: url
-  //  }).catch((err) => {
-  //    console.log(err);
-  //  })
-
-  }
-
   save(user) {
-console.log(user);
+    this.registerService.SaveUser(user).then(async (data) => {
+      user.email = "";
+      user.password = "";
+      await this.fireinfo.doc(firebase.auth().currentUser.uid).set({
+        owner: firebase.auth().currentUser.uid,
+        email: firebase.auth().currentUser.email,
+        created: firebase.firestore.FieldValue.serverTimestamp(),
+      }).then(() => {
+        console.log(data);
+        this.toastCtrl.create({
+          message: "บันทึกสำเร็จแล้ว",
+          duration: 3000,
+          position: 'top'
+        }).present();
+      })
+      .catch((err) => {
+        this.toastCtrl.create({
+          message: "บันทึกข้อมูลไม่สำเร็จ",
+          duration: 3000,
+          position: 'top'
+        }).present();
+      });
+    }).catch(() => {
+      this.toastCtrl.create({
+        message: "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง",
+        duration: 3000,
+      }).present();
+    })
 
-    // firebase.auth().createUserWithEmailAndPassword(user.email + "@omf.com", user.password)
-    //   .then(async () => {
-    //     if (this.image != "assets/imgs/user.png") {
-    //       await this._USER.uploadImgUser(firebase.auth().currentUser.uid, this.image)
-    //         .then((data) => {
-    //           this.url = data;
-    //           this.optionSave(this.url);
-    //           firebase.firestore().collection("informationUser").doc(firebase.auth().currentUser.uid).set({
-    //             photoURL: this.url,
-    //             owner_name: "",
-    //             owner: firebase.auth().currentUser.uid,
-    //             email: firebase.auth().currentUser.email,
-    //             created: firebase.firestore.FieldValue.serverTimestamp(),
-    //             age: 0,
-    //             phone: 0,
-    //             likeplay: [],
-    //             disease: []
-    //           }).then(() => {
-    //             console.log("Success !!!");
-    //             this.navCtrl.setRoot(LoginPage);
-    //           }).catch((err) => {
-    //             console.log(err);
-    //             });
-    //         });
-    //     }else {
-    //       this.optionSave(this.url);
-    //       firebase.firestore().collection("informationUser").doc(firebase.auth().currentUser.uid).set({
-    //         photoURL: this.url,
-    //         owner_name: "",
-    //         owner: firebase.auth().currentUser.uid,
-    //         email: firebase.auth().currentUser.email,
-    //         created: firebase.firestore.FieldValue.serverTimestamp(),
-    //         age: 0,
-    //         phone: 0,
-    //         likeplay: [],
-    //         disease: []
-    //       }).then(() => {
-    //         console.log("Success !!!");
-    //         this.navCtrl.setRoot(LoginPage);
-    //       }).catch((err) => {
-    //         console.log(err);
-    //         });
-    //     }
-    //   })
-    }
+  }
+
+  back() {
+    this.navCtrl.pop();
+  }
 }

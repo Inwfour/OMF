@@ -1,13 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 import { TabsPage } from '../tabs/tabs';
-
-/**
- * Generated class for the RegisterDiseasePage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import firebase from 'firebase';
 
 @IonicPage()
 @Component({
@@ -15,8 +9,18 @@ import { TabsPage } from '../tabs/tabs';
   templateUrl: 'register-disease.html',
 })
 export class RegisterDiseasePage {
-
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  fireinfo = firebase.firestore().collection('informationUser');
+  disease:any = [];
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+    private toastCtrl : ToastController
+    ) {
+      this.fireinfo.doc(firebase.auth().currentUser.uid).get().then((res) => {
+        if(res.data().owner_name === undefined) {
+          this.disease = [];
+        }else {
+          this.disease = res.data().disease;
+        }
+      })
   }
 
   ionViewDidLoad() {
@@ -28,7 +32,23 @@ export class RegisterDiseasePage {
   }
 
   next(){
-    this.navCtrl.setRoot(TabsPage);
+    this.fireinfo.doc(firebase.auth().currentUser.uid).update({
+      disease: this.disease
+    }).then(() => {
+      this.toastCtrl.create({
+        message: "บันทึกโรคประจำตัวสำเร็จ",
+        duration: 3000,
+        position: 'top'
+      }).present();
+      this.navCtrl.setRoot(TabsPage);
+    }).catch((err) => {
+      console.log(err);
+      this.toastCtrl.create({
+        message: "บันทึกโรคประจำตัวไม่สำเร็จ",
+        duration: 3000,
+        position: 'top'
+      }).present();
+    })
   }
 
 }

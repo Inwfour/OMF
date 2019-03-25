@@ -17,10 +17,72 @@ export class EdituserPage {
     private alertCtrl:AlertController
     ) {
       this._uid = firebase.auth().currentUser.uid;
-      this._USER.getInformationUser(this._uid).then(data => {
-        this.user = data;
-        console.log(this.user);
-      })
+      this.getUserEdit();
+  }
+
+  getUserEdit() {
+    this._USER.getInformationUser(this._uid).then(data => {
+      this.user = data;
+      console.log(this.user);
+    })
+
+    let user = firebase.firestore().collection("informationUser")
+    .where("owner", "==", this._uid)
+
+  user.onSnapshot((snapshot) => {
+    let changedDocs = snapshot.docChanges();
+
+    changedDocs.forEach((change) => {
+      if (change.type == "modified") {
+
+        // Edit posts 
+        firebase.firestore().collection("posts").where("owner", "==", this._uid)
+        .get()
+        .then(data => {
+          if(data != undefined){
+            data.forEach((docs) => {
+                console.log("update post",docs.id);
+                firebase.firestore().collection("posts").doc(docs.id).update({
+                    owner_name: change.doc.data().owner_name
+                })
+            })
+          }
+        })
+        
+
+        // Edit comments
+        firebase.firestore().collection("comments").where("owner", "==", this._uid)
+        .get()
+        .then(data => {
+          if(data != undefined){
+          data.forEach((docs) => {
+            console.log("update comments",docs.id);
+            firebase.firestore().collection("comments").doc(docs.id).update({
+                owner_name: change.doc.data().owner_name
+            })
+        })
+      }
+        })
+
+        //Edit Family owner_name
+        firebase.firestore().collection("familys").doc(firebase.auth().currentUser.uid).collection("family").get().then((data) => {
+          if(data != undefined) {
+            data.forEach((docs) => {
+              firebase.firestore().collection("familys").doc(docs.data().uid).collection("family").get().then((snapshot) => {
+                snapshot.forEach((doc) => {
+                  firebase.firestore().collection("familys").doc(docs.data().uid).collection("family").doc(doc.id).update({
+                    owner_name: change.doc.data().owner_name,
+                    phone: change.doc.data().phone
+                  })
+                })
+              })
+            })
+          }
+        })
+        
+      }
+    })
+  })
   }
 
   edituser(){
