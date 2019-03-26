@@ -16,7 +16,7 @@ export class FamilyProvider {
   ) {
   }
 
-  addfamilys(buddy, type) {
+  addfamilys(buddy, type, statusme) {
     return new Promise((resolve, reject) => {
 
       this.firefamilys.doc(firebase.auth().currentUser.uid).collection('family').add({
@@ -32,7 +32,7 @@ export class FamilyProvider {
             phone: data.data().phone,
             photoURL: data.data().photoURL,
             owner_name: data.data().owner_name,
-            type: type
+            type: statusme
           }).then(() => {
             resolve(true);
           })
@@ -61,7 +61,7 @@ export class FamilyProvider {
     })
   }
 
-  edittype(buddy, type){
+  edittype(buddy, type, statusme){
     return new Promise((resolve, reject) => {
       this.firefamilys.doc(firebase.auth().currentUser.uid).collection('family').doc(buddy.id).update({
         type: type
@@ -69,7 +69,7 @@ export class FamilyProvider {
         this.firefamilys.doc(buddy.data().uid).collection("family").where("uid", "==", firebase.auth().currentUser.uid).get().then((res) => {
           res.forEach((doc) => {
             this.firefamilys.doc(buddy.data().uid).collection('family').doc(doc.id).update({
-              type: type
+              type: statusme
             }).then(() => {
               resolve(true);
             })

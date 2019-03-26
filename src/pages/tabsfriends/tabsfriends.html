@@ -20,28 +20,14 @@
 
 <ion-content padding>
     <ion-segment [(ngModel)]="friends" color="headertop">
-        <!-- <ion-segment-button icon-only value="Chats">
-            <ion-icon name="chatbubbles"></ion-icon>
-          </ion-segment-button> -->
           <ion-segment-button icon-only value="Groups">
               <ion-icon name="contacts"></ion-icon>
-              <!-- <div style="text-align: center;margin-top: -13px !important; ">
-                กลุ่ม
-              </div> -->
             </ion-segment-button>
             <ion-segment-button icon-only value="Friend">
                 <ion-icon name="contact"></ion-icon>
-                <!-- <div style="text-align: center;margin-top: -13px !important; ">
-                  เพื่อน
-                </div> -->
               </ion-segment-button>
       </ion-segment>
-
-
       <div [ngSwitch]="friends" >
-          <!-- <ion-list *ngSwitchCase="'Chats'">
-              <page-historychat></page-historychat>
-          </ion-list> -->
         <ion-list *ngSwitchCase="'Groups'">
             <page-groups></page-groups>
         </ion-list>
