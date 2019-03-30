@@ -16,10 +16,11 @@ const sendNotification = (owner_uid, type) => {
                         data: {
                             title: "A new comment has been made on your post.",
                             sound: "default",
-                            body: "Tap to Check"
+                            body: "Tap to Check",
                         }
-                    }).then((sent) => {
-                        resolve(sent)
+                    }).then((send) => {
+                        
+                        resolve(send)
                     }).catch((err) => {
                         reject(err)
                     })
@@ -125,25 +126,3 @@ export const deleteCommentsCount = functions.firestore.document('comments/{comme
     }
 })
 
-export const editProfile = functions.firestore.document('informationUser/{informationUser}').onUpdate((change,context) => {
-    let data = change.after.data();
-    let uid = data.owner;
-    let img = data.photoURL;
-
-    console.log("1",uid);
-    console.log("2",img);
-
-    // admin.firestore().collection("posts").where("owner", "==", uid)
-    // .get()
-    // .then(data => {
-    //     data.forEach((docs) => {
-    //         admin.firestore().collection("posts").doc(docs.id).update({
-    //             photoUser: img
-    //         })
-            
-    //     })
-    //     return true;
-    // }).catch(() => {
-    //     return false;
-    // })
-    })

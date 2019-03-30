@@ -74,6 +74,10 @@ import { RegisterPhonePage } from '../pages/register-phone/register-phone';
 import { RegisterProvider } from '../providers/register/register';
 import { LoginProvider } from '../providers/login/login';
 import { IonicStorageModule } from '@ionic/storage';
+import { LaunchNavigator } from '@ionic-native/launch-navigator';
+import { LocalNotifications } from '@ionic-native/local-notifications';
+import { BackgroundMode } from '@ionic-native/background-mode';
+import { Autostart } from '@ionic-native/autostart';
 
 firebase.initializeApp(FIREBASE_CONFIG);
 firebase.firestore().settings({ timestampsInSnapshots: true })
@@ -208,6 +212,11 @@ firebase.firestore().settings({ timestampsInSnapshots: true })
     FamilyProvider,
     RegisterProvider,
     LoginProvider,
+    LaunchNavigator,
+    LocalNotifications,
+    BackgroundMode,
+    Autostart
+    
   ]
 })
 export class AppModule { }

@@ -8,14 +8,10 @@ import { GooglemapPage } from '../googlemap/googlemap';
 import { HelpPage } from '../help/help';
 import { HowtoPage } from '../howto/howto';
 import { FamilyPage } from '../family/family';
-
-
-/**
- * Generated class for the HomePage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator';
+import { Geolocation } from '@ionic-native/geolocation';
+import { Firebase } from '@ionic-native/firebase';
+import { CollectionServicesProvider } from '../../providers/get-collections/get-collections';
 
 @IonicPage()
 @Component({
@@ -26,15 +22,52 @@ export class HomePage {
   user :User = new User;
   photoURL:any;
   displayName:any;
-
+  latitude:number ;
+  longitude:number ;
+  photoDisplay: string;
+  _uid: any;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public events: Events,
-    private alertCtrl:AlertController
+    private alertCtrl:AlertController,
+    public geolocation: Geolocation,
+    private LunchNavigator: LaunchNavigator,
+    private firebaseCordova: Firebase,
+    private CollectionService: CollectionServicesProvider,
     ) {
       this.get();
       this.getimg();
+      this._uid = firebase.auth().currentUser.uid;
+      this.photoDisplay = firebase.auth().currentUser.photoURL
+      this.firebaseCordova.getToken().then((token) => {
+        console.log(token);
+        this.updateToken(token, firebase.auth().currentUser.uid);
+      }).catch((err) => {
+        console.log(err);
+      })
   }
+
+  updateToken(token: string, uid: string) {
+
+    this.CollectionService.UsersCollection().doc(uid).set({
+      token: token,
+      tokenUpdate: firebase.firestore.FieldValue.serverTimestamp()
+    }, {
+        merge: true
+      }).catch((err) => {
+        console.log(err);
+      })
+
+  }
+
+  // LocationMe() {
+  //   this.geolocation.getCurrentPosition().then(position =>{
+  //     this.latitude = position.coords.latitude;
+  //     this.longitude = position.coords.longitude;
+  // },error=>{
+  //     console.log('error',error);
+  // });
+  // }
 
   get() {
     let fireuser = firebase.firestore().collection("informationUser").doc(firebase.auth().currentUser.uid);
@@ -70,7 +103,19 @@ export class HomePage {
   }
 
   googleMap(){
-    this.navCtrl.push(GooglemapPage);
+    // this.LocationMe();
+    let options: LaunchNavigatorOptions = {
+      start: [this.latitude,this.longitude],
+      app: this.LunchNavigator.APP.GOOGLE_MAPS
+    };
+    
+    this.LunchNavigator.navigate('London, ON', options)
+      .then(() => {
+        console.log("success");
+      }).catch((err) => {
+        console.log(err);
+      })
+    // this.navCtrl.push(GooglemapPage);
   }
 
   logout(){
