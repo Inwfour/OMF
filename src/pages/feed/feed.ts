@@ -14,6 +14,9 @@ import { EditPostPage } from '../edit-post/edit-post';
 import { PostProvider } from '../../providers/post/post';
 import { ImageProvider } from '../../providers/image/image';
 import { UserProvider } from '../../providers/user/user';
+// Social Share
+import { SocialSharing } from '@ionic-native/social-sharing';
+
 @IonicPage()
 @Component({
   selector: 'page-feed',
@@ -56,7 +59,8 @@ export class FeedPage {
     , public _IMG: ImageProvider
     , public _USER: UserProvider
     , public alertCtrl: AlertController,
-    public toastCtrl: ToastController
+    public toastCtrl: ToastController,
+    private socialSharing: SocialSharing,
   ) {
     // this.getComment();
     this.getPosts();
@@ -73,6 +77,50 @@ export class FeedPage {
   }
   ngAfterViewInit() {
     this.resize()
+  }
+
+  async share(post) {
+    console.log(post.data());
+   await this.socialSharing.shareWithOptions({
+      message: `${post.data().owner_name} - ${post.data().text}: ${post.data().image}`,
+      files: post.data().image,
+      url: post.data().image,
+    }).then(() => {
+      console.log('Shared!');
+    }).catch((err) => {
+      console.log('Oops, something went wrong:', err);
+    });
+    // let actionSheetCtrl = this.actionSheetCtrl.create({
+    //   title: "แชร์โพสท์ของคุณไปที่",
+    //   buttons:[
+    //     {
+    //       text: "แชร์ไปที่เฟสบุ๊ค",
+    //       icon: "logo-facebook",
+    //       handler:()=> {
+
+    //         // this.socialSharing.shareViaFacebook("test",null,null).then((data) => {
+    //         //   console.log(data);
+    //         // })
+    //       }
+    //     },
+    //     {
+    //       text: "แชร์ไปที่ไลน์",
+    //       icon: "md-share",
+    //       handler:()=> {
+    //         this.socialSharing.shareViaSMS("ทดสอบ","0887665841");
+    //       }
+    //     }
+    //   ]
+    // })
+    // actionSheetCtrl.present();
+
+
+    // this.socialSharing.share(post.data().text,post.data().image)
+    // .then((data) => {
+    //   console.log("success" + data);
+    // }).catch(err => {
+    //   console.log(err);
+    // })
   }
 
   resize() {

@@ -78,6 +78,7 @@ import { LaunchNavigator } from '@ionic-native/launch-navigator';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { BackgroundMode } from '@ionic-native/background-mode';
 import { Autostart } from '@ionic-native/autostart';
+import { SocialSharing } from '@ionic-native/social-sharing';
 
 firebase.initializeApp(FIREBASE_CONFIG);
 firebase.firestore().settings({ timestampsInSnapshots: true })
@@ -215,7 +216,8 @@ firebase.firestore().settings({ timestampsInSnapshots: true })
     LaunchNavigator,
     LocalNotifications,
     BackgroundMode,
-    Autostart
+    Autostart,
+    SocialSharing
     
   ]
 })

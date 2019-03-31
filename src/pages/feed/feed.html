@@ -82,19 +82,25 @@
         <img [src]="post.data().image" *ngIf="post.data().image" imageViewer>
         
     <ion-row class="bottom-bar">
-      <ion-col>
+      <ion-col col-3>
         <button  ion-button block icon-left clear small [color]="post.data().likes[_uid] ? 'primary':'headertop'" class="border-right" (click)="like(post)">
           <ion-icon name="thumbs-up"></ion-icon>
           <small>{{ post.data().likesCount || 0 }} ถูกใจ</small>
         </button>
       </ion-col>
-      <ion-col>
+      <ion-col col-5>
           <button ion-button block icon-left clear small color="headertop"  class="border-right" (click)="comment(post)">
             <ion-icon name="text"></ion-icon>
             <small> {{ post.data().commentsCount || 0 }} ความคิดเห็น</small>
           </button>
         </ion-col>
-        <ion-col>
+        <ion-col col-2>
+          <button ion-button block icon-left clear small color="headertop" (click)="share(post)">
+            <ion-icon name="md-share"></ion-icon>
+            <small>แชร์</small>
+          </button>
+        </ion-col>
+        <ion-col col-2>
             <button ion-button block icon-left clear small color="headertop" *ngIf="post.data().created">
               <small>{{ ago(post.data().created.toDate()) }}</small>
             </button>
