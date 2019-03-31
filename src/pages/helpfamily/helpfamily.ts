@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, Events, ToastController } from 'ionic-angular';
 import { CallNumber } from '@ionic-native/call-number';
 import { AndroidPermissions } from '@ionic-native/android-permissions';
-import { SMS } from '@ionic-native/sms';
 import { FamilyProvider } from '../../providers/family/family';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import firebase from 'firebase';
@@ -18,9 +17,6 @@ export class HelpfamilyPage {
     public navParams: NavParams,
     private viewCtrl: ViewController,
     private callNumber: CallNumber,
-    private androidPermissions: AndroidPermissions,
-    private sms: SMS,
-    private events: Events,
     private familyservice: FamilyProvider,
     private toast: ToastController,
     private socialSharing: SocialSharing,
@@ -65,21 +61,6 @@ export class HelpfamilyPage {
     }).catch((err) => {
       console.log(err);
     })
-//     this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.SEND_SMS).then(
-//   result => {
-//     console.log('Has permission?',result.hasPermission);
-
-//     if(result.hasPermission){
-//       this.sms.send("342423423","Hi")
-//       .then(()=>{
-//       console.log("The Message is sent");
-//       }).catch((error)=>{
-//       console.log("The Message is Failed",error);
-//       });
-//     }
-//   },
-//   err => this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.SEND_SMS)
-// );
 
   }
 

@@ -56,7 +56,6 @@ import { Geolocation } from '@ionic-native/geolocation';
 import { PhotoViewer } from '@ionic-native/photo-viewer';
 import { HelpPage } from '../pages/help/help';
 import { CallNumber } from '@ionic-native/call-number';
-import { SMS } from '@ionic-native/sms';
 import { AndroidPermissions } from '@ionic-native/android-permissions';
 import { HowtoPage } from '../pages/howto/howto';
 import { HelpfamilyPage } from '../pages/helpfamily/helpfamily';
@@ -74,11 +73,12 @@ import { RegisterPhonePage } from '../pages/register-phone/register-phone';
 import { RegisterProvider } from '../providers/register/register';
 import { LoginProvider } from '../providers/login/login';
 import { IonicStorageModule } from '@ionic/storage';
-import { LaunchNavigator } from '@ionic-native/launch-navigator';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { BackgroundMode } from '@ionic-native/background-mode';
 import { Autostart } from '@ionic-native/autostart';
 import { SocialSharing } from '@ionic-native/social-sharing';
+import { Network } from '@ionic-native/network';
+import { NetworkProvider } from '../providers/network/network';
 
 firebase.initializeApp(FIREBASE_CONFIG);
 firebase.firestore().settings({ timestampsInSnapshots: true })
@@ -208,16 +208,16 @@ firebase.firestore().settings({ timestampsInSnapshots: true })
     Geolocation,
     PhotoViewer,
     CallNumber,
-    SMS,
     AndroidPermissions,
     FamilyProvider,
     RegisterProvider,
     LoginProvider,
-    LaunchNavigator,
     LocalNotifications,
     BackgroundMode,
     Autostart,
-    SocialSharing
+    SocialSharing,
+    Network,
+    NetworkProvider
     
   ]
 })

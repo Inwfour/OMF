@@ -15,7 +15,7 @@ export class RegisterAgePage {
     private toastCtrl: ToastController
     ) {
       this.fireinfo.doc(firebase.auth().currentUser.uid).get().then((res) => {
-        if(res.data().disease === undefined) {
+        if(res.data().age === undefined) {
           this.age = "";
         }else {
           this.age = res.data().age;

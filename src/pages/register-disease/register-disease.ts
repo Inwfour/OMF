@@ -11,6 +11,8 @@ import firebase from 'firebase';
 export class RegisterDiseasePage {
   fireinfo = firebase.firestore().collection('informationUser');
   disease:any = [];
+  diabetes:any;
+
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private toastCtrl : ToastController
     ) {

@@ -1,11 +1,14 @@
-import { Component } from '@angular/core';
-import { Platform } from 'ionic-angular';
+import { Component, NgZone } from '@angular/core';
+import { Platform, Events, LoadingController, Loading, AlertController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { LoginPage } from '../pages/login/login';
 import { timer } from 'rxjs/observable/timer';
 import { TabsPage } from '../pages/tabs/tabs';
 import firebase from 'firebase'
+import { NetworkProvider } from '../providers/network/network';
+import { Network } from '@ionic-native/network';
+import { Geolocation, Geoposition } from '@ionic-native/geolocation';
 
 declare var window;
 
@@ -13,9 +16,19 @@ declare var window;
   templateUrl: 'app.html'
 })
 export class MyApp {
-  rootPage:any;
+  rootPage: any;
   showSplash = true;
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
+  public lat: number = 0;
+public lng: number = 0; 
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,
+    public network: Network,
+    public networkProvider: NetworkProvider,
+    public events: Events,
+    public loadingCtrl: LoadingController,
+    public alertCtrl: AlertController,
+    public geolocation: Geolocation,
+    public zone:NgZone,
+  ) {
     const unsubscribe = firebase.auth().onAuthStateChanged(user => {
       if (!user) {
         this.rootPage = LoginPage;
@@ -34,7 +47,31 @@ export class MyApp {
       splashScreen.hide();
 
       timer(3000).subscribe(() => this.showSplash = false)
-  
+
+      firebase.auth().onAuthStateChanged(user => {
+        if(user){
+
+          let options = {
+            frequency: 10*1000,
+            enableHighAccuracy: true
+          };
+
+          let watch = this.geolocation.watchPosition(options);
+          watch.subscribe((data: Geoposition) => {
+            this.zone.run(() => {
+              this.lat = data.coords.latitude;
+              this.lng = data.coords.longitude;
+              firebase.firestore().collection("informationUser").doc(firebase.auth().currentUser.uid)
+            .update({
+              location: new firebase.firestore.GeoPoint(data.coords.latitude,data.coords.longitude),
+              createlocation: firebase.firestore.FieldValue.serverTimestamp()
+            })
+            console.log("lat : " + this.lat);
+            console.log("lng : " + this.lng);
+            })
+          });
+        }
+      })
       //Key chatbot >>>>>>>>>>>
 
       //   window["ApiAIPlugin"].init(
@@ -49,6 +86,24 @@ export class MyApp {
       //       alert(error);
       //      }
       // );
+
+      // Check Internet
+      this.networkProvider.initializeNetworkEvents();
+      // var loading = this.loadingCtrl.create({
+      //   content: 'เครื่อข่ายล้มเหลวกรุณารอการเชื่อมต่อ'
+      // });
+
+      // Offline event
+      this.events.subscribe('network:offline', () => {
+        // loading.present();
+        alert('network:offline ==> ' + this.network.type);
+      });
+
+      // Online event
+      this.events.subscribe('network:online', () => {
+        // loading.dismiss();
+        alert('network:online ==> ' + this.network.type);
+      });
 
     });
   }

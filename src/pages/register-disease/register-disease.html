@@ -41,8 +41,40 @@
                 </ion-select>
               </ion-item>
         </div>
-        <div class="spacer" tyle="height: 10px;"></div>
-  
+        <!-- <br><br><br><hr>
+        <div>
+          <h5>ระดับน้ำตาลในเลือดของคุณคือ ?</h5>
+        <br>
+          <input type="number" oninput="if(value.length>=3)value=value.slice(0,3)" text-center [(ngModel)]="diabetes" placeholder="ระบุน้ำตาลในเลือดของคุณ">
+        </div>
+        <div>
+            <br><br><br><hr>
+            <h5>ความดันโลหิตของคุณเท่าไหร่ ?</h5>
+          <br>
+          <ion-row>
+            <ion-col col-5>
+                <input type="number" oninput="if(value.length>=3)value=value.slice(0,3)" text-center [(ngModel)]="pressfront" placeholder="">
+            </ion-col>
+            <ion-col col-2 text-center>
+              <h1>/</h1>
+              </ion-col>
+            <ion-col col-5>
+                <input type="number" oninput="if(value.length>=3)value=value.slice(0,3)" text-center [(ngModel)]="pressback" placeholder="">
+              </ion-col>
+          </ion-row>
+          
+            <br><hr>
+            <h5>ความดันโลหิตของคุณเท่าไหร่ ?</h5>
+            <br>
+            <ion-item>
+                <ion-label>ช่วงเวลาในการวัดความดันโลหิต</ion-label>
+                <ion-select [(ngModel)]="checkpress" multiple="false">
+                  <ion-option>ก่อนอาหาร 6-8 ชั่วโมง</ion-option>
+                  <ion-option>หลังอาหาร</ion-option>
+                </ion-select>
+              </ion-item> -->
+          <!-- </div> -->
+
   </ion-content>
   
   <ion-footer>

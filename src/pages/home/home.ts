@@ -8,7 +8,6 @@ import { GooglemapPage } from '../googlemap/googlemap';
 import { HelpPage } from '../help/help';
 import { HowtoPage } from '../howto/howto';
 import { FamilyPage } from '../family/family';
-import { LaunchNavigator, LaunchNavigatorOptions } from '@ionic-native/launch-navigator';
 import { Geolocation } from '@ionic-native/geolocation';
 import { Firebase } from '@ionic-native/firebase';
 import { CollectionServicesProvider } from '../../providers/get-collections/get-collections';
@@ -31,11 +30,14 @@ export class HomePage {
     public events: Events,
     private alertCtrl:AlertController,
     public geolocation: Geolocation,
-    private LunchNavigator: LaunchNavigator,
     private firebaseCordova: Firebase,
     private CollectionService: CollectionServicesProvider,
     ) {
-      this.get();
+
+  }
+
+  ionViewWillEnter() {
+          this.get();
       this.getimg();
       this._uid = firebase.auth().currentUser.uid;
       this.photoDisplay = firebase.auth().currentUser.photoURL
@@ -104,18 +106,8 @@ export class HomePage {
 
   googleMap(){
     // this.LocationMe();
-    let options: LaunchNavigatorOptions = {
-      start: [this.latitude,this.longitude],
-      app: this.LunchNavigator.APP.GOOGLE_MAPS
-    };
-    
-    this.LunchNavigator.navigate('London, ON', options)
-      .then(() => {
-        console.log("success");
-      }).catch((err) => {
-        console.log(err);
-      })
-    // this.navCtrl.push(GooglemapPage);
+
+    this.navCtrl.push(GooglemapPage);
   }
 
   logout(){

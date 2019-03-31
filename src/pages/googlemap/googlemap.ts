@@ -1,7 +1,7 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
-
-declare var google:any;
+import firebase from 'firebase';
+declare var google: any;
 
 @IonicPage()
 @Component({
@@ -10,36 +10,42 @@ declare var google:any;
 })
 export class GooglemapPage {
 
-  @ViewChild('map') mapRef : ElementRef
-  map:any;
+  @ViewChild('map') mapRef: ElementRef
+  map: any;
 
-  constructor(public navCtrl: NavController, 
+  constructor(public navCtrl: NavController,
     public navParams: NavParams,
-    ) {}
+  ) { }
 
-    ionViewDidLoad(){
-      this.showMap();
-    }
+  ionViewWillEnter() {
 
-    showMap() {
+    this.showMap();
 
-      const location = new google.maps.LatLng(51.222,-1.333);
+  }
+
+
+  showMap() {
+    firebase.firestore().collection("informationUser").doc(firebase.auth().currentUser.uid).get().then(async(data) => {
+      console.log(data.data().location.latitude);
+      console.log(data.data().location.longitude);
+      const location = await new google.maps.LatLng(data.data().location.latitude, data.data().location.longitude);
       const options = {
         center: location,
         zoom: 10,
         streetViewControl: false,
-        mapTypeId:'satellite'
+        mapTypeId: 'satellite'
       };
-      this.map = new google.maps.Map(this.mapRef.nativeElement,options);
-      this.addMarker(location,this.map);
-    }
+      this.map = new google.maps.Map(this.mapRef.nativeElement, options);
+      this.addMarker(location, this.map);
+    })
+  }
 
-    addMarker(position,map) {
-      return new google.maps.Marker({
-        position,
-        map
-      });
-    }
+  addMarker(position, map) {
+    return new google.maps.Marker({
+      position,
+      map
+    });
+  }
 
 
 }

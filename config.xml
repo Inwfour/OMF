@@ -102,21 +102,16 @@
         <variable name="GEOLOCATION_USAGE_DESCRIPTION" value="To locate you" />
     </plugin>
     <plugin name="com-sarriaroman-photoviewer" spec="1.2.1" />
-    <plugin name="cordova-sms-plugin" spec="1.0.0" />
     <plugin name="mx.ferreyra.callnumber" spec="~0.0.2" />
     <plugin name="cordova-plugin-android-permissions" spec="1.0.0" />
     <plugin name="cordova-sqlite-storage" spec="3.2.0" />
-    <plugin name="uk.co.workingedge.phonegap.plugin.launchnavigator" spec="5.0.4">
-        <variable name="GOOGLE_API_KEY_FOR_IOS" value="AIzaSyDs98-kJBI1Y28zP6QwZyp-ni7naj5ZCPI" />
-        <variable name="GOOGLE_API_KEY_FOR_ANDROID" value="AIzaSyDs98-kJBI1Y28zP6QwZyp-ni7naj5ZCPI" />
-        <variable name="OKHTTP_VERSION" value="3.12.0" />
-    </plugin>
     <plugin name="cordova-plugin-local-notification" spec="0.9.0-beta.2" />
     <plugin name="cordova-plugin-background-mode" spec="0.7.2" />
     <plugin name="cordova-plugin-autostart" spec="2.3.0" />
     <plugin name="cordova-plugin-x-socialsharing" spec="5.4.4">
         <variable name="ANDROID_SUPPORT_V4_VERSION" value="24.1.1+" />
     </plugin>
+    <plugin name="cordova-plugin-network-information" spec="2.0.1" />
     <engine name="ios" spec="4.5.5" />
-    <engine name="android" spec="^7.1.4" />
+    <engine name="android" spec="7.1.4" />
 </widget>

@@ -11,6 +11,9 @@ export class EdituserPage {
   user:any = [];
   _uid:any;
   dis:any = [];
+  checkdiabetes:string = "";
+  checkpress:string = "";
+
   fireinfo = firebase.firestore().collection("informationUser");
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private _USER: UserProvider,
@@ -20,11 +23,30 @@ export class EdituserPage {
       this.getUserEdit();
   }
 
+
   getUserEdit() {
     this._USER.getInformationUser(this._uid).then(data => {
       this.user = data;
-      console.log(this.user);
+      // console.log(this.user);
+      firebase.firestore().collection("informationUser").doc(firebase.auth().currentUser.uid).get()
+      .then((res) => {
+        for(let i = 0; i < res.data().disease.length;i++) {
+          if(res.data().disease[i] == "โรคเบาหวาน"){
+            this.checkdiabetes = res.data().disease[i];
+            console.log(this.checkdiabetes);
+          }else{
+            this.checkdiabetes = "";
+          }
+          if(res.data().disease[i] == "โรคความดันโลหิตสูง"){
+             this.checkpress = res.data().disease[i];
+             console.log(this.checkpress);
+          }else{
+            this.checkpress = "";
+          }
+        }
+      })
     })
+    
 
     let user = firebase.firestore().collection("informationUser")
     .where("owner", "==", this._uid)
@@ -86,11 +108,12 @@ export class EdituserPage {
   }
 
   edituser(){
-    this._USER.editUser(this.user).then(() => {
+    this._USER.editUser(this.user).then(async () => {
       this.alertCtrl.create({
         title: 'บันทึกสำเร็จแล้ว',
         buttons:['ตกลง']
       }).present();
+      this.getUserEdit();
     })
   }
 
