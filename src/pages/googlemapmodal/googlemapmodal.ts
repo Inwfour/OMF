@@ -29,6 +29,10 @@ export class GooglemapmodalPage {
     this.getfamilys();
   }
 
+  ionViewWillLeave() {
+    this.events.unsubscribe('infofamilys');
+  }
+
   getfamilys() {
     this.familyservice.getmyfamilys().then((data) => {
       this.myfamilys = data;
@@ -36,16 +40,25 @@ export class GooglemapmodalPage {
   }
 
   searchlocation(item) {
-    this.familyservice.checkInfoGetMyFamilys(item);
-    this.events.subscribe('infofamilys', () => {
+    console.log(item.id);
+    // this.familyservice.checkInfoGetMyFamilys(item);
+    this.events.subscribe('infofamilys', async() => {
+      this.infofamily = [];
       this.infofamily = this.familyservice.infofamilys;
-      console.log(this.infofamily);
+      if(this.infofamily.data().location){
+      await this.viewCtrl.dismiss({
+        user: this.infofamily.data(),
+        lat : this.infofamily.data().location.latitude,
+        lng : this.infofamily.data().location.longitude
+      })
+    }else {
+      alert("ไม่มีตำแหน่งปัจจุบัน");
+    }
     })
   }
   
   close() {
     this.viewCtrl.dismiss().then(() => {
-      this.events.unsubscribe('infofamilys');
     }) ;
   }
 }

@@ -104,25 +104,57 @@ export class FamilyProvider {
     })
   }
 
-  checkInfoGetMyFamilys(item) {
-    this.firefamilys.doc(firebase.auth().currentUser.uid).collection('family').doc(item.id)
-    .get().then((res) => {
-
+  getinfofamilys() {
+    let allfamilys;
+    var familyuid = [];
+    this.firefamilys.doc(firebase.auth().currentUser.uid).collection('family')
+    .get().then((snapshot) => {
+      allfamilys = snapshot.docs;
+      familyuid = [];
+      for(var i in allfamilys){
+        familyuid.push(allfamilys[i].data().uid);   
+      }
+      
+    }).then(() => {
       this.userservice.getalluser().then((res:any) => {
       var allusers = [];
       allusers = res;
+      
       this.infofamilys = [];
-
+      for(var j in familyuid){
+        
       for(var key in allusers) {
-        if(res.data().uid === allusers[key].id) {
-          this.infofamilys.push(allusers[key]);
+        if(familyuid[j] === allusers[key].id) {
+          this.infofamilys.push(allusers[key].data());
         }
       }
       console.log(this.infofamilys);
+    }
       this.events.publish('infofamilys')
     })
-
   })
-}
+  }
+
+//   checkInfoGetMyFamilys(item) {
+//     this.firefamilys.doc(firebase.auth().currentUser.uid).collection('family').doc(item.id)
+//     .get().then((doc) => {
+
+//       this.userservice.getalluser().then((res:any) => {
+//       var allusers = [];
+//       allusers = res;
+//       this.infofamilys = [];
+
+//       for(var key in allusers) {
+//         if(doc.data().uid === allusers[key].id) {
+//           console.log(allusers[key]);
+//           this.infofamilys = allusers[key]
+//         }
+//       }
+//       console.log(this.infofamilys);
+//       this.events.publish('infofamilys')
+//     })
+
+//   })
+// }
 
 }
