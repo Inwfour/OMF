@@ -1,0 +1,33 @@
+<ion-header>
+
+  <ion-navbar text-center>
+    <ion-title>ค้นหาตำแหน่งครอบครัว</ion-title>
+    <ion-buttons end>
+        <button ion-button icon-only clear (click)="close()">
+          <ion-icon name="close"></ion-icon>
+        </button>
+      </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+<ion-list no-lines>
+  <ion-card style="border-radius: 10px">
+  <ion-item *ngFor="let key of myfamilys" >
+    
+    <ion-thumbnail item-start *ngIf="key.data().photoURL">
+      <img src="{{key.data().photoURL}}">
+    </ion-thumbnail>
+    <ion-thumbnail item-start *ngIf="!key.data().photoURL">
+      <img src="assets/imgs/user.png">
+    </ion-thumbnail>
+    <ion-label item-start>{{key.data().owner_name}}</ion-label>
+
+      <ion-label item-center>{{key.data().type}}</ion-label>
+
+    <ion-icon name="search" item-right (click)="searchlocation(key)"></ion-icon>
+  </ion-item>
+</ion-card>
+</ion-list>
+</ion-content>

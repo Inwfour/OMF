@@ -1,6 +1,10 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Platform, Events, ModalController } from 'ionic-angular';
 import firebase from 'firebase';
+import { RequestsProvider } from '../../providers/requests/requests';
+import { GroupsProvider } from '../../providers/groups/groups';
+import { FamilyProvider } from '../../providers/family/family';
+import { GooglemapmodalPage } from '../googlemapmodal/googlemapmodal';
 declare var google: any;
 
 @IonicPage()
@@ -12,32 +16,42 @@ export class GooglemapPage {
 
   @ViewChild('map') mapRef: ElementRef
   map: any;
-
+  myfamilys: any = [];
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
+    public familyservice: FamilyProvider,
+    public modalCtrl : ModalController
   ) { }
 
   ionViewWillEnter() {
-
+    this.getfamilys();
     this.showMap();
 
   }
 
+  getfamilys() {
+    this.familyservice.getmyfamilys().then((data) => {
+      this.myfamilys = data;
+    })
+
+  }
+
+  modalfamily() {
+    this.modalCtrl.create(GooglemapmodalPage).present();
+  }
+
 
   showMap() {
-    firebase.firestore().collection("informationUser").doc(firebase.auth().currentUser.uid).get().then(async(data) => {
-      console.log(data.data().location.latitude);
-      console.log(data.data().location.longitude);
-      const location = await new google.maps.LatLng(data.data().location.latitude, data.data().location.longitude);
+
+      const location = new google.maps.LatLng(12.999999, 15.000000);
       const options = {
         center: location,
         zoom: 10,
         streetViewControl: false,
-        mapTypeId: 'satellite'
+        mapTypeId: google.maps.MapTypeId.ROADMAP
       };
       this.map = new google.maps.Map(this.mapRef.nativeElement, options);
       this.addMarker(location, this.map);
-    })
   }
 
   addMarker(position, map) {

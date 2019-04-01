@@ -79,6 +79,7 @@ import { Autostart } from '@ionic-native/autostart';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { Network } from '@ionic-native/network';
 import { NetworkProvider } from '../providers/network/network';
+import { GooglemapmodalPage } from '../pages/googlemapmodal/googlemapmodal';
 
 firebase.initializeApp(FIREBASE_CONFIG);
 firebase.firestore().settings({ timestampsInSnapshots: true })
@@ -126,7 +127,8 @@ firebase.firestore().settings({ timestampsInSnapshots: true })
     RegisterAgePage,
     RegisterDiseasePage,
     RegisterPhonePage,
-    RegisterPhotoPage
+    RegisterPhotoPage,
+    GooglemapmodalPage
   ],
   imports: [
     BrowserModule,
@@ -185,6 +187,7 @@ firebase.firestore().settings({ timestampsInSnapshots: true })
     PasswordresetPage,
     FamilyPage,
     FamilybuddysPage,
+    GooglemapmodalPage
 
   ],
   providers: [

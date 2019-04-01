@@ -10,6 +10,7 @@ export class FamilyProvider {
   myfamilys: any;
   typefamilys: any = [];
   familysuid:any;
+  infofamilys:any;
 
   constructor(public userservice: UserProvider,
     public events: Events,
@@ -102,4 +103,26 @@ export class FamilyProvider {
         })
     })
   }
+
+  checkInfoGetMyFamilys(item) {
+    this.firefamilys.doc(firebase.auth().currentUser.uid).collection('family').doc(item.id)
+    .get().then((res) => {
+
+      this.userservice.getalluser().then((res:any) => {
+      var allusers = [];
+      allusers = res;
+      this.infofamilys = [];
+
+      for(var key in allusers) {
+        if(res.data().uid === allusers[key].id) {
+          this.infofamilys.push(allusers[key]);
+        }
+      }
+      console.log(this.infofamilys);
+      this.events.publish('infofamilys')
+    })
+
+  })
+}
+
 }
