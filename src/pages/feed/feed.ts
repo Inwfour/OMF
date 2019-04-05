@@ -425,9 +425,17 @@ export class FeedPage {
       this.getPosts();
     }else {
       this.posts = [];
+      let loader = this.loadingCtrl.create({
+        spinner: 'hide',
+        content: `<img src="assets/imgs/loading.svg">`
+  
+      }); loader.present();
+
       firebase.firestore().collection("posts").where("type", "==", $event).get().then((data) => {
         data.forEach((doc) => {
+          loader.dismiss();
           this.posts.push(doc);
+
         })
       })
   }

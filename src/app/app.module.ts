@@ -79,6 +79,7 @@ import { SocialSharing } from '@ionic-native/social-sharing';
 import { Network } from '@ionic-native/network';
 import { NetworkProvider } from '../providers/network/network';
 import { GooglemapmodalPage } from '../pages/googlemapmodal/googlemapmodal';
+import { NativeAudio } from '@ionic-native/native-audio';
 
 firebase.initializeApp(FIREBASE_CONFIG);
 firebase.firestore().settings({ timestampsInSnapshots: true })
@@ -217,7 +218,8 @@ firebase.firestore().settings({ timestampsInSnapshots: true })
     Autostart,
     SocialSharing,
     Network,
-    NetworkProvider
+    NetworkProvider,
+    NativeAudio
     
   ]
 })

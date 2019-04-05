@@ -39,7 +39,7 @@
               <img src = "assets/imgs/user.png" class="avatar">
             </ion-avatar>
           <div *ngIf="message.sender == 'api'" class="bubble me">
-
+            <ion-icon *ngIf="message.text" name="volume-up" (click)="showvoice(message.text)"></ion-icon>
             <h2 *ngIf="message.text">{{message.text}}</h2>
 
             <!-- <img *ngIf="message.img" src="{{message.img}}" (click)="viewPhoto(message.img)"> -->

@@ -126,6 +126,14 @@ export class ChatbotPage {
       });
   }
 
+  showvoice(text) {
+        this.tts.speak({
+        text: text,
+        locale: "th-TH",
+        rate: 1
+      })
+  }
+
   // sendVoice(match) {
   //   this.text = match;
   //   this.sendText();
@@ -201,11 +209,11 @@ export class ChatbotPage {
         }  
       })
       // voice
-      this.tts.speak({
-        text: response.result.fulfillment.speech,
-        locale: "th-TH",
-        rate: 1
-      })
+      // this.tts.speak({
+      //   text: response.result.fulfillment.speech,
+      //   locale: "th-TH",
+      //   rate: 1
+      // })
     }, (error) => {
       alert(JSON.stringify(error))
     })

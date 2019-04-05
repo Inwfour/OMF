@@ -48,7 +48,7 @@ public lng: number = 0;
 
       timer(3000).subscribe(() => this.showSplash = false)
 
-      firebase.auth().onAuthStateChanged(user => {
+      firebase.auth().onAuthStateChanged(async user => {
         console.log(user);
         if(user){
           console.log("if");
@@ -58,11 +58,11 @@ public lng: number = 0;
           };
 
           var watch = this.geolocation.watchPosition(options);
-          var subscribtion = this.geolocation.watchPosition(options).subscribe((data: Geoposition) => {
-            this.zone.run(() => {
+          var subscribtion = await this.geolocation.watchPosition(options).subscribe((data: Geoposition) => {
+            this.zone.run(async () => {
               this.lat = data.coords.latitude;
               this.lng = data.coords.longitude;
-           firebase.firestore().collection("informationUser").doc(firebase.auth().currentUser.uid)
+          await firebase.firestore().collection("informationUser").doc(firebase.auth().currentUser.uid)
             .update({
               location: new firebase.firestore.GeoPoint(data.coords.latitude,data.coords.longitude),
               createlocation: firebase.firestore.FieldValue.serverTimestamp()
