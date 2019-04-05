@@ -53,15 +53,16 @@ public lng: number = 0;
         if(user){
           console.log("if");
           let options = {
-            enableHighAccuracy: true
+            timeout: 5000,
+            maximumAge: 0
           };
 
           var watch = this.geolocation.watchPosition(options);
           var subscribtion = this.geolocation.watchPosition(options).subscribe((data: Geoposition) => {
-            this.zone.run(async() => {
+            this.zone.run(() => {
               this.lat = data.coords.latitude;
               this.lng = data.coords.longitude;
-            await firebase.firestore().collection("informationUser").doc(firebase.auth().currentUser.uid)
+           firebase.firestore().collection("informationUser").doc(firebase.auth().currentUser.uid)
             .update({
               location: new firebase.firestore.GeoPoint(data.coords.latitude,data.coords.longitude),
               createlocation: firebase.firestore.FieldValue.serverTimestamp()
@@ -76,18 +77,18 @@ public lng: number = 0;
       })
       //Key chatbot >>>>>>>>>>>
 
-      //   window["ApiAIPlugin"].init(
-      //     {
-      //         clientAccessToken: "fe95cf69c3ab4cae9df66de9f27ce5f7", // insert your client access key here
-      //         lang: "en" // set lang tag from list of supported languages
-      //     }, 
-      //     function(result) { 
-      //       // alert(result);
-      //      },
-      //     function(error) { 
-      //       alert(error);
-      //      }
-      // );
+        window["ApiAIPlugin"].init(
+          {
+              clientAccessToken: "fe95cf69c3ab4cae9df66de9f27ce5f7", // insert your client access key here
+              lang: "en" // set lang tag from list of supported languages
+          }, 
+          function(result) { 
+            // alert(result);
+           },
+          function(error) { 
+            alert(error);
+           }
+      );
 
       // Check Internet
       this.networkProvider.initializeNetworkEvents();

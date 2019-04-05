@@ -38,26 +38,10 @@ export class GooglemapPage {
     this.events.unsubscribe('infofamilys');
   }
 
-  // modalfamily() {
-  //   let modalPage = this.modalCtrl.create(GooglemapmodalPage)
-  //   modalPage.onDidDismiss(data => {
-  //     this.lat= 0;
-  //     this.lng= 0;
-  //     console.log('test :' , data);
-  //     this.user = data.user;
-  //     this.lat = data.lat;
-  //     this.lng = data.lng;
-  //     console.log(this.lat);
-  //     console.log(this.lng);
-  //     this.showMap();
-  //   });
-  //   modalPage.present();
-  // }
-
 
   showMap() {
-    firebase.firestore().collection("informationUser").doc(firebase.auth().currentUser.uid).get().then( async(res) => {
-      const locationme = await new google.maps.LatLng(res.data().location.latitude, res.data().location.longitude);
+    firebase.firestore().collection("informationUser").doc(firebase.auth().currentUser.uid).get().then( (res) => {
+      const locationme = new google.maps.LatLng(res.data().location.latitude, res.data().location.longitude);
       const options = {
         center: locationme,
         zoom: 14,
