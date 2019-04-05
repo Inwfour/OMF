@@ -66,27 +66,22 @@ export class GooglemapPage {
       };
       this.map = new google.maps.Map(this.mapRef.nativeElement, options);
 
-      var date = new Date(this.allresfamilys.createlocation);
-      var infowindow = new google.maps.InfoWindow({
-        content: res.data().owner_name + "<br>" + date
-      });
       var marker = new google.maps.Marker({
         position: locationme,
         map: this.map,
         draggable: false,
         animation: google.maps.Animation.DROP,
-        label: "ฉัน",
+        title: res.data().owner_name,
         icon: {
           url: "http://maps.google.com/mapfiles/ms/icons/pink-dot.png",
-          size: {
-            width: 30,
-            height: 35
-          }
         },
       })
-      marker.addListener('click', function () {
-       infowindow.open(this.map, marker)
-      })
+      var infowindow = new google.maps.InfoWindow({
+        content: res.data().owner_name,
+        maxWidth: 200
+      });
+      infowindow.open(this.map,marker);
+
 
       this.familyservice.getinfofamilys();
       this.events.subscribe('infofamilys', () => {
@@ -96,31 +91,23 @@ export class GooglemapPage {
           for(var key in this.allfamilys){
             if(this.allfamilys[key].location){
               this.allresfamilys = this.allfamilys[key];
-              console.log(this.allresfamilys.owner_name);
-              var datebuddy = new Date(this.allresfamilys.createlocation);
+              console.log(this.allresfamilys.location);
               var marker = new google.maps.Marker({
                 position: new google.maps.LatLng(this.allresfamilys.location.latitude,this.allresfamilys.location.longitude),
                 map: this.map,
                 draggable: false,
                 animation: google.maps.Animation.DROP,
-                label: "เพื่อน",
+                title: this.allresfamilys.owner_name,
                 icon: {
                   url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
-                  size: {
-                    width: 30,
-                    height: 35
-                  }
                 },
               })
               var infowindow = new google.maps.InfoWindow({
-                content: this.allresfamilys.owner_name + "<br>" + datebuddy
+                content: this.allresfamilys.owner_name,
+                maxWidth: 200
               });
-              marker.addListener('click', function () {
-              
-               infowindow.open(this.map, marker)
-              })
-
-              console.log(this.allresfamilys.location.latitude);
+              infowindow.open(this.map,marker);
+          
             }
           }
         })

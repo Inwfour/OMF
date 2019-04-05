@@ -73,6 +73,7 @@ export class LoginPage {
               }).present();
             });
         } else {
+            if(res.data().owner_name == undefined && res.data().age == undefined && res.data().phone == undefined && res.data().photoURL == undefined && res.data().disease == undefined){
             console.log(data);
             loader.dismiss();
             this.toastCtrl.create({
@@ -81,6 +82,16 @@ export class LoginPage {
               position: 'top',
             }).present();
             this.navCtrl.push(RegisterPhotoPage);
+            }else {
+              loader.dismiss();
+              this.toastCtrl.create({
+                message: "เข้าสู่ระบบสำเร็จ",
+                duration: 3000,
+                position: 'top',
+              }).present();
+              this.navCtrl.push(TabsPage)
+            }
+
           }
       })
 

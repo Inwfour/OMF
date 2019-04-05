@@ -5,7 +5,7 @@
   </button>
   <br>
   <ion-list-header>
-    กลุ่มของฉัน
+    <h2>กลุ่มของฉัน</h2>
   </ion-list-header>
   <ion-item *ngFor="let item of groupowner">
     <ion-avatar item-left>
@@ -14,7 +14,7 @@
     <h3 (click)="openchat(item)">{{item.groupName}}</h3>
   </ion-item>
   <ion-list-header>
-    กลุ่มที่ฉันเป็นสมาชิก
+    <h2>กลุ่มที่ฉันเป็นสมาชิก</h2>
   </ion-list-header>
   <ion-item *ngFor="let item of groupfriend">
     <ion-avatar item-left>

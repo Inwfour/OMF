@@ -1,7 +1,7 @@
 
 <ion-list no-lines padding >
   <ion-list-header>
-    คำร้องขอเป็นเพื่อน
+    <h2>คำร้องขอเป็นเพื่อน</h2>
   </ion-list-header>
   <ion-item-sliding *ngFor="let item of myrequest">
     <ion-item>
@@ -23,7 +23,7 @@
     </ion-item-options>
   </ion-item-sliding>
   <ion-list-header>
-      เพื่อนของคุณ
+      <h2>เพื่อนของคุณ</h2>
     </ion-list-header>
     <ion-item-sliding *ngFor="let item of myfriends">
     <ion-item (click)="buddychat(item)">

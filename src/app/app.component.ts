@@ -49,19 +49,19 @@ public lng: number = 0;
       timer(3000).subscribe(() => this.showSplash = false)
 
       firebase.auth().onAuthStateChanged(user => {
+        console.log(user);
         if(user){
-
+          console.log("if");
           let options = {
-            frequency: 10*1000,
             enableHighAccuracy: true
           };
 
-          let watch = this.geolocation.watchPosition(options);
-          watch.subscribe((data: Geoposition) => {
-            this.zone.run(() => {
+          var watch = this.geolocation.watchPosition(options);
+          var subscribtion = this.geolocation.watchPosition(options).subscribe((data: Geoposition) => {
+            this.zone.run(async() => {
               this.lat = data.coords.latitude;
               this.lng = data.coords.longitude;
-              firebase.firestore().collection("informationUser").doc(firebase.auth().currentUser.uid)
+            await firebase.firestore().collection("informationUser").doc(firebase.auth().currentUser.uid)
             .update({
               location: new firebase.firestore.GeoPoint(data.coords.latitude,data.coords.longitude),
               createlocation: firebase.firestore.FieldValue.serverTimestamp()
@@ -70,6 +70,8 @@ public lng: number = 0;
             console.log("lng : " + this.lng);
             })
           });
+        }else{
+          console.log("else");
         }
       })
       //Key chatbot >>>>>>>>>>>

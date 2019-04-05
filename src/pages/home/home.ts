@@ -41,35 +41,7 @@ export class HomePage {
       this.getimg();
       this._uid = firebase.auth().currentUser.uid;
       this.photoDisplay = firebase.auth().currentUser.photoURL
-      this.firebaseCordova.getToken().then((token) => {
-        console.log(token);
-        this.updateToken(token, firebase.auth().currentUser.uid);
-      }).catch((err) => {
-        console.log(err);
-      })
   }
-
-  updateToken(token: string, uid: string) {
-
-    this.CollectionService.UsersCollection().doc(uid).set({
-      token: token,
-      tokenUpdate: firebase.firestore.FieldValue.serverTimestamp()
-    }, {
-        merge: true
-      }).catch((err) => {
-        console.log(err);
-      })
-
-  }
-
-  // LocationMe() {
-  //   this.geolocation.getCurrentPosition().then(position =>{
-  //     this.latitude = position.coords.latitude;
-  //     this.longitude = position.coords.longitude;
-  // },error=>{
-  //     console.log('error',error);
-  // });
-  // }
 
   get() {
     let fireuser = firebase.firestore().collection("informationUser").doc(firebase.auth().currentUser.uid);

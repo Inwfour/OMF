@@ -2,11 +2,6 @@
 
   <ion-navbar text-center >
     <ion-title>กระดานข่าว</ion-title>
-    <!-- <ion-buttons end>
-      <button ion-button icon-only clear>
-        <ion-icon name="ios-clipboard-outline"></ion-icon>
-      </button>
-    </ion-buttons> -->
   </ion-navbar>
 
 
@@ -27,27 +22,15 @@
         <ion-icon name="send"></ion-icon>
       </button>
   </ion-row>
-
-  <ion-row>
-    <ion-col col-4>
-      <ion-item>
-        <ion-label>กีฬา</ion-label>
-        <ion-checkbox [(ngModel)]="check" ></ion-checkbox>
-      </ion-item>
-    </ion-col>
-    <ion-col col-4>
-        <ion-item>
-          <ion-label>ดนตรี</ion-label>
-          <ion-checkbox [(ngModel)]="check" ></ion-checkbox>
-        </ion-item>
-      </ion-col>
-      <ion-col col-4>
-          <ion-item>
-            <ion-label>ศาสนา</ion-label>
-            <ion-checkbox [(ngModel)]="check" ></ion-checkbox>
-          </ion-item>
-        </ion-col>
-  </ion-row>
+  <ion-item>
+    <ion-label>เลือกประเภทการแสดงผล</ion-label>
+    <ion-select [(ngModel)]="selectpost" cancelText="ออก" okText="ตกลง" (ionChange)="onChange($event)">
+        <ion-option value="all">ทั้งหมด</ion-option>
+      <ion-option value="sport">กีฬา</ion-option>
+      <ion-option value="music">ดนตรี</ion-option>
+      <ion-option value="regilion">ศาสนา</ion-option>
+    </ion-select>
+  </ion-item>
 
   <ion-row class="rowStyle" *ngIf="image">
     <ion-card class="round-corners">
@@ -94,13 +77,7 @@
             <small> {{ post.data().commentsCount || 0 }} ความคิดเห็น</small>
           </button>
         </ion-col>
-        <ion-col col-2>
-          <button ion-button block icon-left clear small color="headertop" (click)="share(post)">
-            <ion-icon name="md-share"></ion-icon>
-            <small>แชร์</small>
-          </button>
-        </ion-col>
-        <ion-col col-2>
+        <ion-col col-4>
             <button ion-button block icon-left clear small color="headertop" *ngIf="post.data().created">
               <small>{{ ago(post.data().created.toDate()) }}</small>
             </button>

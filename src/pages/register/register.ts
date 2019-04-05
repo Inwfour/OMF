@@ -27,7 +27,8 @@ export class RegisterPage {
   }
 
   save(user) {
-    this.registerService.SaveUser(user).then(() => {
+    this.registerService.SaveUser(user).then(async () => {
+     await firebase.auth().signOut();
       this.user.email = "";
       this.user.password = "";
         this.toastCtrl.create({
@@ -39,6 +40,7 @@ export class RegisterPage {
       this.toastCtrl.create({
         message: "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง",
         duration: 3000,
+        position: 'top'
       }).present();
     })
 

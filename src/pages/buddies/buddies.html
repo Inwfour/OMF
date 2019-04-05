@@ -2,7 +2,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>buddies</ion-title>
+    <ion-title>ค้นหาเพื่อน</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -14,14 +14,14 @@
   <ion-list no-lines>
     <ion-list>
 
-        <ion-item *ngFor="let user of filteruser">
+        <ion-item no-lines *ngFor="let user of filteruser">
             <ion-thumbnail item-start *ngIf="user.data().photoURL">
               <img src="{{user.data().photoURL}}">
             </ion-thumbnail>
             <ion-thumbnail item-start *ngIf="!user.data().photoURL">
                 <img src="assets/imgs/user.png">
               </ion-thumbnail>
-            <h2>{{user.data().owner_name}}</h2>
+            <h1>{{user.data().owner_name}}</h1>
             <!-- <p>เลื่อนไปทางซ้าย</p> -->
             <button ion-button clear item-end (click)="sendreq(user)">เพิ่มเพื่อน</button>
           </ion-item>
