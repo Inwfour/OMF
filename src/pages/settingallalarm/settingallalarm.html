@@ -1,0 +1,31 @@
+
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>รายการแจ้งเตือน</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content no-padding style="background-color: #F3F3F3">
+    <ion-fab bottom right>
+        <button ion-fab color="secondary" (click)="modalalarm()">
+          <ion-icon name="md-add"></ion-icon>
+        </button>
+      </ion-fab>
+
+      <ion-list no-padding>
+          <ion-card *ngFor="let a of alarm">
+              <ion-card-header color="white" style="background-color: #127C5B">
+                 <span>ชื่อยา : {{a.data().name}}</span>
+                 <ion-icon style="float:right;" name="md-close" (click)="delete()"></ion-icon>
+              </ion-card-header>
+              <ion-card-content>
+                <h2 *ngIf="a.data().type == 'eat'">รับประทานครั้งละ : {{a.data().number}}</h2>
+                <h2 *ngIf="a.data().type == 'spray'">ฉีดครั้งละ : {{a.data().number}}</h2>
+                <h2>เวลาแจ้งเตือน : {{a.data().time | date: "HH:mm"}} นาฬิกา</h2>
+              </ion-card-content>
+            </ion-card>
+      </ion-list>
+</ion-content>

@@ -80,6 +80,9 @@ import { Network } from '@ionic-native/network';
 import { NetworkProvider } from '../providers/network/network';
 import { GooglemapmodalPage } from '../pages/googlemapmodal/googlemapmodal';
 import { NativeAudio } from '@ionic-native/native-audio';
+import { AboutPage } from '../pages/about/about';
+import { SettingsalarmPage } from '../pages/settingsalarm/settingsalarm';
+import { SettingallalarmPage } from '../pages/settingallalarm/settingallalarm';
 
 firebase.initializeApp(FIREBASE_CONFIG);
 firebase.firestore().settings({ timestampsInSnapshots: true })
@@ -127,7 +130,10 @@ firebase.firestore().settings({ timestampsInSnapshots: true })
     RegisterDiseasePage,
     RegisterPhonePage,
     RegisterPhotoPage,
-    GooglemapmodalPage
+    GooglemapmodalPage,
+    AboutPage,
+    SettingsalarmPage,
+    SettingallalarmPage
   ],
   imports: [
     BrowserModule,
@@ -185,7 +191,10 @@ firebase.firestore().settings({ timestampsInSnapshots: true })
     PasswordresetPage,
     FamilyPage,
     FamilybuddysPage,
-    GooglemapmodalPage
+    GooglemapmodalPage,
+    AboutPage,
+    SettingsalarmPage,
+    SettingallalarmPage
 
   ],
   providers: [

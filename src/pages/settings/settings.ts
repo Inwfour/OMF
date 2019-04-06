@@ -5,6 +5,8 @@ import { SettingsalarmPage } from '../settingsalarm/settingsalarm';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { Storage } from '@ionic/storage';
 import { Autostart } from '@ionic-native/autostart';
+import { AboutPage } from '../about/about';
+import { SettingallalarmPage } from '../settingallalarm/settingallalarm';
 
 @IonicPage()
 @Component({
@@ -15,11 +17,6 @@ export class SettingsPage {
   fireinfo = firebase.firestore().collection('informationUser');
   disease:any = [];
   checked:any;
-  disease0:boolean = false;
-  disease1:boolean = false;
-  disease2:boolean = false;
-  disease3:boolean = false;
-  disease4:boolean = false;
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private localNotifications: LocalNotifications,
     public storage: Storage,
@@ -29,17 +26,7 @@ export class SettingsPage {
   }
 
   ionViewDidEnter() {
-    // this.storage.get('disease0').then((val) => {
-    //   if(val === null) {  
-    //     this.storage.set('disease0', this.disease0);
-    //   }
-    //   if(val === false) {
-    //     this.disease0 == val;
-    //   }
-    //   if(val === true) {
-    //     this.disease0 == val;
-    //   }
-    // });
+
   
       this.fireinfo.doc(firebase.auth().currentUser.uid).get().then((res) => {
       this.disease = res.data().disease;
@@ -57,6 +44,10 @@ export class SettingsPage {
         data: {"id":1, "name": "Four"}
       });
     });
+  }
+
+  about() {
+    this.navCtrl.push(AboutPage);
   }
 
   // checkedAlarm() {
@@ -88,7 +79,7 @@ export class SettingsPage {
   // }
 
   settingalarm() {
-    this.navCtrl.push(SettingsalarmPage);
+    this.navCtrl.push(SettingallalarmPage);
   }
 
 }

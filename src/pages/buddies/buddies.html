@@ -21,7 +21,7 @@
             <ion-thumbnail item-start *ngIf="!user.data().photoURL">
                 <img src="assets/imgs/user.png">
               </ion-thumbnail>
-            <h1>{{user.data().owner_name}}</h1>
+            <h2>{{user.data().owner_name}}</h2>
             <!-- <p>เลื่อนไปทางซ้าย</p> -->
             <button ion-button clear item-end (click)="sendreq(user)">เพิ่มเพื่อน</button>
           </ion-item>

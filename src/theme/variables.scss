@@ -53,7 +53,10 @@ $colors: (
   
   helpfamily: #872222,
 
-  slide: #C400FF
+  slide: #C400FF,
+
+  listheader: #F3F3F3,
+  listheaderdetail: rgb(248, 246, 246)
 );
 
 
@@ -67,7 +70,9 @@ $toolbar-background: #127C5B;
 $fab-size: 60px;
 $loading-md-background: transparent;
 $loading-md-box-shadow: none;
-
+h2 {
+  margin-top: 1rem !important;
+}
 
 // App iOS Variables
 // --------------------------------------------------

@@ -13,36 +13,26 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content no-padding>
   <ion-list no-lines>
-      <ion-list-header color="headertop">ชื่อผู้ใช้</ion-list-header>
+      <ion-list-header color="listheader">ชื่อผู้ใช้</ion-list-header>
     <ion-item>
       <ion-input type="text" [(ngModel)]="user.owner_name"></ion-input>
     </ion-item>
-    <ion-list-header color="headertop">อายุ</ion-list-header>
+    <ion-list-header color="listheader">อายุ</ion-list-header>
     <ion-item>
       <ion-input type="text" [(ngModel)]="user.age"></ion-input>
     </ion-item>
-    <ion-list-header color="headertop">เบอร์โทรศัพท์</ion-list-header>
+    <ion-list-header color="listheader">เบอร์โทรศัพท์</ion-list-header>
     <ion-item>
       <ion-input type="text" [(ngModel)]="user.phone"></ion-input>
     </ion-item>
-    <ion-list-header color="headertop">โรคประจำตัว</ion-list-header>
+    <ion-list-header color="listheader">โรคประจำตัว</ion-list-header>
     <ion-item *ngFor="let dis of user.disease">
         <ion-label text-center>{{dis}}</ion-label>
     </ion-item>
     <ion-item>
         <button ion-button block round color="headertop" (click)="editdisease()">แก้ไขโรค</button>
-    </ion-item>
-
-    <ion-list-header *ngIf="checkdiabetes" color="headertop">ระบุระดับน้ำตาลในเลือด</ion-list-header>
-    <ion-item *ngIf="checkdiabetes">
-      <ion-input type="text" [(ngModel)]="user.diabetes"></ion-input>
-    </ion-item>
-
-    <ion-list-header *ngIf="checkpress" color="headertop">ระบุความดันโลหิต</ion-list-header>
-    <ion-item *ngIf="checkpress">
-      <ion-input type="text" [(ngModel)]="user.press"></ion-input>
     </ion-item>
   </ion-list>
 

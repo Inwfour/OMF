@@ -6,73 +6,41 @@
 
 </ion-header>
 
-<ion-content padding>
+<ion-content no-padding>
+
   <ion-list>
-    <ion-list-header>
-      <h2>แจ้งเตือน</h2>
+    <ion-list-header color="listheader">
+      <h2>แจ้งเตือนการทานยา</h2>
     </ion-list-header>
 
-    <!-- <ion-item *ngFor="let d of disease">
-      <ion-toggle [(ngModel)]="d.value" style="padding:5px;float: right" (ionChange)="checkedAlarm(d)"></ion-toggle>
+    <ion-item (click)="settingalarm()">
+      <ion-label>แจ้งเตือนทานยา</ion-label>
+      <ion-icon name='alarm' item-start></ion-icon>
+      <ion-icon name='ios-arrow-forward' item-end></ion-icon>
+    </ion-item>
+
+    <!-- <ion-item *ngFor="let dis of disease" (click)="settingalarm(dis)">
       <ion-label>
-        {{d}}
+        {{dis}}
       </ion-label>
       <ion-icon name='alarm' item-start></ion-icon>
+      <ion-icon name='ios-arrow-forward' item-end></ion-icon>
     </ion-item> -->
+    <br>
 
-    <ion-item *ngIf="disease[0]">
-      <ion-toggle color="headertop" [(ngModel)]="disease0" (ionChange)="checkedAlarm(disease[0])"></ion-toggle>
-      <ion-label>
-        {{disease[0]}}
-      </ion-label>
-      <ion-icon name='alarm' item-start></ion-icon>
-    </ion-item>
-
-    <ion-item *ngIf="disease[1]">
-      <ion-toggle [(ngModel)]="disease1" (ionChange)="checkedAlarm(disease[1])"></ion-toggle>
-      <ion-label>
-        {{disease[1]}}
-      </ion-label>
-      <ion-icon name='alarm' item-start></ion-icon>
-    </ion-item>
-
-    <ion-item *ngIf="disease[2]">
-      <ion-toggle [(ngModel)]="disease2" (ionChange)="checkedAlarm(disease[2])"></ion-toggle>
-      <ion-label>
-        {{disease[2]}}
-      </ion-label>
-      <ion-icon name='alarm' item-start></ion-icon>
-    </ion-item>
-
-    <ion-item *ngIf="disease[3]">
-      <ion-toggle [(ngModel)]="disease0" (ionChange)="checkedAlarm(disease[3])"></ion-toggle>
-      <ion-label>
-        {{disease[3]}}
-      </ion-label>
-      <ion-icon name='alarm' item-start></ion-icon>
-    </ion-item>
-
-    <ion-item *ngIf="disease[4]">
-      <ion-toggle [(ngModel)]="disease4" (ionChange)="checkedAlarm(disease[4])"></ion-toggle>
-      <ion-label>
-        {{disease[4]}}
-      </ion-label>
-      <ion-icon name='alarm' item-start></ion-icon>
-    </ion-item>
-
-    <ion-list-header>
-      <h2>ตำแหน่งของคุณ</h2>
+    <ion-list-header color="listheader">
+      <h2>เกี่ยวกับ</h2>
     </ion-list-header>
 
-    <!-- <ion-item>
-      <ion-toggle></ion-toggle>
-      <ion-label>
-        เปิดใช้งานตำแหน่ง
-      </ion-label>
-      <ion-icon name='md-locate' item-start></ion-icon>
-    </ion-item> -->
+    <ion-item (click)="about()"> 
+        <ion-label>
+          เกี่ยวกับผู้พัฒนา
+        </ion-label>
+        <ion-icon name='contacts' item-start></ion-icon>
+        <ion-icon name='ios-arrow-forward' item-end></ion-icon>
+      </ion-item>
 
-    <button ion-button block round (click)="test()">Click</button>
+    <!-- <button ion-button block round (click)="test()">Click</button> -->
 
   </ion-list>
 

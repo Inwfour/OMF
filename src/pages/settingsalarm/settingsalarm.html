@@ -1,18 +1,63 @@
-<!--
-  Generated template for the SettingsalarmPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
   <ion-navbar>
-    <ion-title>settingsalarm</ion-title>
+    <ion-title>แจ้งเตือนทานยา</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only clear (click)="close()">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
+<ion-content no-padding>
+  <ion-list no-border>
 
+    <ion-item>
+      <ion-label>ประเภท</ion-label>
+      <ion-select [(ngModel)]="selecttype" cancelText="ออก" okText="ตกลง">
+        <ion-option value="eat">สำหรับรับประทาน</ion-option>
+        <ion-option value="spray">สำหรับฉีด</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-list>
+
+      <ion-list-header color="listheader">
+        <h2>รายละเอียดการแจ้งเตือน</h2>
+      </ion-list-header>
+
+      <ion-list-header color="listheaderdetail">
+        <h3>ประเภทของยา (ชื่อยา,ลักษณะยา หรือ สีของยา)</h3>
+      </ion-list-header>
+      <ion-item>
+        <ion-input type="text" placeholder="ระบุประเภทยา" [(ngModel)]="name"></ion-input>
+      </ion-item>
+
+      <ion-list-header style="margin-top: 2rem" color="listheaderdetail">
+          <h3>จำนวน (ครั้งละ)</h3>
+        </ion-list-header>
+        <ion-item>
+          <ion-input type="number" placeholder="ระบุจำนวน" [(ngModel)]="number"></ion-input>
+        </ion-item>
+
+      <ion-list-header style="margin-top: 2rem" color="listheaderdetail">
+        <h3>ช่วงเวลา</h3>
+      </ion-list-header>
+      <ion-item>
+          <ion-label>ตั้งเวลาแจ้งเตือน</ion-label>
+          <ion-datetime displayFormat="hh:mm A" pickerFormat="hh:mm A" [(ngModel)]="bangkokTime"></ion-datetime>
+      </ion-item>
+      <ion-item>
+        <ion-note>*หมายเหตุ <br> AM : 00.00 (เที่ยงคืน) - 12.00 (เที่ยงวัน) <br> PM : 12:00 (เที่ยงวัน) - 00.00 (เที่ยงคืน)</ion-note>
+      </ion-item>
+
+    </ion-list>
+    
+  </ion-list>
 </ion-content>
+<ion-footer no-padding text-center>
+  <button ion-button block color="headertop" (click)="savemedicine()">บันทึกข้อมูลยา</button>
+</ion-footer>

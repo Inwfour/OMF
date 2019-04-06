@@ -20,7 +20,7 @@
     <preference name="SplashScreen" value="screen" />
     <preference name="SplashScreenDelay" value="10000" />
     <preference name="AutoHideSplashScreen" value="false" />
-    <preference name="FadeSplashScreen" value="false" />
+    <preference name="FadeSplashScreen" value="true" />
     <preference name="ShowSplashScreen" value="true" />
     <preference name="loadUrlTimeoutValue" value="60000" />
     <platform name="android">
