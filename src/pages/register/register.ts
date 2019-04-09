@@ -27,7 +27,7 @@ export class RegisterPage {
   }
 
   save(user) {
-    this.registerService.SaveUser(user).then(async () => {
+    this.registerService.SaveUser(user).then(async (data) => {
      await firebase.auth().signOut();
       this.user.email = "";
       this.user.password = "";

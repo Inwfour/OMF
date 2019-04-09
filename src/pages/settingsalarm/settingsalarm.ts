@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, ToastController } from 'ionic-angular';
 import firebase from 'firebase';
-
+import * as moment from 'moment';
 @IonicPage()
 @Component({
   selector: 'page-settingsalarm',
@@ -10,27 +10,17 @@ import firebase from 'firebase';
 export class SettingsalarmPage {
   selecttype:any = 'eat';
   myTime:any = new Date().getTime();
-  bangkokTime:any;
+  bangkokTime:string;
   number:any;
   name:any;
+  
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public viewCtrl: ViewController,
     public toastCtrl : ToastController
     ) {
-      this.bangkokTime = this.calculateTime('+7');
+      this.bangkokTime = moment().format();
   }
-
-  calculateTime(offset: any) {
-    // create Date object for current location
-    let d = new Date();
-
-    // create new Date object for different city
-    // using supplied offset
-    let nd = new Date(d.getTime() + (3600000 * offset));
-
-    return nd.toISOString();
-  }
-
+  
   savemedicine() {
     if(this.name == undefined || this.number == undefined){
       this.toastCtrl.create({

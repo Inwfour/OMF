@@ -59,17 +59,22 @@ public lng: number = 0;
 
           var watch = this.geolocation.watchPosition(options);
           var subscribtion = this.geolocation.watchPosition(options).subscribe((data: Geoposition) => {
-            this.zone.run(async () => {
+            this.zone.run(async() => {
+              if(data.coords.latitude != undefined && data.coords.longitude != undefined){
               this.lat = await data.coords.latitude;
               this.lng = await data.coords.longitude;
-          await firebase.firestore().collection("informationUser").doc(firebase.auth().currentUser.uid)
+          firebase.firestore().collection("informationUser").doc(firebase.auth().currentUser.uid)
             .update({
               location: new firebase.firestore.GeoPoint(data.coords.latitude,data.coords.longitude),
               createlocation: firebase.firestore.FieldValue.serverTimestamp()
             })
             console.log("lat : " + this.lat);
             console.log("lng : " + this.lng);
+          }else {
+            console.log("ไม่มีข้อมูล");
+          }
             })
+            
           });
         }else{
           console.log("else");

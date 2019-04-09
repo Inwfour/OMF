@@ -49,35 +49,6 @@ export class SettingsPage {
   about() {
     this.navCtrl.push(AboutPage);
   }
-
-  // checkedAlarm() {
-  //   if(this.disease0 === true) {
-  //     this.storage.set('disease0', true);
-  //     this.autostart.enable();
-  //   this.localNotifications.schedule([
-  //     {
-  //       id: 1,
-  //       title: 'My first notification',
-  //       text: 'First notification test one',
-  //       trigger: { every: {hour: 23, minute: 0} },
-  //       data: {"id": 1, "name": "Mr. A"}
-  //     },
-  //     {
-  //       id: 2,
-  //       title: 'My Second notification',
-  //       text: 'Second notification on 12 pm',
-  //       trigger: { every: {hour: 22, minute: 59} },
-  //       data: {"id": 2, "name": "Mr. B"}
-  //     }
-  //   ]);
-  // }else {
-  //   this.storage.set('disease0', false);
-  //   this.localNotifications.clear(1).then((data) => {
-  //       console.log("นำออกสำเร็จ" + JSON.stringify(data));
-  //   })
-  // }
-  // }
-
   settingalarm() {
     this.navCtrl.push(SettingallalarmPage);
   }
