@@ -19,7 +19,7 @@
           <ion-card *ngFor="let a of alarm">
               <ion-card-header color="white" style="background-color: #127C5B">
                  <span>ชื่อยา : {{a.data().name}}</span>
-                 <ion-icon style="float:right;" name="md-close" (click)="delete()"></ion-icon>
+                 <ion-icon style="float:right;" name="md-close" (click)="delete(a)"></ion-icon>
               </ion-card-header>
               <ion-card-content>
                 <h2 *ngIf="a.data().type == 'eat'">รับประทานครั้งละ : {{a.data().number}}</h2>

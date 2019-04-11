@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ActionSheetController, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ActionSheetController, ToastController, LoadingController } from 'ionic-angular';
 import { RegisterNamePage } from '../register-name/register-name';
 import { ImageProvider } from '../../providers/image/image';
 import { UserProvider } from '../../providers/user/user';
@@ -22,7 +22,7 @@ export class RegisterPhotoPage {
     public _IMG: ImageProvider,
     private userservice: UserProvider,
     private toastCtrl : ToastController,
-    private storage : Storage,
+    private loadingCtrl : LoadingController,
     ) {
       this.uid = firebase.auth().currentUser.uid;
       // this.fireinfo.doc(firebase.auth().currentUser.uid).get().then((res) => {
@@ -77,6 +77,12 @@ export class RegisterPhotoPage {
   }
 
   checkImg(url) {
+    let loader = this.loadingCtrl.create({
+      spinner: 'hide',
+      content: `<img src="assets/imgs/loading.svg">`
+    })
+    loader.present();
+
     firebase.auth().currentUser.updateProfile({
         photoURL: url,
         displayName: null
@@ -89,6 +95,7 @@ export class RegisterPhotoPage {
           duration: 3000,
           position: 'top'
         }).present();
+        loader.dismiss();
         this.navCtrl.push(RegisterNamePage);
       })
       .catch((err) => {
@@ -104,6 +111,7 @@ export class RegisterPhotoPage {
   }
 
   next(){
+
     if(this.image === "assets/imgs/user.png") {
       this.checkImg(this.image);
     }else {      

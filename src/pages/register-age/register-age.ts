@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, LoadingController } from 'ionic-angular';
 import { RegisterPhonePage } from '../register-phone/register-phone';
 import firebase from 'firebase';
 
@@ -12,7 +12,8 @@ export class RegisterAgePage {
   fireinfo = firebase.firestore().collection('informationUser');
   age:any;
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private loadingCtrl : LoadingController,
     ) {
       this.fireinfo.doc(firebase.auth().currentUser.uid).get().then((res) => {
         if(res.data().age === undefined) {
@@ -39,6 +40,12 @@ export class RegisterAgePage {
         position: 'top'
       }).present();
   } else {
+    let loader = this.loadingCtrl.create({
+      spinner: 'hide',
+      content: `<img src="assets/imgs/loading.svg">`
+    })
+    loader.present();
+
     this.fireinfo.doc(firebase.auth().currentUser.uid).update({
       age: this.age
     }).then(() => {
@@ -47,6 +54,7 @@ export class RegisterAgePage {
         duration: 3000,
         position: 'top'
       }).present();
+      loader.dismiss();
       this.navCtrl.push(RegisterPhonePage);
     }).catch((err) => {
       console.log(err);

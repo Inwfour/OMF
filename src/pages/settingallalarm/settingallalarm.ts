@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController, AlertController } from 'ionic-angular';
 import { SettingsalarmPage } from '../settingsalarm/settingsalarm';
-import { LocalNotifications } from '@ionic-native/local-notifications';
 import firebase from 'firebase';
 
 @IonicPage()
@@ -14,7 +13,7 @@ export class SettingallalarmPage {
   datealarm:string = new Date().toISOString();
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public modalCtrl: ModalController,
-    public localnotification: LocalNotifications,
+    public alertCtrl : AlertController,
     ) {
   }
 
@@ -37,6 +36,29 @@ export class SettingallalarmPage {
     this.modalCtrl.create(SettingsalarmPage).onDidDismiss(() => {
       this.getmedicine();
     })
+  }
+
+  delete(item) {
+    let alert = this.alertCtrl.create({
+      title : "คุณต้องการลบ : " + item.data().name + " ?",
+      buttons : [
+        {
+          text: "กลับ",
+          handler: () => {
+            console.log("ไม่ได้ลบข้อมูล");
+          }
+        },
+        {
+          text: "ยืนยัน",
+          handler: () => {
+            firebase.firestore().collection("mecidine").doc(item.id).delete().then(() => {
+              this.getmedicine();
+            })
+          }
+        },
+      ]
+    })
+    alert.present();
   }
 
 }

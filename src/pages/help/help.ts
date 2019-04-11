@@ -15,6 +15,9 @@ export class HelpPage {
     private modalCtrl: ModalController,
     public nativeAudio: NativeAudio
     ) {
+      this.nativeAudio.preloadComplex('1', 'assets/sound/help.mp3',1,1,0).then(()=>{
+        console.log('Preload Playing');
+      });
   }
 
   helpfamily(){
@@ -22,7 +25,6 @@ export class HelpPage {
   }
   
   sound() {
-    this.nativeAudio.preloadSimple('1', 'assets/sound/help.mp3').then(()=>{console.log('Preload Playing')});
     this.nativeAudio.play('1').then(()=>{console.log('Playing')});
   }
 

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, LoadingController } from 'ionic-angular';
 import { RegisterDiseasePage } from '../register-disease/register-disease';
 import firebase from 'firebase';
 
@@ -12,7 +12,8 @@ export class RegisterPhonePage {
   fireinfo = firebase.firestore().collection('informationUser');
   phone:any;
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    private toastCtrl : ToastController
+    private toastCtrl : ToastController,
+    private loadingCtrl : LoadingController,
     ) {
       this.fireinfo.doc(firebase.auth().currentUser.uid).get().then((res) => {
         if(res.data().phone === undefined) {
@@ -32,6 +33,7 @@ export class RegisterPhonePage {
   }
 
   next(){
+
     if(this.phone === "" || this.phone === null || this.phone === undefined){
       this.toastCtrl.create({
         message: "กรุณาระบุเบอร์โทรศัพท์ที่ถูกต้อง",
@@ -39,6 +41,12 @@ export class RegisterPhonePage {
         position: 'top'
       }).present();
   } else {
+    let loader = this.loadingCtrl.create({
+      spinner: 'hide',
+      content: `<img src="assets/imgs/loading.svg">`
+    })
+    loader.present();
+    
     this.fireinfo.doc(firebase.auth().currentUser.uid).update({
       phone: this.phone
     }).then(() => {
@@ -47,6 +55,7 @@ export class RegisterPhonePage {
         duration: 3000,
         position: 'top'
       }).present();
+      loader.dismiss();
       this.navCtrl.push(RegisterDiseasePage);
     }).catch((err) => {
       console.log(err);

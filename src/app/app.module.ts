@@ -77,7 +77,6 @@ import { BackgroundMode } from '@ionic-native/background-mode';
 import { Autostart } from '@ionic-native/autostart';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { Network } from '@ionic-native/network';
-import { NetworkProvider } from '../providers/network/network';
 import { GooglemapmodalPage } from '../pages/googlemapmodal/googlemapmodal';
 import { NativeAudio } from '@ionic-native/native-audio';
 import { AboutPage } from '../pages/about/about';
@@ -227,7 +226,6 @@ firebase.firestore().settings({ timestampsInSnapshots: true })
     Autostart,
     SocialSharing,
     Network,
-    NetworkProvider,
     NativeAudio
     
   ]

@@ -6,7 +6,6 @@ import { LoginPage } from '../pages/login/login';
 import { timer } from 'rxjs/observable/timer';
 import { TabsPage } from '../pages/tabs/tabs';
 import firebase from 'firebase'
-import { NetworkProvider } from '../providers/network/network';
 import { Network } from '@ionic-native/network';
 import { Geolocation, Geoposition } from '@ionic-native/geolocation';
 
@@ -22,7 +21,6 @@ export class MyApp {
 public lng: number = 0; 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,
     public network: Network,
-    public networkProvider: NetworkProvider,
     public events: Events,
     public loadingCtrl: LoadingController,
     public alertCtrl: AlertController,
@@ -39,30 +37,25 @@ public lng: number = 0;
       }
     });
 
-
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
       splashScreen.hide();
-
+    
       timer(3000).subscribe(() => this.showSplash = false)
 
-      firebase.auth().onAuthStateChanged(user => {
+      firebase.auth().onAuthStateChanged(async user => {
         console.log(user);
         if(user){
           console.log("if");
-          let options = {
-            timeout: 5000,
-            maximumAge: 0
-          };
 
-          var watch = this.geolocation.watchPosition(options);
-          var subscribtion = this.geolocation.watchPosition(options).subscribe((data: Geoposition) => {
-            this.zone.run(async() => {
+          var watch = await this.geolocation.watchPosition();
+          watch.subscribe(async (data: Geoposition) => {
+           await this.zone.run(() => {
               if(data.coords.latitude != undefined && data.coords.longitude != undefined){
-              this.lat = await data.coords.latitude;
-              this.lng = await data.coords.longitude;
+              this.lat = data.coords.latitude;
+              this.lng = data.coords.longitude;
           firebase.firestore().collection("informationUser").doc(firebase.auth().currentUser.uid)
             .update({
               location: new firebase.firestore.GeoPoint(data.coords.latitude,data.coords.longitude),
@@ -95,23 +88,15 @@ public lng: number = 0;
       //      }
       // );
 
-      // Check Internet
-      this.networkProvider.initializeNetworkEvents();
-      // var loading = this.loadingCtrl.create({
-      //   content: 'เครื่อข่ายล้มเหลวกรุณารอการเชื่อมต่อ'
-      // });
+       this.network.onDisconnect().subscribe(() => {
+        alert("กรุณาเชื่อมต่ออินเทอร์เน็ต")
+      })
 
-      // Offline event
-      this.events.subscribe('network:offline', () => {
-        // loading.present();
-        alert('network:offline ==> ' + this.network.type);
-      });
+      this.network.onConnect().subscribe(() => {
+        alert("เชื่อมต่ออินเทอร์เน็ตสำเร็จ")
+      })
 
-      // Online event
-      this.events.subscribe('network:online', () => {
-        // loading.dismiss();
-        alert('network:online ==> ' + this.network.type);
-      });
+
 
     });
   }

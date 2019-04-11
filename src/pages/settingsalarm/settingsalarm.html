@@ -48,10 +48,7 @@
       </ion-list-header>
       <ion-item>
           <ion-label>ตั้งเวลาแจ้งเตือน</ion-label>
-          <ion-datetime displayFormat="HH:mm" [(ngModel)]="bangkokTime"></ion-datetime>
-      </ion-item>
-      <ion-item>
-        <ion-note>*หมายเหตุ <br> AM : 00.00 (เที่ยงคืน) - 12.00 (เที่ยงวัน) <br> PM : 12:00 (เที่ยงวัน) - 00.00 (เที่ยงคืน)</ion-note>
+          <ion-datetime displayFormat="HH:mm:ss" [(ngModel)]="bangkokTime"></ion-datetime>
       </ion-item>
 
     </ion-list>

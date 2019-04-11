@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, LoadingController } from 'ionic-angular';
 import { RegisterAgePage } from '../register-age/register-age';
 import firebase from 'firebase';
 
@@ -14,6 +14,7 @@ export class RegisterNamePage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private toastCtrl : ToastController,
+    private loadingCtrl : LoadingController,
     ) {
       this.fireinfo.doc(firebase.auth().currentUser.uid).get().then((res) => {
         if(res.data().owner_name === undefined) {
@@ -33,6 +34,7 @@ export class RegisterNamePage {
   }
 
   next(){
+
     if(this.displayname === "" || this.displayname === null || this.displayname === undefined){
       this.toastCtrl.create({
         message: "กรุณาระบุชื่อเล่นที่ถูกต้อง",
@@ -40,6 +42,12 @@ export class RegisterNamePage {
         position: 'top'
       }).present();
   } else {
+    let loader = this.loadingCtrl.create({
+      spinner: 'hide',
+      content: `<img src="assets/imgs/loading.svg">`
+    })
+    loader.present();
+
     firebase.auth().currentUser.updateProfile({
       photoURL: firebase.auth().currentUser.photoURL,
       displayName: this.displayname
@@ -52,6 +60,7 @@ export class RegisterNamePage {
           duration: 3000,
           position: 'top'
         }).present();
+        loader.dismiss();
         this.navCtrl.push(RegisterAgePage);
       }).catch((err) => {
         console.log(err);
