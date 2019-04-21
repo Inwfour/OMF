@@ -9,7 +9,6 @@ import { NativeAudio } from '@ionic-native/native-audio';
   templateUrl: 'help.html',
 })
 export class HelpPage {
-  phone:number;
   constructor(public navCtrl: NavController, 
     public navParams: NavParams,
     private modalCtrl: ModalController,

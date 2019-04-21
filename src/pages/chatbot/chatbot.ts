@@ -16,15 +16,9 @@ declare var window;
 
 export class ChatbotPage {
 
-  buttons: any = [];
-  lists: any = [];
   messages: any[] = [];
   text: string = "";
-  textVoice: any;
-  matches: String[];
   isRecording = false
-  img: any = firebase.auth().currentUser.photoURL;
-  photoUser: string = "";
   getUser: any = {};
   disease: any = [];
   temprr: any = [];
@@ -188,10 +182,6 @@ export class ChatbotPage {
           try {
             console.log(response);
             this.textres = JSON.parse(response.result.fulfillment.speech);
-            console.log(this.textres);
-            console.log(this.textres.text);
-            console.log(this.textres.img);
-            console.log(this.textres.button);
             this.messages.push({
               text: this.textres.text,
               img: this.textres.img,
@@ -208,12 +198,6 @@ export class ChatbotPage {
           this.content.scrollToBottom();
         }  
       })
-      // voice
-      // this.tts.speak({
-      //   text: response.result.fulfillment.speech,
-      //   locale: "th-TH",
-      //   rate: 1
-      // })
     }, (error) => {
       alert(JSON.stringify(error))
     })

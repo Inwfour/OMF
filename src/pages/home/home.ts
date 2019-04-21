@@ -18,20 +18,15 @@ import { CollectionServicesProvider } from '../../providers/get-collections/get-
   templateUrl: 'home.html',
 })
 export class HomePage {
-  user :User = new User;
   photoURL:any;
   displayName:any;
   latitude:number ;
   longitude:number ;
-  photoDisplay: string;
-  _uid: any;
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public events: Events,
     private alertCtrl:AlertController,
     public geolocation: Geolocation,
-    private firebaseCordova: Firebase,
-    private CollectionService: CollectionServicesProvider,
     ) {
 
   }
@@ -39,8 +34,6 @@ export class HomePage {
   ionViewWillEnter() {
           this.get();
       this.getimg();
-      this._uid = firebase.auth().currentUser.uid;
-      this.photoDisplay = firebase.auth().currentUser.photoURL
   }
 
   get() {

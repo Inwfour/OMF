@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, AlertController, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, ToastController } from 'ionic-angular';
 import { User } from '../../models/user';
 import { RegisterPage } from '../register/register';
-import { UserProvider } from '../../providers/user/user';
 import { PasswordresetPage } from '../passwordreset/passwordreset';
 import { RegisterPhotoPage } from '../register-photo/register-photo';
 import { LoginProvider } from '../../providers/login/login';
@@ -22,9 +21,7 @@ export class LoginPage {
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
     public loadingCtrl: LoadingController,
-    public alertCtrl: AlertController,
     public toastCtrl: ToastController,
-    public _USER: UserProvider,
     private loginservice: LoginProvider,
   ) {
   }
@@ -42,14 +39,8 @@ export class LoginPage {
       content: `<img src="assets/imgs/loading.svg">`
     })
     loader.present();
-
     this.loginservice.loginUser(user).then(async(data) => {
-      console.log(data);
-
       await this.fireinfo.doc(firebase.auth().currentUser.uid).get().then((res) => {
-        // Checked Status Auth
-
-        // Checked Undefined InfomationUser
         if (res.data() === undefined) {
            this.fireinfo.doc(firebase.auth().currentUser.uid).set({
             owner: firebase.auth().currentUser.uid,
@@ -64,7 +55,7 @@ export class LoginPage {
               }).present();
               this.navCtrl.push(RegisterPhotoPage);
           })
-            .catch((err) => {
+            .catch(() => {
               loader.dismiss();
               this.toastCtrl.create({
                 message: "บันทึกข้อมูลไม่สำเร็จ",
@@ -91,10 +82,8 @@ export class LoginPage {
               }).present();
               this.navCtrl.push(TabsPage)
             }
-
           }
       })
-
     }).catch((err) => {
       console.log(err);
       loader.dismiss();
@@ -104,7 +93,6 @@ export class LoginPage {
         position: 'top',
       }).present();
     })
-
   }
 
   nextRegister() {

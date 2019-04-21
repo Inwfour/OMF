@@ -33,9 +33,9 @@ export class SettingallalarmPage {
 
   modalalarm() {
     this.modalCtrl.create(SettingsalarmPage).present();
-    this.modalCtrl.create(SettingsalarmPage).onDidDismiss(() => {
-      this.getmedicine();
-    })
+    // this.modalCtrl.create(SettingsalarmPage).onDidDismiss(() => {
+    //   this.getmedicine();
+    // })
   }
 
   delete(item) {
@@ -51,7 +51,7 @@ export class SettingallalarmPage {
         {
           text: "ยืนยัน",
           handler: () => {
-            firebase.firestore().collection("mecidine").doc(item.id).delete().then(() => {
+            firebase.firestore().collection("medicine").doc(item.id).delete().then(() => {
               this.getmedicine();
             })
           }

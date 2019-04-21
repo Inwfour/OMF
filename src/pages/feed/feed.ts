@@ -14,8 +14,6 @@ import { EditPostPage } from '../edit-post/edit-post';
 import { PostProvider } from '../../providers/post/post';
 import { ImageProvider } from '../../providers/image/image';
 import { UserProvider } from '../../providers/user/user';
-// Social Share
-import { SocialSharing } from '@ionic-native/social-sharing';
 
 @IonicPage()
 @Component({
@@ -34,23 +32,12 @@ export class FeedPage {
 
   text: string = "";
   posts: any[] = [];
-  getPost: any = {};
   getUser:any = {};
-  // commentsLength: any[] = [];
   pageSize: number = 10;
   cursor: any;
   infiniteEvent: any;
   image: string = "";
-  _uid: any;
   comments: any;
-  textEdit: any;
-  checkEdit: boolean;
-  user: any[] = [];
-  photoDisplay: string;
-  all: any = {};
-  checklist:any;
-  check:boolean;
-  selectpost:any = "all";
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private loadingCtrl: LoadingController
     , private http: HttpClient, private actionSheetCtrl: ActionSheetController
@@ -64,9 +51,6 @@ export class FeedPage {
   ) {
     // this.getComment();
     this.getPosts();
-    console.log(this.check);
-    this._uid = firebase.auth().currentUser.uid;
-    this.photoDisplay = firebase.auth().currentUser.photoURL
     this.firebaseCordova.getToken().then((token) => {
       console.log(token);
       this.updateToken(token, firebase.auth().currentUser.uid);
@@ -215,24 +199,28 @@ export class FeedPage {
   }
 
   post() {
+    if (typeof (this.text) == "string" && this.text.length > 0) { 
       const alert = this.alertCtrl.create({
         title: 'ประเภทโพสท์',
         inputs: [
+          {
+            name: 'ทั่วไป',
+            type: 'radio',
+            label: 'ทั่วไป',
+            value: 'other',
+          },
           {
             name: 'กีฬา',
             type: 'radio',
             label: 'กีฬา',
             value: 'sport',
-            // checked: true
           },
-  
           {
             name: 'ดนตรี',
             type: 'radio',
             label: 'ดนตรี',
             value: 'music'
           },
-  
           {
             name: 'ศาสนา',
             type: 'radio',
@@ -250,7 +238,8 @@ export class FeedPage {
             }
           }, {
             text: 'โพสท์',
-            handler: (data) => {        
+            handler: (data) => {
+              if(data != null || data != undefined){
               let loader = this.loadingCtrl.create({
                 spinner: 'hide',
                 content: `<img src="assets/imgs/loading.svg">`
@@ -284,12 +273,23 @@ export class FeedPage {
                 loader.dismiss();
                 console.log(err);
               })
+            } else {
+              this.toastCtrl.create({
+                message: "กรุณาเลือกประเภท",
+                duration: 2000
+              }).present();
+            }
             }
           }
         ]
       });
    alert.present();
-
+  } else {
+    this.toastCtrl.create({
+      message: "กรุณาระบุข้อความให้ถูกต้อง",
+      duration: 2000
+    }).present();
+  }
   }
 
   refresh(event) {

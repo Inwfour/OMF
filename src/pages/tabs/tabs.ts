@@ -27,7 +27,6 @@ export class TabsPage {
   settingPage = SettingsPage
   cameraPage = TabsCameraPage
   tabsFriendPage = TabsfriendsPage  
-  image:string = "";
   // checked:number = 0;
 
   constructor(public navCtrl: NavController, 

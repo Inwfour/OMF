@@ -15,11 +15,11 @@ export class GroupchatPage {
   @ViewChild('content') content : Content;
   owner: boolean = false;
   firegroup = firebase.firestore().collection("groups");
-  groupName;
-  newmessage;
-  allgroupmsgs;
-  alignuid;
-  photoURL;
+  groupName:any;
+  newmessage:any;
+  allgroupmsgs:any;
+  alignuid:any;
+  photoURL:any;
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public groupservice:GroupsProvider,
     public actionSheetCtrl:ActionSheetController,

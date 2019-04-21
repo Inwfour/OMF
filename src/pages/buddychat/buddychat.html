@@ -43,15 +43,12 @@
   </div>
 </ion-content>
 
-<ion-footer no-border [style.height]="showEmojiPicker ? '255px' : '55px'">
+<ion-footer no-border>
     <ion-card bottom right *ngIf="matches">
         <img *ngIf="image" [src]="image" width="40%">
     </ion-card>
   <ion-toolbar color="light">
     <ion-item>
-        <button ion-button clear icon-only item-left (click)="switchEmojiPicker()">
-            <ion-icon name="md-happy"></ion-icon>
-          </button>
           <button ion-button clear icon-only item-left (click)="sendPicMsg()">
             <ion-icon name="image"></ion-icon>
           </button>
@@ -67,7 +64,6 @@
         <ion-icon name="send"></ion-icon>
       </button>
     </ion-item>
-    <emoji-picker [(ngModel)]="newmessage"></emoji-picker>
   </ion-toolbar>
 
 </ion-footer>

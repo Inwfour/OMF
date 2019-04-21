@@ -60,7 +60,6 @@ export class SettingsalarmPage {
       }).present();
       this.viewCtrl.dismiss();
     })
-  
   }
   }
 

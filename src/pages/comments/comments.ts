@@ -114,15 +114,15 @@ export class CommentsPage {
 
   sendComment() {
 
-    let loader = this.loadingCtrl.create({
-      spinner: 'hide',
-      content: `<img src="assets/imgs/loading.svg">`
-
-    });
-
-    loader.present();
-
     if (typeof (this.text) == "string" && this.text.length > 0) {
+      let loader = this.loadingCtrl.create({
+        spinner: 'hide',
+        content: `<img src="assets/imgs/loading.svg">`
+  
+      });
+  
+      loader.present();
+
       firebase.firestore().collection("comments").add({
         text: this.text,
         post: this.post.id,
@@ -141,7 +141,7 @@ export class CommentsPage {
       })
     } else {
       this.toastCtrl.create({
-        message: "กรุณากรอกให้ช่องไม่ว่าง",
+        message: "กรุณากรอกคอมเมนท์",
         duration: 2000,
       }).present();
     }

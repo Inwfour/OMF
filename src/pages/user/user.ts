@@ -16,19 +16,13 @@ import { TabsPage } from '../tabs/tabs';
   templateUrl: 'user.html',
 })
 export class UserPage {
-  text: string = "";
   posts: any[] = [];
   getUser:any = {};
   pageSize: number = 10;
   cursor: any;
   infiniteEvent: any;
-  image: string = "";
   _uid: any;
-  DisplayName: string;
   comments: any;
-  textEdit: any;
-  checkEdit: boolean;
-  photoURLDisplay: string = "";
   postLength: any;
   friendsLength: any;
   familysLength: any;
@@ -42,10 +36,7 @@ export class UserPage {
     public _IMG:ImageProvider,
     public _USER: UserProvider
   ) {
-    
     this._uid = firebase.auth().currentUser.uid;
-    this.photoURLDisplay = firebase.auth().currentUser.photoURL;
-    console.log(this.photoURLDisplay)
   }
 
   ionViewWillEnter() {

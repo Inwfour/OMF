@@ -15,8 +15,6 @@ export class BuddychatPage {
   newmessage:any;
   allmessages = [];
   photoURL:any;
-  editorMsg = '';
-  showEmojiPicker = false;
   image:string = "";
   firebuddychats = firebase.firestore().collection('buddychats');
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -43,10 +41,6 @@ export class BuddychatPage {
     this.chatservice.addnewmessage(this.newmessage,this.image).then(() => {
       this.newmessage = '';
       this.image = undefined;
-
-      if (!this.showEmojiPicker) {
-        this.focus();
-      }
 
       this.ionViewDidEnter();
     })
@@ -92,19 +86,6 @@ export class BuddychatPage {
     }, 1000);
   }
 
-  switchEmojiPicker() {
-    this.showEmojiPicker = !this.showEmojiPicker;
-    if (!this.showEmojiPicker) {
-      this.focus();
-    } else {
-      this.content.resize();
-      this.scrollToBottom();
-      // this.setTextareaScroll();
-    }
-    this.content.resize();
-    this.scrollToBottom();
-  }
-
   sendPicMsg() {
     let alert = this.actionSheetCtrl.create({
       title: "คุณต้องการรูปในลักษณะใด ?",
@@ -141,11 +122,6 @@ export class BuddychatPage {
       this.messageInput.nativeElement.focus();
     }
   }
-
-  // private setTextareaScroll() {
-  //   const textarea =this.messageInput.nativeElement;
-  //   textarea.scrollTop = textarea.scrollto;
-  // }
 
   scrollToBottom() {
     setTimeout(() => {

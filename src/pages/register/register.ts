@@ -27,23 +27,30 @@ export class RegisterPage {
   }
 
   save(user) {
-    this.registerService.SaveUser(user).then(async (data) => {
-     await firebase.auth().signOut();
-      this.user.email = "";
-      this.user.password = "";
+    if (this.user.email == null || this.user.password == null) {
+      this.toastCtrl.create({
+        message: "กรุณาระบุชื่อผู้ใช้หรือรหัสผ่านให้ถูกต้อง",
+        duration: 3000,
+        position: 'top'
+      }).present();
+    } else {
+      this.registerService.SaveUser(user).then(async (data) => {
+        await firebase.auth().signOut();
+        this.user.email = "";
+        this.user.password = "";
         this.toastCtrl.create({
           message: "บันทึกสำเร็จแล้ว",
           duration: 3000,
           position: 'top'
         }).present();
-    }).catch(() => {
-      this.toastCtrl.create({
-        message: "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง",
-        duration: 3000,
-        position: 'top'
-      }).present();
-    })
-
+      }).catch(() => {
+        this.toastCtrl.create({
+          message: "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง",
+          duration: 3000,
+          position: 'top'
+        }).present();
+      })
+    }
   }
 
   back() {

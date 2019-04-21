@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, ViewController, Events, ToastController } from 'ionic-angular';
 import { CallNumber } from '@ionic-native/call-number';
-import { AndroidPermissions } from '@ionic-native/android-permissions';
 import { FamilyProvider } from '../../providers/family/family';
 import { SocialSharing } from '@ionic-native/social-sharing';
 import firebase from 'firebase';

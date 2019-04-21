@@ -26,6 +26,7 @@
     <ion-label>เลือกประเภทการแสดงผล</ion-label>
     <ion-select [(ngModel)]="selectpost" cancelText="ออก" okText="ตกลง" (ionChange)="onChange($event)">
         <ion-option value="all">ทั้งหมด</ion-option>
+        <ion-option value="other">ทั่วไป</ion-option>
       <ion-option value="sport">กีฬา</ion-option>
       <ion-option value="music">ดนตรี</ion-option>
       <ion-option value="regilion">ศาสนา</ion-option>

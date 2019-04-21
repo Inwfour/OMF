@@ -11,7 +11,6 @@ import { RequestsProvider } from '../../providers/requests/requests';
   templateUrl: 'buddies.html',
 })
 export class BuddiesPage {
-  _uid: any;
   newrequest = {} as connreq;
   filteruser: any = [];
   temprr: any = [];
@@ -24,7 +23,6 @@ export class BuddiesPage {
     public requestservice: RequestsProvider,
     public events: Events
   ) {
-    this._uid = firebase.auth().currentUser.uid;
     this.userservice.getalluser().then((res: any) => {
       this.filteruser = res;
       this.temprr = res;

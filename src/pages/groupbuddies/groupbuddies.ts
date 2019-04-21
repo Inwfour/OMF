@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Events } from 'ionic-angular';
 import { RequestsProvider } from '../../providers/requests/requests';
 import { GroupsProvider } from '../../providers/groups/groups';
-
+import firebase from 'firebase';
 
 @IonicPage()
 @Component({
@@ -15,6 +15,7 @@ export class GroupbuddiesPage {
   searchstring;
   tempmyfriends = [];
   newbuddy;
+  groupref = firebase.firestore().collection("groups");
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public requestservice:RequestsProvider,
     public groupservice: GroupsProvider,

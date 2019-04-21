@@ -18,7 +18,7 @@ export class MyApp {
   rootPage: any;
   showSplash = true;
   public lat: number = 0;
-public lng: number = 0; 
+  public lng: number = 0; 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,
     public network: Network,
     public events: Events,
@@ -75,18 +75,18 @@ public lng: number = 0;
       })
       //Key chatbot >>>>>>>>>>>
 
-      //   window["ApiAIPlugin"].init(
-      //     {
-      //         clientAccessToken: "fe95cf69c3ab4cae9df66de9f27ce5f7", // insert your client access key here
-      //         lang: "en" // set lang tag from list of supported languages
-      //     }, 
-      //     function(result) { 
-      //       // alert(result);
-      //      },
-      //     function(error) { 
-      //       alert(error);
-      //      }
-      // );
+        window["ApiAIPlugin"].init(
+          {
+              clientAccessToken: "fe95cf69c3ab4cae9df66de9f27ce5f7", // insert your client access key here
+              lang: "en" // set lang tag from list of supported languages
+          }, 
+          function(result) { 
+            // alert(result);
+           },
+          function(error) { 
+            alert(error);
+           }
+      );
 
        this.network.onDisconnect().subscribe(() => {
         alert("กรุณาเชื่อมต่ออินเทอร์เน็ต")

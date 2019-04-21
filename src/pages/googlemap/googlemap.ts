@@ -1,10 +1,7 @@
 import { Component, ViewChild, ElementRef, NgZone } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform, Events, ModalController } from 'ionic-angular';
 import firebase from 'firebase';
-import { RequestsProvider } from '../../providers/requests/requests';
-import { GroupsProvider } from '../../providers/groups/groups';
 import { FamilyProvider } from '../../providers/family/family';
-import { GooglemapmodalPage } from '../googlemapmodal/googlemapmodal';
 declare var google: any;
 
 @IonicPage()
@@ -16,9 +13,6 @@ export class GooglemapPage {
 
   @ViewChild('map') mapRef: ElementRef
   map: any;
-  lat: any;
-  lng: any;
-  user: any;
   allfamilys:any;
   allresfamilys:any = [];
   constructor(public navCtrl: NavController,

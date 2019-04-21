@@ -11,9 +11,9 @@ import firebase from 'firebase';
   templateUrl: 'groups.html',
 })
 export class GroupsPage {
-  allmygroups;
-  groupowner;
-  groupfriend;
+  allmygroups:any;
+  groupowner:any;
+  groupfriend:any;
   firegroup = firebase.firestore().collection("groups");
   constructor(public navCtrl: NavController, public navParams: NavParams,
     public loadingCtrl : LoadingController,

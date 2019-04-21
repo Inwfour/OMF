@@ -3,13 +3,6 @@ import { IonicPage, NavController, NavParams, AlertController, ActionSheetContro
 import { ImageProvider } from '../../providers/image/image';
 import { GroupsProvider } from '../../providers/groups/groups';
 
-/**
- * Generated class for the NewgroupPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
 @IonicPage()
 @Component({
   selector: 'page-newgroup',
