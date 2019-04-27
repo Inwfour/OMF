@@ -38,6 +38,8 @@ export class FeedPage {
   infiniteEvent: any;
   image: string = "";
   comments: any;
+  _uid: any;
+  selectpost:any = 'all';
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private loadingCtrl: LoadingController
     , private http: HttpClient, private actionSheetCtrl: ActionSheetController
@@ -50,6 +52,7 @@ export class FeedPage {
     public toastCtrl: ToastController,
   ) {
     // this.getComment();
+    this._uid = firebase.auth().currentUser.uid;
     this.getPosts();
     this.firebaseCordova.getToken().then((token) => {
       console.log(token);
@@ -128,6 +131,64 @@ export class FeedPage {
 
 
     let query = firebase.firestore().collection("posts").orderBy("created", "desc")
+      .limit(this.pageSize)
+
+    query.onSnapshot((snapshot) => {
+      let changedDocs = snapshot.docChanges();
+
+      changedDocs.forEach((change) => {
+        if (change.type == "added") {
+          // TODO
+        }
+        if (change.type == "modified") {
+          // TODO
+          for (let i = 0; i < this.posts.length; i++) {
+            if (this.posts[i].id == change.doc.id) {
+              this.posts[i] = change.doc;
+            }
+          }
+        }
+        if (change.type == "removed") {
+          // TODO
+        }
+      })
+    })
+
+    query.get().then((docs) => {
+
+      docs.forEach((doc) => {
+        this.posts.push(doc);
+
+        console.log(doc.data().owner);
+        firebase.firestore().collection("informationUser").doc(doc.data().owner).get().then((data) => {
+
+          this.getUser = data.data();
+          console.log("user : " , this.getUser);
+        })
+        
+      })
+
+      loader.dismiss();
+
+      this.cursor = this.posts[this.posts.length - 1];
+      console.log(this.posts);
+
+    }).catch((err) => {
+      console.log(err);
+    })
+  }
+
+  getPostsWhere(type) {
+    this.posts = [];
+
+    let loader = this.loadingCtrl.create({
+      spinner: 'hide',
+      content: `<img src="assets/imgs/loading.svg">`
+
+    }); loader.present();
+
+
+    let query = firebase.firestore().collection("posts").where("type", "==", type).orderBy("created", "desc")
       .limit(this.pageSize)
 
     query.onSnapshot((snapshot) => {
@@ -432,11 +493,13 @@ export class FeedPage {
       }); loader.present();
 
       firebase.firestore().collection("posts").where("type", "==", $event).get().then((data) => {
-        data.forEach((doc) => {
+        if(data.empty == true) {
           loader.dismiss();
-          this.posts.push(doc);
-
-        })
+          this.posts = [];
+        }else {
+            loader.dismiss();
+            this.getPostsWhere($event);
+        }
       })
   }
 }

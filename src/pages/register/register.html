@@ -1,4 +1,4 @@
-<ion-content class="background">
+<!-- <ion-content class="background">
   <ion-card>
     <ion-card-header>
       สมัครสมาชิก
@@ -19,4 +19,25 @@
           </ion-list>
     </ion-card-content>
   </ion-card>
+  </ion-content> -->
+
+  <ion-content text-center padding class="registration">
+    <div padding>
+    </div>
+      <img src="assets/imgs/iconregister.png">
+    <div padding>
+    </div>
+    <ion-list>
+      <ion-item>
+        <ion-icon name="ios-contact" item-left></ion-icon>
+        <ion-input [(ngModel)]="user.email" type="text"></ion-input>
+      </ion-item>
+          <ion-item>
+            <ion-icon name="ios-lock" item-left></ion-icon>
+            <ion-input [(ngModel)]="user.password" type="password"></ion-input>
+          </ion-item>
+    </ion-list>
+    <div padding></div>
+    <button ion-button round block outline color="white" (click)="save(user)">สร้างบัญชีผู้ใช้</button>
+    <button ion-button round block outline color="white" (click)="back()">กลับ</button>
   </ion-content>

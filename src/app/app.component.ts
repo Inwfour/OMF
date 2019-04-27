@@ -8,6 +8,7 @@ import { TabsPage } from '../pages/tabs/tabs';
 import firebase from 'firebase'
 import { Network } from '@ionic-native/network';
 import { Geolocation, Geoposition } from '@ionic-native/geolocation';
+import { BackgroundMode } from '@ionic-native/background-mode';
 
 declare var window;
 
@@ -26,6 +27,7 @@ export class MyApp {
     public alertCtrl: AlertController,
     public geolocation: Geolocation,
     public zone:NgZone,
+    public backgroundMode: BackgroundMode
   ) {
     const unsubscribe = firebase.auth().onAuthStateChanged(user => {
       if (!user) {
@@ -38,6 +40,12 @@ export class MyApp {
     });
 
     platform.ready().then(() => {
+
+        this.backgroundMode.on('activate').subscribe(() => {
+          console.log('activated');
+        });
+  
+        this.backgroundMode.enable();
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();

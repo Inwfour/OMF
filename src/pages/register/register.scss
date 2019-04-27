@@ -1,29 +1,84 @@
 page-register {
-  .background {
+//   .background {
+//     background-image: linear-gradient(160deg, #33B545 30%, #69D07D 70%);
+// }
+// .scroll-content {
+//     align-content: center;
+//     display: flex;
+//     flex-direction: column;
+//     justify-content: center;
+//     text-align: center;
+// }
+// ion-card.card {
+//     box-shadow: none;
+//     background: #127C5B;
+//     border-radius: 5px;
+// }
+// a, p,
+// ion-card-header.card-header {
+//     color: #fff!important;
+// }
+ 
+// .list > .item-block:first-child {
+//     border: medium none;
+// }
+ 
+// .item {
+//     margin-bottom: 10px;
+//     background: rgba(255, 255, 255, 0.212);
+//     border: medium none;
+ 
+//     .text-input, {
+//         color: #fff;
+//     }
+ 
+    
+//     input::-moz-placeholder{
+//         color: #fff!important;
+//     }
+//     input:-moz-placeholder {
+//         color: #fff!important;
+//     }
+//     *:-moz-placeholder{
+//         color: #fff!important;
+//     }
+//     *:-ms-input-placeholder{
+//         color: #fff!important;
+//     }
+//     *::-webkit-input-placeholder{
+//         color: #fff!important;
+//     }
+ 
+// }
+ 
+// .icon {
+//     padding-right: 10px;
+// }
+ 
+// .bottom {
+//     bottom: 0;
+// }
+ 
+// .input-cover {
+// position: static;
+// }
+
+.registration {
     background-image: linear-gradient(160deg, #33B545 30%, #69D07D 70%);
-}
-.scroll-content {
-    align-content: center;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
-}
-ion-card.card {
-    box-shadow: none;
-    background: #127C5B;
-    border-radius: 5px;
-}
-a, p,
-ion-card-header.card-header {
-    color: #fff!important;
-}
- 
-.list > .item-block:first-child {
-    border: medium none;
-}
- 
-.item {
+    ion-card {
+        box-shadow: none;
+    }
+    img{
+        margin-bottom: 20px;
+        height: 200px;
+        width: 200px;
+        border-radius:50%;
+        border: 4px solid rgba(255,255,255,0.4);
+        -webkit-box-shadow: 0px 0px 142px -37px rgba(0,0,0,0.75);
+        -moz-box-shadow: 0px 0px 142px -37px rgba(0,0,0,0.75);
+        box-shadow: 0px 0px 142px -37px rgba(0,0,0,0.75);
+    }
+    .item {
     margin-bottom: 10px;
     background: rgba(255, 255, 255, 0.212);
     border: medium none;
@@ -54,13 +109,6 @@ ion-card-header.card-header {
 .icon {
     padding-right: 10px;
 }
- 
-.bottom {
-    bottom: 0;
-}
- 
-.input-cover {
-position: static;
 }
     
 }
