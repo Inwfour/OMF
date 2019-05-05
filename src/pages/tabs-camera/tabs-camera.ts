@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ViewController, ActionSheetController, AlertController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ViewController, ActionSheetController, AlertController, LoadingController, ToastController } from 'ionic-angular';
 import { Camera,CameraOptions } from '@ionic-native/camera';
 import { PostProvider } from '../../providers/post/post';
 import { ImageProvider } from '../../providers/image/image';
@@ -24,7 +24,8 @@ export class TabsCameraPage {
     public alertCtrl: AlertController,
     public loadingCtrl : LoadingController,
     public CollectionService : CollectionServicesProvider,
-    public _POST : PostProvider
+    public _POST : PostProvider,
+    public toastCtrl : ToastController,
     ) {
   }
 
@@ -64,81 +65,97 @@ export class TabsCameraPage {
   }
 
   post() {
-    const alert = this.alertCtrl.create({
-      title: 'ประเภทโพสท์',
-      inputs: [
-        {
-          name: 'กีฬา',
-          type: 'checkbox',
-          label: 'กีฬา',
-          value: 'กีฬา',
-          // checked: true
-        },
-
-        {
-          name: 'ดนตรี',
-          type: 'checkbox',
-          label: 'ดนตรี',
-          value: 'ดนตรี'
-        },
-
-        {
-          name: 'ศาสนา',
-          type: 'checkbox',
-          label: 'ศาสนา',
-          value: 'ศาสนา'
-        },
-      ],
-      buttons: [
-        {
-          text: 'ยกเลิก',
-          role: 'cancel',
-          cssClass: 'secondary',
-          handler: (data) => {
-            console.log('Confirm Cancel');
+    if (typeof (this.text) == "string" && this.text.length > 0) { 
+      const alert = this.alertCtrl.create({
+        title: 'ประเภทโพสท์',
+        inputs: [
+          {
+            name: 'ทั่วไป',
+            type: 'radio',
+            label: 'ทั่วไป',
+            value: 'other',
+          },
+          {
+            name: 'กีฬา',
+            type: 'radio',
+            label: 'กีฬา',
+            value: 'sport',
+          },
+          {
+            name: 'ดนตรี',
+            type: 'radio',
+            label: 'ดนตรี',
+            value: 'music'
+          },
+          {
+            name: 'ศาสนา',
+            type: 'radio',
+            label: 'ศาสนา',
+            value: 'regilion'
+          },
+        ],
+        buttons: [
+          {
+            text: 'ยกเลิก',
+            role: 'cancel',
+            cssClass: 'secondary',
+            handler: (data) => {
+              console.log('Confirm Cancel');
+            }
+          }, {
+            text: 'โพสท์',
+            handler: (data) => {
+              if(data != null || data != undefined){
+              let loader = this.loadingCtrl.create({
+                spinner: 'hide',
+                content: `<img src="assets/imgs/loading.svg">`
+              });
+              loader.present();
+              this.CollectionService.PostsCollection().add({
+                text: this.text,
+                created: firebase.firestore.FieldValue.serverTimestamp(),
+                owner: firebase.auth().currentUser.uid,
+                owner_name: firebase.auth().currentUser.displayName,
+                likes: {
+                  [`${firebase.auth().currentUser.uid}`]: false
+                },
+                likesCount: 0,
+                photoUser: firebase.auth().currentUser.photoURL,
+                type: data
+          
+              }).then(async (doc) => {
+          
+                console.log(doc);
+          
+                if (this.image) {
+                  await this._POST.uploadImgPost(doc.id, this.image);
+                }
+          
+                this.text = "";
+                this.image = undefined;
+                loader.dismiss();
+                this.navCtrl.push(FeedPage);
+              }).catch((err) => {
+                loader.dismiss();
+                console.log(err);
+              })
+            } else {
+              this.toastCtrl.create({
+                message: "กรุณาเลือกประเภท",
+                duration: 2000
+              }).present();
+            }
+            }
           }
-        }, {
-          text: 'โพสท์',
-          handler: (data) => {        
-            let loader = this.loadingCtrl.create({
-              spinner: 'hide',
-              content: `<img src="assets/imgs/loading.svg">`
-            });
-            loader.present();
-            this.CollectionService.PostsCollection().add({
-              text: this.text,
-              created: firebase.firestore.FieldValue.serverTimestamp(),
-              owner: firebase.auth().currentUser.uid,
-              owner_name: firebase.auth().currentUser.displayName,
-              likes: {
-                [`${firebase.auth().currentUser.uid}`]: false
-              },
-              likesCount: 0,
-              photoUser: firebase.auth().currentUser.photoURL,
-              type: data
-        
-            }).then(async (doc) => {
-        
-              console.log(doc);
-        
-              if (this.image) {
-                await this._POST.uploadImgPost(doc.id, this.image);
-              }
-        
-              this.text = "";
-              this.image = undefined;
-              loader.dismiss();
-              this.navCtrl.push(FeedPage);
-            }).catch((err) => {
-              loader.dismiss();
-              console.log(err);
-            })
-          }
-        }
-      ]
-    });
- alert.present();
-
-}
+        ]
+      });
+   alert.present();
+  } else {
+    this.toastCtrl.create({
+      message: "กรุณาระบุข้อความให้ถูกต้อง",
+      duration: 2000
+    }).present();
+  }
+  }
 
 }
